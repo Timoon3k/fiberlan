@@ -71,8 +71,14 @@
       }
     }
   },
+  "customTemplates": [
+    { "name": "page-fiberlan", "title": "FIBERLAN PL", "postTypes": ["page"] },
+    { "name": "page-en", "title": "FIBERLAN EN", "postTypes": ["page"] }
+  ],
   "templateParts": [
     { "name": "header", "title": "Nagłówek", "area": "header" },
-    { "name": "footer", "title": "Stopka", "area": "footer" }
+    { "name": "footer", "title": "Stopka", "area": "footer" },
+    { "name": "header-en", "title": "Header (EN)", "area": "header" },
+    { "name": "footer-en", "title": "Footer (EN)", "area": "footer" }
   ]
 }

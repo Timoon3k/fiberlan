@@ -15,6 +15,11 @@ services:
       timeout: 5s
       retries: 45
 
+  mailpit:
+    image: axllent/mailpit:v1.24.2@sha256:3ad9483ac2dea937ae402b95435ab12c3355d2373a1002a49491db0be536d8fa
+    ports:
+      - "127.0.0.1:8025:8025"
+
   wordpress:
     image: wordpress:7.1.5-php8.3-apache@sha256:15195799455c0440e34e4890478c0f1af26350ce166df93a402c1affb4fa0695
     depends_on:
@@ -36,6 +41,8 @@ services:
     volumes:
       - wordpress:/var/www/html
       - ./theme/fiberlan:/var/www/html/wp-content/themes/fiberlan:ro
+      - ./plugin/fiberlan-site:/var/www/html/wp-content/plugins/fiberlan-site:ro
+      - ./dev/mail.php:/var/www/html/wp-content/mu-plugins/fiberlan-local-mail.php:ro
       - ./dev/initialize.php:/opt/fiberlan-init.php:ro
 
 volumes:

@@ -1,0 +1,22 @@
+{
+  "apiVersion": 3,
+  "name": "fiberlan/projects",
+  "title": "Katalog realizacji",
+  "category": "widgets",
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "all": {
+      "type": "string"
+    },
+    "empty": {
+      "type": "string"
+    }
+  },
+  "supports": {
+    "html": false,
+    "multiple": false
+  },
+  "editorScript": "fiberlan-block-editor"
+}

@@ -66,7 +66,7 @@ def roundtrip(page, base, path, raw, suffix, slug, image):
     # Use unpublished copies for page content and distinct, unreferenced slugs for parts.
     data = {"title": f"Test FIBERLAN {suffix}", "content": raw}
     if path == "template-parts":
-        data.update({"slug": f"fiberlan-qa-{slug}-{suffix}", "theme": "fiberlan", "area": slug})
+        data.update({"slug": f"fiberlan-qa-{slug}-{suffix}", "theme": "fiberlan", "area": slug.split("-")[0]})
     else:
         data["status"] = "draft"
     entity = rest(page, f"/wp/v2/{path}", "POST", data)
@@ -94,7 +94,11 @@ def roundtrip(page, base, path, raw, suffix, slug, image):
                         } else if (name === 'core/button') {
                             updates.url = '#qa-' + suffix;
                             updates.text = String(a.text) + ' ' + suffix;
-                        } else if (['core/home-link', 'core/navigation-link'].includes(name)) {
+                        } else if (name === 'fiberlan/contact') {
+                            for (const [key, value] of Object.entries(a)) {
+                                if (typeof value === 'string') updates[key] = value + ' ' + suffix;
+                            }
+                        } else if (['fiberlan/projects', 'fiberlan/languages', 'core/home-link', 'core/navigation-link'].includes(name)) {
                             updates.label = String(a.label || '') + ' ' + suffix;
                         }
                         if (Object.keys(updates).length) {
@@ -125,7 +129,9 @@ def roundtrip(page, base, path, raw, suffix, slug, image):
                         const f = {
                             'core/image': ['alt','caption'], 'core/button': ['url','text'],
                             'core/heading': ['content'], 'core/paragraph': ['content'],
-                            'core/details': ['summary'], 'core/navigation-link': ['label'], 'core/home-link': ['label']
+                            'core/details': ['summary'], 'core/navigation-link': ['label'], 'core/home-link': ['label'],
+                            'fiberlan/projects': ['label'], 'fiberlan/languages': ['label'],
+                            'fiberlan/contact': ['name','company','email','phone','subject','message','privacy','policy','submit','success','invalid','failure','limited']
                         }[b.name];
                         if (b.name === 'core/image' && (a.url !== image.url || a.id !== image.id))
                             throw new Error('Image replacement was not persisted');
@@ -145,7 +151,7 @@ def roundtrip(page, base, path, raw, suffix, slug, image):
         rest(page, endpoint + "?force=true", "DELETE")
 
 
-def run(page, base, username, password):
+def run(page, base, username, password, stage_two):
     page.goto(base + "/wp-login.php")
     page.locator("#user_login").fill(username)
     page.locator("#user_pass").fill(password)
@@ -159,6 +165,16 @@ def run(page, base, username, password):
     assert len(theme_patterns) >= 7, theme_patterns.keys()
     for name, raw in theme_patterns.items():
         check_blocks(page, raw, name)
+    pages_to_edit = []
+    if stage_two:
+        managed = [x for x in rest(page, "/wp/v2/pages?per_page=100&context=edit")
+                   if x["template"] in ("page-fiberlan", "page-en") or x["id"] == home["id"]]
+        assert len(managed) >= 22
+        for item in managed:
+            check_blocks(page, item["content"]["raw"], item["link"])
+        paths = {"/o-nas/", "/uslugi/", "/sprzet/", "/realizacje/", "/kontakt/", "/en/", "/en/contact/"}
+        pages_to_edit = [x for x in managed if urlparse(x["link"]).path in paths]
+        assert len(pages_to_edit) == len(paths)
     suffix = uuid4().hex[:8]
     # A locally created solid swatch exercises Media Library attachment replacement.
     image = page.evaluate("""async suffix => {
@@ -173,7 +189,10 @@ def run(page, base, username, password):
     }""", suffix)
     try:
         roundtrip(page, base, "pages", home["content"]["raw"], suffix, "home", image)
-        for slug in ["header", "footer"]:
+        for entry in pages_to_edit:
+            roundtrip(page, base, "pages", entry["content"]["raw"], suffix, entry["link"], image)
+        parts = ["header", "footer", "header-en", "footer-en"] if stage_two else ["header", "footer"]
+        for slug in parts:
             roundtrip(page, base, "template-parts", theme_patterns[f"fiberlan/{slug}"], suffix, slug, image)
         contacts = rest(page, "/wp/v2/blocks?context=edit&search=FIBERLAN")
         contact = next(item for item in contacts if "kontaktowe" in item["title"]["raw"])
@@ -187,13 +206,14 @@ def main():
     parser.add_argument("base_url")
     parser.add_argument("password_file", type=Path)
     parser.add_argument("--user", default="fiberlan-editor")
+    parser.add_argument("--stage-two", action="store_true")
     args = parser.parse_args()
     if urlparse(args.base_url).hostname not in {"localhost", "127.0.0.1", "::1"}:
         parser.error("This test requires a disposable, local WordPress installation.")
     with sync_playwright() as p:
         browser = p.chromium.launch(executable_path=shutil.which("chromium"))
         page = browser.new_page(viewport={"width": 1440, "height": 1000})
-        run(page, args.base_url.rstrip("/"), args.user, args.password_file.read_text().strip())
+        run(page, args.base_url.rstrip("/"), args.user, args.password_file.read_text().strip(), args.stage_two)
         browser.close()
 
 

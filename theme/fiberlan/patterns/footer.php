@@ -29,6 +29,7 @@ defined( 'ABSPATH' ) || exit;
 			<?php echo fiberlan_contact_reference(); ?>
 		</div>
 		<!-- /wp:group -->
+		<?php if ( function_exists( 'fiberlan_policy_links' ) ) { echo fiberlan_policy_links( 'pl' ); } ?>
 	</div>
 	<!-- /wp:group -->
 </div>

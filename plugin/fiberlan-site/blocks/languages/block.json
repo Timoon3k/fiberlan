@@ -1,0 +1,20 @@
+{
+  "apiVersion": 3,
+  "name": "fiberlan/languages",
+  "title": "Przełącznik języka",
+  "category": "widgets",
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "suggestion": {
+      "type": "string"
+    }
+  },
+  "supports": {
+    "html": false,
+    "multiple": false
+  },
+  "editorScript": "fiberlan-block-editor",
+  "viewScript": "fiberlan-languages"
+}

@@ -59,6 +59,7 @@ defined( 'ABSPATH' ) || exit;
 			}
 			?>
 		<!-- /wp:navigation -->
+		<?php if ( function_exists( 'fl_custom_block' ) ) { echo fl_custom_block( 'languages', array( 'label' => 'Język', 'suggestion' => 'View this page in English' ) ); } ?>
 	</div>
 	<!-- /wp:group -->
 </div>

@@ -38,12 +38,17 @@ if ( $install && 'fiberlan' !== get_stylesheet() ) {
     switch_theme( 'fiberlan' );
 }
 if ( $install ) {
+    require_once ABSPATH . 'wp-admin/includes/plugin.php';
+    $activated = activate_plugin( 'fiberlan-site/fiberlan-site.php' );
+    if ( is_wp_error( $activated ) ) {
+        throw new RuntimeException( $activated->get_error_message() );
+    }
     exit( 0 );
 }
 
 // In a fresh process, WordPress loads the active theme and registers its patterns.
 wp_set_current_user( get_user_by( 'login', 'fiberlan-editor' )->ID );
-$result = fiberlan_install_starter();
+$result = fl_install_stage_two();
 if ( is_wp_error( $result ) ) {
     throw new RuntimeException( $result->get_error_message() );
 }

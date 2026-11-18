@@ -54,9 +54,12 @@ def check_page(browser, base, width, screens):
         else:
             assert [a.inner_text().strip() for a in nav.locator("a").all()] == NAV_LABELS
             for link in nav.locator("a").all():
-                target = urlsplit(link.get_attribute("href") or "").fragment
+                href = link.get_attribute("href") or ""
+                target = urlsplit(href).fragment
                 if target:
                     assert page.evaluate("id => !!document.getElementById(id)", unquote(target)), target
+                elif href:
+                    assert page.request.get(href).ok, href
         if width == 390 and toggle.is_visible():
             toggle.click()
             service = nav.get_by_role("link", name="Usługi", exact=True)

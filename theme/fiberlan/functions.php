@@ -37,7 +37,7 @@ add_action(
 add_action(
 	'wp',
 	static function () {
-		if ( 'pl_PL' !== get_locale() ) {
+		if ( 'pl_PL' !== get_locale() || ( function_exists( 'fl_page_lang' ) && 'en' === fl_page_lang( get_queried_object_id() ) ) ) {
 			return;
 		}
 		add_filter(
@@ -82,3 +82,16 @@ add_filter(
 	10,
 	2
 );
+
+function fiberlan_policy_links( $lang ) {
+	if ( ! function_exists( 'fl_url' ) || ! fl_page_id( 'privacy', $lang ) ) {
+		return '';
+	}
+	$labels = 'pl' === $lang ? array( 'Polityka prywatności', 'Polityka cookies', 'Ustawienia zgód' ) : array( 'Privacy policy', 'Cookie policy', 'Consent settings' );
+	$links  = array();
+	foreach ( array( 'privacy', 'cookies' ) as $index => $key ) {
+		$links[] = '<a href="' . esc_url( fl_url( $key, $lang ) ) . '">' . esc_html( $labels[ $index ] ) . '</a>';
+	}
+	$html = '<!-- wp:paragraph {"className":"fl-policy-links"} --><p class="fl-policy-links">' . implode( ' · ', $links ) . '</p><!-- /wp:paragraph -->';
+	return $html . '<!-- wp:html --><button type="button" class="fl-consent-settings" hidden>' . esc_html( $labels[2] ) . '</button><!-- /wp:html -->';
+}

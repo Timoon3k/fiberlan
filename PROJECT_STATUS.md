@@ -1,5 +1,40 @@
 # FIBERLAN SC · Status projektu
 
+**19 listopada 2026 · Etap 2 gotowy do odbioru na środowisku testowym.**
+
+## Etap 2
+
+- Zbudowano sześć stron na język (strona główna, O nas, Usługi, Sprzęt, Realizacje i Kontakt), cztery robocze polityki oraz trzy opisy realizacji w dwóch językach. Każdy adres ma własną treść w Gutenbergu, jeden H1 oraz parę PL/EN. Polityki robocze są wyłączone z indeksowania i mapy witryny.
+- Wersja PL ma adresy w katalogu głównym. Wersja EN korzysta z odrębnych stron pod `/en/` i oddzielnych części szablonu. Własna wtyczka łączy strony po ID. Przełącznik pamięta ręczny wybór i zachowuje UTM oraz GCLID. Wstępna sugestia uwzględnia język przeglądarki i polską strefę czasową. Bezpośrednie adresy działają bez przekierowania językowego. Dane z geolokalizacji IP nie są zbierane.
+- Katalog korzysta ze stron potomnych, kategorii i branż WordPressa. Filtr działa przez odnośniki i parametr adresu. Projekt można dodać w edytorze, a jego tłumaczenie powiązać przez wspólny końcowy slug. Przykłady pokazują diagramy do czasu otrzymania zdjęć z realizacji. Do uzupełnienia pozostają potwierdzone logotypy klientów, zdjęcia projektów i modele urządzeń wymagające potwierdzenia.
+- Formularz ma edytowalne etykiety i komunikaty PL/EN. Sprawdza obowiązkowe pola i adres e-mail, nonce, pole przeciw automatom oraz limit prób. Wysyła przez `wp_mail()` na `info@fiberlan.pl` i ustawia zweryfikowany adres użytkownika w nagłówku Reply-To. W testowej konfiguracji SMTP kieruje wszystkie wiadomości do lokalnego Mailpit. Zgłoszenie nie jest zapisywane w WordPressie.
+- Moduł „20 lat” i Ribbon jest dostępny jako edytowalna sekcja z natywnym panelem rozwijanym. Zawiera lata 2006–2026 i opis metody. Oświadczenie o wyłączności w Polsce wymaga potwierdzenia.
+- Wtyczka obsługuje opcjonalny identyfikator CookieYes. Przy aktywnym API ustawienia zgód można ponownie otworzyć ze stopki. Pełny baner i Consent Mode v2 wymagają konfiguracji i testu z kontem CookieYes. Robocze polityki wymagają zatwierdzenia przez administratora danych.
+
+### Pliki i testy
+
+| Obszar | Pliki i wynik |
+| --- | --- |
+| Motyw i bloki | `theme/fiberlan`, `plugin/fiberlan-site`. Nowe szablony i style FSE, instalator treści, trzy niestandardowe bloki dla formularza, katalogu i języków. |
+| Instalacja | `compose.yaml`, `dev/`. WordPress 7.1.5, PHP 8.3.36, MariaDB 11.4.13 i Mailpit. Instalacja z pustej bazy utworzyła 22 strony. Drugi start zachował identyfikatory i zapisaną zmianę redaktora. |
+| Przeglądarka | `tests/stage_two_smoke.py`. 22 adresy × 2 szerokości (390 i 1440 px) przeszły kontrole H1, języka, canonical, hreflang, obrazów, menu i poziomego przepełnienia. Sprawdzono filtrowanie w obu językach, wybór języka z parametrami kampanii i obsługę panelu Ribbon za pomocą Enter/Escape. |
+| Dostępność | Wynik automatyczny axe-core 4.10.3 dla strony głównej, realizacji i formularza w obu językach. Zero zgłoszeń dla uruchomionych reguł WCAG A/AA na 390 i 1440 px. |
+| Poczta | Oba formularze dostarczyły wiadomości do Mailpit przez SMTP. Odczytano właściwy adres odbiorcy, treść i Reply-To. Sprawdzono błędny nonce, pole przeciw automatom, walidację i HTTP 429. |
+| Edytor | `tests/editor_smoke.py --stage-two`. Wszystkie 22 strony i dziewięć wzorców przeszły parsowanie. Zapisano i ponownie otwarto kopie sześciu stron PL, dwóch stron EN oraz nagłówków i stopek obu języków. Zmieniono między innymi wszystkie etykiety i komunikaty formularzy w PL i EN. |
+| Mapa witryny | Na odizolowanej kopii z włączonym indeksowaniem WordPress uwzględnił oba języki i wykluczył niezatwierdzone polityki. Instancja deweloperska ma wyłączone indeksowanie. |
+| CookieYes | Sprawdzono wywołanie funkcji ponownego otwarcia panelu z testowym callbackiem. Produkcyjny skrypt, zgody i blokowanie tagów oczekują na dane klienta. |
+
+Aby powtórzyć testy, uruchom `./dev/start.sh` i wykonaj poniższe polecenia z zainstalowanymi Python Playwright i Chromium. Flaga `--mail` wysyła dwie wiadomości do lokalnej skrzynki. Limit formularza obejmuje pięć prób w ciągu dziesięciu minut z jednego adresu.
+
+```sh
+python tests/stage_two_smoke.py --mail
+python tests/editor_smoke.py http://127.0.0.1:8080 .local/admin-password --stage-two
+```
+
+Instrukcje edycji i uruchomienia na hostingu znajdują się w [EDYCJA.md](docs/EDYCJA.md) oraz [HOSTING.md](docs/HOSTING.md). Etap 3 obejmuje końcowe metadane i dane strukturalne, Rank Math, analitykę, konfigurację cache i pomiary wydajności. Użycie lekkiej wtyczki projektowej zamiast Polylang umożliwiło niezależną edycję treści bez dodatkowej zależności. Integrację z Rank Math należy zweryfikować na etapie 3.
+
+## Archiwum etapu 1
+
 **19 listopada 2026 · Etap 1 gotowy do odbioru wizualnego.** W bieżącej instancji działa polska strona główna z rzeczywistym zapleczem WordPress. Gałąź projektu to `feature/fiberlan-gutenberg-premium`.
 
 ## Zakres i architektura
