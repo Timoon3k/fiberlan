@@ -1,0 +1,43 @@
+name: fiberlan-dev
+services:
+  database:
+    image: mariadb:11.4@sha256:5e73baf8179b29f115101bb102763a47a017361f3e9792daccba6646c3ab1532
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: ${DATABASE_PASSWORD:?}
+      MARIADB_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD:?}
+    volumes:
+      - database:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      timeout: 5s
+      retries: 45
+
+  wordpress:
+    image: wordpress:7.1.5-php8.3-apache@sha256:15195799455c0440e34e4890478c0f1af26350ce166df93a402c1affb4fa0695
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:80"
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${DATABASE_PASSWORD:?}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_ENVIRONMENT_TYPE', 'local');
+        define('WPLANG', 'pl_PL');
+        define('DISALLOW_FILE_MODS', true);
+        define('WP_HTTP_BLOCK_EXTERNAL', true);
+        define('DISABLE_WP_CRON', true);
+    volumes:
+      - wordpress:/var/www/html
+      - ./theme/fiberlan:/var/www/html/wp-content/themes/fiberlan:ro
+      - ./dev/initialize.php:/opt/fiberlan-init.php:ro
+
+volumes:
+  database:
+  wordpress:

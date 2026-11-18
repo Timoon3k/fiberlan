@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 160" width="300" height="160" fill="none">
+<defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" stroke="#7a96b1" stroke-width=".7" opacity="0.28"/></pattern></defs>
+<rect width="300" height="160" fill="#192e43"/>
+<rect width="300" height="160" fill="url(#grid)"/>
+<path d="M6 10h8 M10 6v8" stroke="#607c96" stroke-width="1" />
+<path d="M6 150h8 M10 146v8" stroke="#607c96" stroke-width="1" />
+<path d="M286 10h8 M290 6v8" stroke="#607c96" stroke-width="1" />
+<path d="M286 150h8 M290 146v8" stroke="#607c96" stroke-width="1" />
+<g stroke-linecap="round" stroke-linejoin="round">
+<polygon points="129,34 163,25 201,37 166,47" fill="#38516a" stroke="#8faecc" stroke-width="0.95"/>
+<polygon points="129,34 166,47 166,127 129,112" fill="#20384e" stroke="#8faecc" stroke-width="0.95"/>
+<polygon points="166,47 201,37 201,115 166,127" fill="#132a3d" stroke="#8faecc" stroke-width="0.95"/>
+<path d="M133 43 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M137 43 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M174 50l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M133 51 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M137 51 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M174 58l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M133 59 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M137 59 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M174 66l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M133 67 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M137 67 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M174 74l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M133 75 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M137 75 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M174 82l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M133 83 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M137 83 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M174 90l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M133 91 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M137 91 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M174 98l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M133 99 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M137 99 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M174 106l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<polygon points="90,44 124,35 162,47 127,57" fill="#38516a" stroke="#8faecc" stroke-width="0.95"/>
+<polygon points="90,44 127,57 127,137 90,122" fill="#20384e" stroke="#8faecc" stroke-width="0.95"/>
+<polygon points="127,57 162,47 162,125 127,137" fill="#132a3d" stroke="#8faecc" stroke-width="0.95"/>
+<path d="M94 53 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M98 53 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M135 60l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M94 61 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M98 61 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M135 68l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M94 69 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M98 69 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M135 76l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M94 77 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M98 77 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M135 84l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M94 85 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M98 85 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M135 92l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M94 93 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M98 93 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M135 100l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M94 101 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M98 101 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M135 108l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M94 109 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M98 109 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M135 116l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<polygon points="51,54 85,45 123,57 88,67" fill="#38516a" stroke="#8faecc" stroke-width="0.95"/>
+<polygon points="51,54 88,67 88,147 51,132" fill="#20384e" stroke="#8faecc" stroke-width="0.95"/>
+<polygon points="88,67 123,57 123,135 88,147" fill="#132a3d" stroke="#8faecc" stroke-width="0.95"/>
+<path d="M55 63 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M59 63 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M96 70l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M55 71 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M59 71 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M96 78l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M55 79 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M59 79 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M96 86l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M55 87 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M59 87 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M96 94l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M55 95 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M59 95 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M96 102l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M55 103 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M59 103 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M96 110l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M55 111 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M59 111 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M96 118l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M55 119 l28 10" stroke="#6685a5" stroke-width="0.9" />
+<path d="M59 119 l4 1.5" stroke="#90b7e5" stroke-width="0.9" />
+<path d="M96 126l16 -4" stroke="#6685a5" stroke-width="0.65" />
+<path d="M42 141 88 155 223 116 M177 32 182 22 208 15" stroke="#6685a5" stroke-width="0.7" />
+</g>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 160" width="300" height="160" fill="none">
+<defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" stroke="#7a96b1" stroke-width=".7" opacity="0.28"/></pattern></defs>
+<rect width="300" height="160" fill="#192e43"/>
+<rect width="300" height="160" fill="url(#grid)"/>
+<path d="M6 10h8 M10 6v8" stroke="#607c96" stroke-width="1" />
+<path d="M6 150h8 M10 146v8" stroke="#607c96" stroke-width="1" />
+<path d="M286 10h8 M290 6v8" stroke="#607c96" stroke-width="1" />
+<path d="M286 150h8 M290 146v8" stroke="#607c96" stroke-width="1" />
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M27 130h241 M41 136h212" stroke="#6685a5" stroke-width="0.7" />
+<polygon points="35,99 201,99 264,82 246,104 221,120 59,120" fill="#20384e" stroke="#8faecc" stroke-width="1.3"/>
+<path d="M46 104h146q34 0 64 -16 M59 116h162" stroke="#6685a5" stroke-width="0.8" />
+<polygon points="62,99 66,84 191,84 230,78 239,88 204,99" fill="#132a3d" stroke="#8faecc" stroke-width="1.3"/>
+<polygon points="71,84 76,73 170,73 177,68 198,68 212,81 189,84" fill="#38516a" stroke="#8faecc" stroke-width="0.95"/>
+<polygon points="87,72 91,62 157,62 161,58 179,58 187,68 171,73" fill="#20384e" stroke="#8faecc" stroke-width="0.9"/>
+<polygon points="112,61 114,44 135,44 139,62" fill="#20384e" stroke="#8faecc" stroke-width="1.3"/>
+<path d="M115 48h19 M116 52h18" stroke="#6685a5" stroke-width="0.8" />
+<path d="M164 57V40 M160 43h10 M211 79V62" stroke="#8faecc" stroke-width="0.9" />
+<path d="M72 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M80 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M88 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M96 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M104 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M112 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M120 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M128 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M136 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M144 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M152 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M160 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M168 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M176 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M184 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M192 90h3" stroke="#90b7e5" stroke-width="1.3" />
+<path d="M84.0 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M91.5 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M99.0 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M106.5 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M114.0 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M121.5 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M129.0 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M136.5 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M144.0 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M151.5 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M159.0 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M166.5 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M174.0 78h3" stroke="#90b7e5" stroke-width="1.2" />
+<path d="M97 67h3" stroke="#90b7e5" stroke-width="1.1" />
+<path d="M104 67h3" stroke="#90b7e5" stroke-width="1.1" />
+<path d="M111 67h3" stroke="#90b7e5" stroke-width="1.1" />
+<path d="M118 67h3" stroke="#90b7e5" stroke-width="1.1" />
+<path d="M125 67h3" stroke="#90b7e5" stroke-width="1.1" />
+<path d="M132 67h3" stroke="#90b7e5" stroke-width="1.1" />
+<path d="M139 67h3" stroke="#90b7e5" stroke-width="1.1" />
+<path d="M146 67h3" stroke="#90b7e5" stroke-width="1.1" />
+<path d="M153 67h3" stroke="#90b7e5" stroke-width="1.1" />
+<path d="M160 67h3" stroke="#90b7e5" stroke-width="1.1" />
+<path d="M167 67h3" stroke="#90b7e5" stroke-width="1.1" />
+</g>
+</svg>

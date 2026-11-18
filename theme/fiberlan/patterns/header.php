@@ -1,0 +1,65 @@
+<?php
+/**
+ * Title: Nagłówek FIBERLAN
+ * Slug: fiberlan/header
+ * Inserter: no
+ *
+ * @package Fiberlan
+ */
+
+defined( 'ABSPATH' ) || exit;
+?>
+<!-- wp:group {"className":"fl-header","layout":{"type":"default"}} -->
+<div class="wp-block-group fl-header">
+	<!-- wp:group {"className":"fl-contactbar","layout":{"type":"default"}} -->
+	<div class="wp-block-group fl-contactbar">
+		<!-- wp:group {"className":"fl-shell","layout":{"type":"default"}} -->
+		<div class="wp-block-group fl-shell">
+			<?php echo fiberlan_contact_reference(); ?>
+		</div>
+		<!-- /wp:group -->
+	</div>
+	<!-- /wp:group -->
+	<!-- wp:group {"className":"fl-nav-row fl-shell","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+	<div class="wp-block-group fl-nav-row fl-shell">
+		<!-- wp:group {"className":"fl-brand","layout":{"type":"flex","flexWrap":"nowrap"}} -->
+		<div class="wp-block-group fl-brand">
+			<!-- wp:site-logo {"width":166} /-->
+			<!-- wp:site-title {"level":0} /-->
+		</div>
+		<!-- /wp:group -->
+		<!-- wp:navigation {"ariaLabel":"Menu główne","className":"fl-nav","overlayMenu":"mobile","layout":{"type":"flex","justifyContent":"right","flexWrap":"nowrap"}} -->
+			<!-- wp:home-link {"label":"Strona główna"} /-->
+			<?php
+			$destinations = array(
+				array( 'o-nas', 'O nas', 'doswiadczenie' ),
+				array( 'uslugi', 'Usługi', 'uslugi' ),
+				array( 'sprzet', 'Sprzęt', 'sprzet' ),
+				array( 'realizacje', 'Realizacje', 'realizacje' ),
+				array( 'kontakt', 'Kontakt', 'kontakt' ),
+			);
+			foreach ( $destinations as list( $slug, $label, $anchor ) ) {
+				$page = get_page_by_path( $slug );
+				if ( $page && 'publish' === $page->post_status ) {
+					$attributes = array(
+						'label' => $label,
+						'kind'  => 'post-type',
+						'type'  => 'page',
+						'id'    => $page->ID,
+						'url'   => get_permalink( $page ),
+					);
+				} else {
+					$attributes = array(
+						'label' => $label,
+						'kind'  => 'custom',
+						'url'   => home_url( '/#' . $anchor ),
+					);
+				}
+				echo '<!-- wp:navigation-link ' . serialize_block_attributes( $attributes ) . ' /-->' . "\n";
+			}
+			?>
+		<!-- /wp:navigation -->
+	</div>
+	<!-- /wp:group -->
+</div>
+<!-- /wp:group -->

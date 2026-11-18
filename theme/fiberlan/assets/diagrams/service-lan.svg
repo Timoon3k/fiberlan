@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 150" width="360" height="150" fill="none">
+<defs><pattern id="minor" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" stroke="#819db7" stroke-width=".7" opacity="0.3"/></pattern></defs>
+<rect width="360" height="150" fill="#e8eff4"/>
+<rect width="360" height="150" fill="url(#minor)"/>
+<path d="M7 11h8 M11 7v8" stroke="#9bb0c3" stroke-width="1" />
+<path d="M7 139h8 M11 135v8" stroke="#9bb0c3" stroke-width="1" />
+<path d="M345 11h8 M349 7v8" stroke="#9bb0c3" stroke-width="1" />
+<path d="M345 139h8 M349 135v8" stroke="#9bb0c3" stroke-width="1" />
+<g stroke-linejoin="round" stroke-linecap="round">
+<polygon points="72,74 161,50 210,66 120,92" fill="#f3f7fa" stroke="#315a87" stroke-width="1.3"/>
+<polygon points="72,74 120,92 121,111 72,93" fill="#c4d6e6" stroke="#315a87" stroke-width="1.3"/>
+<polygon points="120,92 210,66 210,85 121,111" fill="#dae5ee" stroke="#315a87" stroke-width="1.3"/>
+<polygon points="100,68 148,55 178,64 131,78" fill="#dae5ee" stroke="#315a87" stroke-width="1.3"/>
+<path d="M102 69 108 58 150 46 168 51 177 64" stroke="#315a87" stroke-width="1.2" />
+<polygon points="152,62 209,45 228,50 226,67 176,81 175,70" fill="#c4d6e6" stroke="#315a87" stroke-width="1.3"/>
+<path d="M77.0 77.0l9 -2.8 M77.0 77.0 v9" stroke="#a35d2a" stroke-width="0.9" />
+<path d="M81.8 78.55l9 -2.8 M81.8 78.55 v9" stroke="#a35d2a" stroke-width="0.9" />
+<path d="M86.6 80.1l9 -2.8 M86.6 80.1 v9" stroke="#a35d2a" stroke-width="0.9" />
+<path d="M91.4 81.65l9 -2.8 M91.4 81.65 v9" stroke="#a35d2a" stroke-width="0.9" />
+<path d="M96.2 83.2l9 -2.8 M96.2 83.2 v9" stroke="#a35d2a" stroke-width="0.9" />
+<path d="M101.0 84.75l9 -2.8 M101.0 84.75 v9" stroke="#a35d2a" stroke-width="0.9" />
+<path d="M105.8 86.3l9 -2.8 M105.8 86.3 v9" stroke="#a35d2a" stroke-width="0.9" />
+<path d="M110.6 87.85l9 -2.8 M110.6 87.85 v9" stroke="#a35d2a" stroke-width="0.9" />
+<path d="M214 47 C246 38 251 50 270 46 S300 32 353 19" stroke="#2758be" stroke-width="1.6" />
+<path d="M216 51 C246 42 251 54 270 50 S300 36 353 23" stroke="#88a6c4" stroke-width="1.6" />
+<path d="M218 55 C246 46 251 58 270 54 S300 40 353 27" stroke="#a35d2a" stroke-width="1.6" />
+<path d="M220 59 C246 50 251 62 270 58 S300 44 353 31" stroke="#315a87" stroke-width="1.6" />
+<path d="M74 98 64 108 37 115 M189 83 197 100l35 9" stroke="#88a6c4" stroke-width="0.85" />
+<circle cx="35" cy="116" r="1.5" fill="#2758be"/>
+</g>
+</svg>
