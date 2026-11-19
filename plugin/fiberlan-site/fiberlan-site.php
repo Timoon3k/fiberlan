@@ -1,8 +1,9 @@
 <?php
 /**
- * Plugin Name: FIBERLAN – witryna PL/EN
+ * Plugin Name: FIBERLAN Core
+ * Text Domain: fiberlan-core
  * Description: Powiązania językowe, katalog realizacji i zapytania ofertowe FIBERLAN.
- * Version: 4.0.0
+ * Version: 4.1.0
  * Author: Tomasz Majewski
  * Author URI: https://majewskitomasz.pl
  * Requires at least: 6.6
@@ -10,7 +11,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 define( 'FL_SITE_DIR', __DIR__ );
-define( 'FL_SITE_VERSION', '4.0.0' );
+define( 'FL_SITE_VERSION', '4.1.0' );
 require_once __DIR__ . '/inc/languages.php';
 require_once __DIR__ . '/inc/projects.php';
 require_once __DIR__ . '/inc/contact.php';
@@ -20,10 +21,12 @@ require_once __DIR__ . '/inc/navigation.php';
 require_once __DIR__ . '/inc/seo.php';
 require_once __DIR__ . '/inc/schema.php';
 require_once __DIR__ . '/inc/marketing.php';
+require_once __DIR__ . '/inc/block-copy.php';
 
 add_action( 'init', static function () {
-	wp_register_script( 'fiberlan-block-editor', plugins_url( 'assets/editor.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-core-data', 'wp-html-entities' ), FL_SITE_VERSION, true );
-	foreach ( array( 'contact' => 'fl_contact_render', 'projects' => 'fl_projects_render', 'languages' => 'fl_languages_render' ) as $name => $render ) {
+	wp_register_style( 'fiberlan-block-editor', plugins_url( 'assets/editor.css', __FILE__ ), array(), FL_SITE_VERSION );
+	wp_register_script( 'fiberlan-block-editor', plugins_url( 'assets/editor.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-core-data', 'wp-html-entities', 'wp-rich-text', 'wp-data', 'wp-hooks', 'wp-url' ), FL_SITE_VERSION, true );
+	foreach ( array( 'contact' => 'fl_contact_render', 'projects' => 'fl_projects_render', 'consent' => 'fl_consent_render', 'languages' => 'fl_languages_render' ) as $name => $render ) {
 		register_block_type( __DIR__ . '/blocks/' . $name, array( 'render_callback' => $render ) );
 	}
 	foreach ( array( 'breadcrumbs', 'service-links', 'not-found' ) as $name ) {

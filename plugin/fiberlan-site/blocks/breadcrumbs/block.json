@@ -1,5 +1,6 @@
 {
   "apiVersion": 3,
+  "textdomain": "fiberlan-core",
   "name": "fiberlan/breadcrumbs",
   "title": "Ścieżka nawigacji",
   "category": "theme",
@@ -7,5 +8,14 @@
     "html": false,
     "multiple": false
   },
-  "editorScript": "fiberlan-block-editor"
+  "editorScript": "fiberlan-block-editor",
+  "attributes": {
+    "home": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    }
+  },
+  "editorStyle": "fiberlan-block-editor"
 }

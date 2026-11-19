@@ -31,11 +31,11 @@ if ( $install && ! is_blog_installed() ) {
 wp_installing( false );
 
 if ( $install && 'fiberlan' !== get_template() ) {
-    $theme = wp_get_theme( 'fiberlan' );
+    $theme = wp_get_theme( 'fiberlan-child' );
     if ( ! $theme->exists() || $theme->errors() ) {
-        throw new RuntimeException( 'The Fiberlan block theme is missing or incomplete.' );
+        throw new RuntimeException( 'The FIBERLAN child theme or its parent is missing or incomplete.' );
     }
-    switch_theme( 'fiberlan' );
+    switch_theme( 'fiberlan-child' );
 }
 if ( $install ) {
     require_once ABSPATH . 'wp-admin/includes/plugin.php';

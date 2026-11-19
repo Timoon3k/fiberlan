@@ -1,5 +1,6 @@
 {
   "apiVersion": 3,
+  "textdomain": "fiberlan-core",
   "name": "fiberlan/service-links",
   "title": "Spis usług",
   "category": "theme",
@@ -7,5 +8,11 @@
     "html": false,
     "multiple": false
   },
-  "editorScript": "fiberlan-block-editor"
+  "editorScript": "fiberlan-block-editor",
+  "attributes": {
+    "heading": {
+      "type": "string"
+    }
+  },
+  "editorStyle": "fiberlan-block-editor"
 }

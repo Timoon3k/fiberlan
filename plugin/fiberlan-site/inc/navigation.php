@@ -28,7 +28,7 @@ function fl_breadcrumbs( $id ) {
 	return count( $items ) > 1 ? $items : array();
 }
 
-function fl_breadcrumbs_render() {
+function fl_breadcrumbs_render( $attrs = array() ) {
 	if ( ! is_page() ) {
 		return '';
 	}
@@ -38,9 +38,10 @@ function fl_breadcrumbs_render() {
 		return '';
 	}
 	$lang = fl_page_lang( $id );
-	$label = fl_text( $lang, 'Ścieżka nawigacji', 'Breadcrumbs' );
+	$copy = fl_block_values( 'breadcrumbs', $attrs, $lang );
+	$items[0]['name'] = $copy['home'];
 	$last = count( $items ) - 1;
-	$html = '<div class="fl-crumb-bar"><nav class="fl-shell fl-crumbs" aria-label="' . esc_attr( $label ) . '"><ol role="list">';
+	$html = '<div class="fl-crumb-bar"><nav class="fl-shell fl-crumbs" aria-label="' . esc_attr( $copy['label'] ) . '"><ol role="list">';
 	foreach ( $items as $index => $item ) {
 		$name = esc_html( $item['name'] );
 		$html .= $index === $last ? '<li aria-current="page">' . $name . '</li>' : '<li><a href="' . esc_url( $item['url'] ) . '">' . $name . '</a></li>';
@@ -67,7 +68,7 @@ function fl_service_sections( $id ) {
 	return $items;
 }
 
-function fl_service_links_render() {
+function fl_service_links_render( $attrs = array() ) {
 	if ( ! is_page() ) {
 		return '';
 	}
@@ -77,19 +78,19 @@ function fl_service_links_render() {
 		return '';
 	}
 	$lang = fl_page_lang( $id );
-	$html = '<aside class="fl-section fl-service-index"><div class="fl-shell fl-reading"><h2>' . esc_html( fl_text( $lang, 'Zakres usług', 'Explore our services' ) ) . '</h2><ul>';
+	$copy = fl_block_values( 'service-links', $attrs, $lang );
+	$html = '<aside class="fl-section fl-service-index"><div class="fl-shell fl-reading"><h2>' . esc_html( $copy['heading'] ) . '</h2><ul>';
 	foreach ( $items as $item ) {
 		$html .= '<li><a href="' . esc_url( $item['url'] ) . '">' . esc_html( $item['name'] ) . '</a></li>';
 	}
 	return $html . '</ul></div></aside>';
 }
 
-function fl_not_found_render() {
+function fl_not_found_render( $attrs = array() ) {
 	$lang = fl_request_language();
-	$title = fl_text( $lang, 'Nie znaleziono strony', 'Page not found' );
-	$body = fl_text( $lang, 'Sprawdź adres lub wróć na stronę główną FIBERLAN.', 'Check the address or return to the FIBERLAN homepage.' );
-	$url = fl_url( 'home', $lang ) ?: home_url( '/' );
-	return do_blocks( fl_hero( $lang, '404', $title, $body ) . fl_section( fl_button( fl_text( $lang, 'Strona główna', 'Home' ), $url ) ) );
+	$copy = fl_block_values( 'not-found', $attrs, $lang );
+	return do_blocks( fl_hero( $lang, $copy['eyebrow'], $copy['heading'], $copy['body'] )
+		. fl_section( fl_button( $copy['button'], $copy['url'] ) ) );
 }
 
 add_filter( '404_template_hierarchy', static function ( $templates ) {

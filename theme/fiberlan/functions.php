@@ -94,5 +94,5 @@ function fiberlan_policy_links( $lang ) {
 		$links[] = '<a href="' . esc_url( fl_url( $key, $lang ) ) . '">' . esc_html( $labels[ $index ] ) . '</a>';
 	}
 	$html = '<!-- wp:paragraph {"className":"fl-policy-links"} --><p class="fl-policy-links">' . implode( ' · ', $links ) . '</p><!-- /wp:paragraph -->';
-	return $html . '<!-- wp:html --><button type="button" class="fl-consent-settings" hidden>' . esc_html( $labels[2] ) . '</button><!-- /wp:html -->';
+	return $html . fl_custom_block( 'consent', array( 'label' => $labels[2] ) );
 }

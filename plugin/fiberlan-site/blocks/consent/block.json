@@ -1,0 +1,17 @@
+{
+  "apiVersion": 3,
+  "textdomain": "fiberlan-core",
+  "name": "fiberlan/consent",
+  "title": "Ustawienia zgód",
+  "category": "widgets",
+  "attributes": {
+    "label": {
+      "type": "string"
+    }
+  },
+  "supports": {
+    "html": false
+  },
+  "editorScript": "fiberlan-block-editor",
+  "editorStyle": "fiberlan-block-editor"
+}

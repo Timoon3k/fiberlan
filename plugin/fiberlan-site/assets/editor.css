@@ -1,0 +1,13 @@
+.fl-editor-preview { border: 1px dashed #91a5c1; padding: 1rem; }
+.fl-editor-preview .fl-form-grid { margin-top: .75rem; }
+.fl-editor-preview .fl-field { margin: 0; }
+.fl-editor-preview .fl-field-message .fl-editor-field { min-height: 5.5rem; }
+.fl-editor-projects { margin-block-start: .75rem; padding-inline-start: 1.25rem; }
+.fl-editor-preview [contenteditable=true] { min-width: 1.5em; cursor: text; }
+.fl-editor-preview [contenteditable=true]:focus { outline: 2px solid #1d4ed8; outline-offset: 2px; }
+.fl-editor-preview .fl-editor-url, .fl-editor-preview .fl-editor-states { display: block; margin-block: 1rem; }
+.fl-editor-preview .fl-editor-states { border-block-start: 1px solid #cbd5e1; padding-block-start: .75rem; }
+.fl-editor-preview .fl-editor-field { display: block; min-height: 2.6rem; background: #f4f6f9; border: 1px solid #8698b0; border-radius: 2px; pointer-events: none; }
+.fl-editor-projects a { text-decoration: underline; }
+.fl-editor-preview form { margin-block: 1rem; }
+.fl-editor-filter { display: inline-block; border: 1px solid currentColor; padding: .35em .75em; }

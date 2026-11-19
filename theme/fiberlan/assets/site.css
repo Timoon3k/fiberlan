@@ -516,7 +516,7 @@ html { scroll-padding-block-start: calc(var(--fl-sticky-height, 5rem) + var(--wp
 .fl-form-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .9rem 1.15rem; }
 .fl-field { display: flex; flex-direction: column; gap: .25rem; font-weight: 600; }
 .fl-field-message, .fl-field-subject { grid-column: 1 / -1; }
-.fl-field input, .fl-field textarea, .fl-editor-field { padding: .65rem .75rem; font: inherit; font-weight: 400; border: 1px solid #8698b0; border-radius: 2px; background: #f4f6f9; color: #0b132b; }
+.fl-field input, .fl-field textarea { padding: .65rem .75rem; font: inherit; font-weight: 400; border: 1px solid #8698b0; border-radius: 2px; background: #f4f6f9; color: #0b132b; }
 .fl-field [aria-invalid] { border-color: #aa202b; }
 .fl-form .wp-element-button { cursor: pointer; }
 .fl-form-privacy { display: block; margin-top: 1rem; }
@@ -526,8 +526,6 @@ html { scroll-padding-block-start: calc(var(--fl-sticky-height, 5rem) + var(--wp
 .fl-form-status.is-error { background: #fce8ea; color: #931e29; }
 .fl-policy-links, .fl-consent-settings { font-size: .86rem; }
 .fl-consent-settings { align-self: start; color: inherit; border: 1px solid var(--fl-border-dark); background: transparent; padding: .5rem .75rem; cursor: pointer; }
-.fl-editor-preview { border: 1px dashed #91a5c1; padding: 1rem; }
-.fl-editor-preview .fl-form-grid { margin-top: .75rem; }
 
 @media (max-width: 60rem) {
   .fl-nav .wp-block-navigation__responsive-container:not(.is-menu-open) { display: none; }
@@ -600,10 +598,6 @@ html { scroll-padding-block-start: calc(var(--fl-sticky-height, 5rem) + var(--wp
 /* Gutenberg image styles apply to library replacements as well as starter photographs. */
 :is(.fl-shell, .wp-block-post-content, .editor-styles-wrapper) .wp-block-image.is-style-fiberlan-full img { display: block; width: 100%; height: auto; max-height: none; object-fit: contain; }
 :is(.fl-shell, .wp-block-post-content, .editor-styles-wrapper) .wp-block-image.is-style-fiberlan-wide img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
-.fl-editor-field { display: block; min-height: 2.6rem; }
-.fl-editor-preview .fl-field-message .fl-editor-field { min-height: 5.5rem; }
-.fl-editor-preview .fl-field { margin: 0; }
-.fl-editor-projects { margin-block-start: .75rem; padding-inline-start: 1.25rem; }
 
 .wp-block-gallery.is-style-fiberlan-gallery.has-nested-images {
   gap: clamp(.85rem, 2vw, 2rem);

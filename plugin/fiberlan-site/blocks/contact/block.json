@@ -1,5 +1,6 @@
 {
   "apiVersion": 3,
+  "textdomain": "fiberlan-core",
   "name": "fiberlan/contact",
   "title": "Formularz zapytania",
   "category": "widgets",
@@ -42,11 +43,15 @@
     },
     "limited": {
       "type": "string"
+    },
+    "policyUrl": {
+      "type": "string"
     }
   },
   "supports": {
     "html": false,
     "multiple": false
   },
-  "editorScript": "fiberlan-block-editor"
+  "editorScript": "fiberlan-block-editor",
+  "editorStyle": "fiberlan-block-editor"
 }

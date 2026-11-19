@@ -1,5 +1,6 @@
 {
   "apiVersion": 3,
+  "textdomain": "fiberlan-core",
   "name": "fiberlan/languages",
   "title": "Przełącznik języka",
   "category": "widgets",
@@ -9,11 +10,18 @@
     },
     "suggestion": {
       "type": "string"
+    },
+    "plText": {
+      "type": "string"
+    },
+    "enText": {
+      "type": "string"
     }
   },
   "supports": {
     "html": false,
     "multiple": false
   },
-  "editorScript": "fiberlan-block-editor"
+  "editorScript": "fiberlan-block-editor",
+  "editorStyle": "fiberlan-block-editor"
 }

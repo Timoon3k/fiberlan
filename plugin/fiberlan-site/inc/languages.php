@@ -71,12 +71,12 @@ function fl_languages_render( $attrs ) {
 	}
 	$lang = fl_page_lang( $id );
 	$other = 'pl' === $lang ? 'en' : 'pl';
-	$hint = $attrs['suggestion'] ?? ( 'pl' === $lang ? 'View this page in English' : 'Wyświetl tę stronę po polsku' );
-	$html = '<nav class="fl-languages" data-lang="' . $lang . '" aria-label="' . esc_attr( $attrs['label'] ?? ( 'pl' === $lang ? 'Język' : 'Language' ) ) . '">';
+	$copy = fl_block_values( 'languages', $attrs, $lang );
+	$html = '<nav class="fl-languages" data-lang="' . $lang . '" aria-label="' . esc_attr( $copy['label'] ) . '">';
 	foreach ( $urls as $code => $url ) {
-		$html .= sprintf( '<a data-language="%1$s" lang="%1$s" hreflang="%1$s" href="%2$s" %3$s>%4$s</a>', esc_attr( $code ), esc_url( $url ), $lang === $code ? 'aria-current="true"' : '', strtoupper( $code ) );
+		$html .= sprintf( '<a data-language="%1$s" lang="%1$s" hreflang="%1$s" href="%2$s" %3$s>%4$s</a>', esc_attr( $code ), esc_url( $url ), $lang === $code ? 'aria-current="true"' : '', esc_html( $copy[ $code . 'Text' ] ) );
 	}
-	return $html . '<a class="fl-language-hint" hidden data-language="' . $other . '" href="' . esc_url( $urls[ $other ] ) . '" lang="' . $other . '">' . esc_html( $hint ) . '</a></nav>';
+	return $html . '<a class="fl-language-hint" hidden data-language="' . $other . '" href="' . esc_url( $urls[ $other ] ) . '" lang="' . $other . '">' . esc_html( $copy['suggestion'] ) . '</a></nav>';
 }
 
 // The linked English brand returns to the English home page.

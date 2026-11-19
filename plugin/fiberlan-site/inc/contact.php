@@ -86,7 +86,7 @@ add_action( 'template_redirect', static function () {
 function fl_contact_render( $attrs ) {
 	$id = get_queried_object_id();
 	$lang = fl_page_lang( $id );
-	$a = wp_parse_args( $attrs, fl_contact_labels( $lang ) );
+	$a = fl_block_values( 'contact', $attrs, $lang );
 	$result = $GLOBALS['fl_contact_result'] ?? array( 'values' => array(), 'errors' => array(), 'status' => '' );
 	$receipt = $_GET['received'] ?? '';
 	$success = is_string( $receipt ) && preg_match( '/^[a-z0-9]{32}$/iD', $receipt ) && $id && (int) get_transient( 'fl_received_' . $receipt ) === $id;
@@ -122,7 +122,7 @@ function fl_contact_render( $attrs ) {
 			<?php endforeach; ?>
 		</div>
 		<label class="fl-form-privacy"><input type="checkbox" name="fl_privacy" value="1" required<?php echo isset( $result['errors']['privacy'] ) ? ' aria-invalid="true" aria-describedby="fl-form-status"' : ''; ?><?php checked( '1', fl_post_string( 'fl_privacy' ) ); ?>> <?php echo esc_html( $a['privacy'] ); ?></label>
-		<p><a href="<?php echo esc_url( fl_url( 'privacy', $lang ) ); ?>"><?php echo esc_html( $a['policy'] ); ?></a></p>
+		<p><a href="<?php echo esc_url( $a['policyUrl'] ); ?>"><?php echo esc_html( $a['policy'] ); ?></a></p>
 		<button class="wp-element-button" type="submit"><?php echo esc_html( $a['submit'] ); ?></button>
 	</form>
 	<?php

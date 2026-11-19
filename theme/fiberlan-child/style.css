@@ -2,7 +2,7 @@
 Theme Name: FIBERLAN Child
 Description: Motyw potomny do indywidualnych zmian w witrynie FIBERLAN SC.
 Template: fiberlan
-Version: 4.0.0
+Version: 4.1.0
 Author: Tomasz Majewski
 Author URI: https://majewskitomasz.pl
 Requires at least: 6.6
@@ -12,4 +12,7 @@ License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
-/* Własne style witryny można dodawać poniżej. */
+.fl-project-report { max-width: 65rem; padding-block: var(--fl-space-section); }
+.fl-project-report .wp-block-post-excerpt { color: var(--fl-ink-secondary); }
+.fl-project-report .wp-block-post-content > p { max-width: 65ch; }
+.fl-project-report .wp-block-post-content > * + * { margin-block-start: 1.4rem; }

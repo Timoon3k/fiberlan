@@ -2,7 +2,9 @@
 
 ## Instalacja na kopii testowej
 
-W standardowej instalacji WordPress zaktualizuj motyw FIBERLAN do wersji 4.0.0. Dodaj i aktywuj wtyczkę **FIBERLAN – witryna PL/EN**. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
+Na nowej witrynie zainstaluj motyw FIBERLAN 4.1.0, motyw FIBERLAN Child i wtyczkę **FIBERLAN Core**. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
+
+Przy aktualizacji etapu 4 zastąp pliki w dotychczasowych katalogach `fiberlan`, `fiberlan-child` i `fiberlan-site`. Wtyczka zachowuje identyfikator aktywacji, a istniejące bloki korzystają z nowego edytora bez ponownej instalacji treści.
 
 Jeśli nagłówek albo stopka zostały wcześniej zapisane przez administratora w Edytorze witryny, WordPress używa tych wersji. W zapisanej nawigacji podmień odnośniki kotwic etapu 1 na właściwe strony. Dodaj blok **Przełącznik języka** do obu nagłówków oraz odnośniki do polityk w obu stopkach. Domyślne części szablonu zawierają już te elementy.
 

@@ -1,5 +1,20 @@
 # FIBERLAN SC · Status projektu
 
+## 4C · Edycja treści w Gutenbergu
+
+**19 listopada 2026 · WordPress 7.1.5, PHP 8.3.36, wydanie FIBERLAN 4.1.0.**
+
+- Teksty formularza i cztery komunikaty wysyłki, etykiety języków, filtry katalogu, przycisk zgód, ścieżka nawigacji, spis usług oraz treść i przycisk 404 można zmieniać bezpośrednio w obszarze edycji. Zdjęcia, podpisy, teksty ALT, przyciski, karty i sekcje korzystają z natywnych bloków WordPressa.
+- Motyw bazowy zawiera system stylów, szablony PL/EN i części witryny. FIBERLAN Child dziedziczy ich ustawienia, dodaje wzorzec pojedynczej karty usługi i nadpisuje część szablonu fotorelacji. FIBERLAN Core zachowuje dotychczasowy identyfikator wtyczki i nazwy wcześniej zapisanych bloków. Autor obu motywów i wtyczki to Tomasz Majewski.
+- Testy w Chromium objęły podmianę treści i obrazów na roboczych kopiach 22 stron, zapis i ponowne otwarcie, obie nawigacje, stopki i szablony 404. Na kopii witryny zmieniono także logo i wspólny adres firmy, dodano i usunięto kartę usługi oraz zmieniono kolejność sekcji. Dwie nowe realizacje utworzono z katalogów PL i EN, wybrano zdjęcia z biblioteki, zapisano teksty ALT i sprawdzono obie karty po publikacji.
+- Czysta instalacja uruchomiła motyw potomny z 22 opublikowanymi stronami i czterema oryginalnymi plikami w bibliotece. Na WordPressie 7.1.5 sprawdzono też wizualną zmianę etykiety przycisku zgód ze stopki zapisanej w formacie 4.0. Po przełączeniu testowej witryny na Twenty Twenty-Five sprawdzono formularze, tokeny wysyłki, powiązania językowe i oba katalogi realizacji. Testowa wysyłka PL i EN trafiła do lokalnego Mailpit.
+
+Kod zaplecza lmajewski.pl był niedostępny w udostępnionych repozytoriach. Podstawą wdrożenia była specyfikacja 4C. Testy dotyczyły lokalnych instalacji WordPressa.
+
+[Instrukcja dla redaktora](docs/EDYCJA.md) · [Instalacja i aktualizacja](docs/HOSTING.md) · [Testy edycji 4C](tests/stage_four_c_editor.py)
+
+## Archiwum etapów 4A–4B
+
 **19 listopada 2026 · Etap 4A–4B gotowy do odbioru na środowisku testowym.**
 
 ## Etap 4

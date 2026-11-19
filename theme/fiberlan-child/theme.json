@@ -1,0 +1,11 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "styles": {
+    "blocks": {
+      "core/post-excerpt": {
+        "typography": { "fontSize": "var:preset|font-size|lead", "lineHeight": "1.5" }
+      }
+    }
+  }
+}

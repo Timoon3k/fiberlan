@@ -1,9 +1,13 @@
 {
   "apiVersion": 3,
+  "textdomain": "fiberlan-core",
   "name": "fiberlan/projects",
   "title": "Katalog realizacji",
   "category": "widgets",
-  "usesContext": ["postId", "postType"],
+  "usesContext": [
+    "postId",
+    "postType"
+  ],
   "attributes": {
     "label": {
       "type": "string"
@@ -19,5 +23,6 @@
     "html": false,
     "multiple": false
   },
-  "editorScript": "fiberlan-block-editor"
+  "editorScript": "fiberlan-block-editor",
+  "editorStyle": "fiberlan-block-editor"
 }

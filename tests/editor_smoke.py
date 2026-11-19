@@ -49,8 +49,9 @@ def check_blocks(page, raw, label):
 
 
 def open_entity(page, base, path, entity_id):
-    if path == "template-parts":
-        location = f"/wp-admin/site-editor.php?p=/wp_template_part/{quote(str(entity_id), safe='')}&canvas=edit"
+    if path in ("template-parts", "templates"):
+        entity = "wp_template_part" if path == "template-parts" else "wp_template"
+        location = f"/wp-admin/site-editor.php?p=/{entity}/{quote(str(entity_id), safe='')}&canvas=edit"
     else:
         location = f"/wp-admin/post.php?post={entity_id}&action=edit"
     page.goto(base + location, wait_until="domcontentloaded")
@@ -94,11 +95,13 @@ def roundtrip(page, base, path, raw, suffix, slug, image, theme=None):
                         } else if (name === 'core/button') {
                             updates.url = '#qa-' + suffix;
                             updates.text = String(a.text) + ' ' + suffix;
-                        } else if (name === 'fiberlan/contact') {
-                            for (const [key, value] of Object.entries(a)) {
-                                if (typeof value === 'string') updates[key] = value + ' ' + suffix;
+                        } else if (name.startsWith('fiberlan/')) {
+                            const fields = window.fiberlanEditor.copy.pl[name.split('/')[1]];
+                            for (const key of Object.keys(fields)) {
+                                updates[key] = key.toLowerCase().endsWith('url')
+                                    ? '#qa-' + suffix : String(a[key] || fields[key]) + ' ' + suffix;
                             }
-                        } else if (['fiberlan/projects', 'fiberlan/languages', 'core/home-link', 'core/navigation-link'].includes(name)) {
+                        } else if (['core/home-link', 'core/navigation-link'].includes(name)) {
                             updates.label = String(a.label || '') + ' ' + suffix;
                         }
                         if (Object.keys(updates).length) {
@@ -126,16 +129,14 @@ def roundtrip(page, base, path, raw, suffix, slug, image, theme=None):
                     for (const b of blocks) {
                         if (!b.isValid) throw new Error('Invalid block: ' + b.name);
                         const a = b.attributes;
-                        const f = {
+                        const fields = b.name.startsWith('fiberlan/') ? Object.keys(window.fiberlanEditor.copy.pl[b.name.split('/')[1]]) : {
                             'core/image': ['alt','caption'], 'core/button': ['url','text'],
                             'core/heading': ['content'], 'core/paragraph': ['content'],
-                            'core/details': ['summary'], 'core/navigation-link': ['label'], 'core/home-link': ['label'],
-                            'fiberlan/projects': ['label'], 'fiberlan/languages': ['label'],
-                            'fiberlan/contact': ['name','company','email','phone','subject','message','privacy','policy','submit','success','invalid','failure','limited']
+                            'core/details': ['summary'], 'core/navigation-link': ['label'], 'core/home-link': ['label']
                         }[b.name];
                         if (b.name === 'core/image' && (a.url !== image.url || a.id !== image.id))
                             throw new Error('Image replacement was not persisted');
-                        if (f?.every(key => String(a[key]).includes(suffix)))
+                        if (fields?.every(key => String(a[key]).includes(suffix)))
                             counts[b.name] = (counts[b.name] || 0) + 1;
                         walk(b.innerBlocks);
                     }
@@ -195,7 +196,7 @@ def run(page, base, username, password, stage_two):
     home = rest(page, f"/wp/v2/pages/{settings['page_on_front']}?context=edit")
     theme = rest(page, "/wp/v2/themes?status=active&context=edit")[0]["stylesheet"]
     patterns = rest(page, "/wp/v2/block-patterns/patterns")
-    theme_patterns = {x["name"]: x["content"] for x in patterns if x["name"].startswith("fiberlan/")}
+    theme_patterns = {x["name"]: x["content"] for x in patterns if x["name"].startswith(("fiberlan/", "fiberlan-child/"))}
     assert len(theme_patterns) >= 7, theme_patterns.keys()
     for name, raw in theme_patterns.items():
         check_blocks(page, raw, name)
@@ -203,13 +204,11 @@ def run(page, base, username, password, stage_two):
     if stage_two:
         check_image_styles(page, base)
         managed = [x for x in rest(page, "/wp/v2/pages?per_page=100&context=edit")
-                   if x["template"] in ("page-fiberlan", "page-en") or x["id"] == home["id"]]
+                   if x["template"] in ("page-fiberlan", "page-en", "project-pl", "project-en") or x["id"] == home["id"]]
         assert len(managed) >= 22
         for item in managed:
             check_blocks(page, item["content"]["raw"], item["link"])
-        paths = {"/o-nas/", "/uslugi/", "/sprzet/", "/realizacje/", "/kontakt/", "/en/", "/en/contact/"}
-        pages_to_edit = [x for x in managed if urlparse(x["link"]).path in paths]
-        assert len(pages_to_edit) == len(paths)
+        pages_to_edit = [x for x in managed if x["id"] != home["id"]]
         archive = next(x for x in pages_to_edit if urlparse(x["link"]).path == "/realizacje/")
         open_entity(page, base, "pages", archive["id"])
         canvas = page.frame_locator('iframe[name="editor-canvas"]')

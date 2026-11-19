@@ -1,5 +1,6 @@
 {
   "apiVersion": 3,
+  "textdomain": "fiberlan-core",
   "name": "fiberlan/not-found",
   "title": "Strona błędu 404",
   "category": "theme",
@@ -7,5 +8,23 @@
     "html": false,
     "multiple": false
   },
-  "editorScript": "fiberlan-block-editor"
+  "editorScript": "fiberlan-block-editor",
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "button": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    }
+  },
+  "editorStyle": "fiberlan-block-editor"
 }
