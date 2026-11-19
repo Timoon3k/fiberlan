@@ -12,6 +12,10 @@ W panelu WordPress wybierz **Strony → Strona główna → Edytuj**. Otwórz wi
 
 Aby wstawić kolejną sekcję, otwórz wstawiacz bloków i wybierz **Wzorce → FIBERLAN**. Nowa sekcja jest niezależną kopią. Jeżeli powielasz sekcję z kotwicą, nadaj jej unikalną kotwicę w ustawieniach zaawansowanych.
 
+## Treści klienta na istniejącej stronie
+
+Treści z dokumentu klienta znajdują się na stronach **O nas**, **Usługi**, **Sprzęt** i **Realizacje** oraz w ich angielskich odpowiednikach. Nowa instalacja tworzy te strony od razu. Na witrynie aktualizowanej z 4.3 otwórz **Strony → Dodaj stronę** i wstaw do szkicu odpowiedni wzorzec, np. **FIBERLAN · Sprzęt (PL)** albo **FIBERLAN · Equipment (EN)**. W widoku listy skopiuj wybrane grupy ze szkicu do istniejącej strony. Możesz też zastąpić wszystkie bloki treści odpowiednikiem dla danej strony i języka. Przed zapisem sprawdź podgląd i usuń powielone sekcje. Istniejący adres strony i jej powiązanie językowe pozostają dostępne. Każdy nagłówek, opis, obraz i przycisk możesz dalej edytować na stronie.
+
 ## Zdjęcia, podpisy i logo
 
 Wybierz blok **Obraz → Zastąp**. Wskaż plik z biblioteki albo prześlij nowy. Sprawdź kadr, podpis i tekst alternatywny. Dekoracyjna ilustracja obok pełnego opisu może mieć pusty tekst alternatywny. Po wymianie fotografii spawarki w pierwszej sekcji zaktualizuj również jej podpis. WordPress tworzy warianty rozmiarów dla obsługiwanych fotografii w bibliotece mediów.

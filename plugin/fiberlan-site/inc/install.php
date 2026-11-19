@@ -161,6 +161,29 @@ function fl_seed_website() {
 	return true;
 }
 
+// Make the client copy available in Gutenberg on sites that already have edited pages.
+add_action( 'init', static function () {
+	if ( ! current_user_can( 'edit_pages' ) || ! get_option( 'fl_stage_two_ready' ) || ! function_exists( 'fiberlan_image_block' ) ) {
+		return;
+	}
+	foreach ( array( 'about', 'services', 'equipment', 'projects' ) as $key ) {
+		foreach ( array( 'pl', 'en' ) as $lang ) {
+			$id = fl_page_id( $key, $lang );
+			if ( ! $id ) {
+				continue;
+			}
+			$title = get_the_title( $id );
+			$build = 'fl_' . $key . '_content';
+			register_block_pattern( 'fiberlan/client-' . $key . '-' . $lang, array(
+				'title'      => sprintf( 'FIBERLAN · %s (%s)', $title, strtoupper( $lang ) ),
+				'categories' => array( 'fiberlan' ),
+				'postTypes'  => array( 'page' ),
+				'content'    => $build( $lang, $title ),
+			) );
+		}
+	}
+} );
+
 add_action( 'admin_menu', static function () {
 	add_theme_page( 'FIBERLAN PL/EN', 'FIBERLAN PL/EN', 'manage_options', 'fiberlan-site', static function () {
 		?>

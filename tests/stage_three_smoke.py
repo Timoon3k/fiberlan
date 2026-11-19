@@ -48,7 +48,10 @@ def check_seo(browser, base, public, rank_math):
                 expect(page.locator('.fl-crumbs')).to_have_count(1)
             if path in ('/uslugi/', '/en/services/'):
                 assert 'Service' in types
-                expect(page.locator('.fl-service-index a')).to_have_count(5)
+                sections = page.locator('main section[id]:has(h2)').evaluate_all('nodes => nodes.map(n => n.id)')
+                assert {'spawanie', 'instalacje', 'pomiary', 'lan', 'data-center'} <= set(sections)
+                links = page.locator('.fl-service-index a').evaluate_all('nodes => nodes.map(a => a.hash.slice(1))')
+                assert links == sections, (path, sections, links)
             if path in ('/kontakt/', '/en/contact/'):
                 response = page.request.get(base + path)
                 assert 'no-store' in response.headers['cache-control']
