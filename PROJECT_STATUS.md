@@ -1,5 +1,13 @@
 # FIBERLAN SC · Status projektu
 
+## 4H · Treści klienta, kompozycja strony i odbiór
+
+**20 listopada 2026 r. · FIBERLAN 4.4.0.** Treści z `www1.docx` są na czterech podstronach w każdym języku. Dla aktualizowanych witryn dodano osiem wzorców z edytowalnymi blokami. Zdjęcie sprzętu w sekcji głównej korzysta z maski konturowej. Po pasku doświadczenia następują usługi i realizacje, a nazwy projektów prowadzą do opisów w wybranym języku.
+
+W lokalnym WordPressie sprawdzono 22 adresy, edycję stron i części witryny, 44 skany dostępności, dostarczenie obu formularzy do Mailpit oraz instalację z gotowych paczek. Pomiary Lighthouse dały 98–100 za wydajność i CLS 0. Odbiór obejmuje pracę na gałęzi `feature/fiberlan-gutenberg-premium`.
+
+[Wyniki testów 4H i zakres kontroli produkcyjnej](docs/ODBIOR-4H.md)
+
 ## 4E–4G · Stopka prawna, SEO i paczki produkcyjne
 
 **19 listopada 2026 · FIBERLAN 4.3.0, WordPress 7.1.5.**

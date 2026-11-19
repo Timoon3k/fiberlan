@@ -2,11 +2,13 @@
 
 ## Instalacja na kopii testowej
 
-Rozpakuj pakiet wydania FIBERLAN 4.3.0. W WordPress wybierz **Wygląd → Motywy → Dodaj motyw** i wgraj osobno `fiberlan.zip` oraz `fiberlan-child.zip`. Przez **Wtyczki → Dodaj wtyczkę** wgraj `fiberlan-site.zip`. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
+Rozpakuj pakiet wydania FIBERLAN 4.4.0. W WordPress wybierz **Wygląd → Motywy → Dodaj motyw** i wgraj osobno `fiberlan.zip` oraz `fiberlan-child.zip`. Przez **Wtyczki → Dodaj wtyczkę** wgraj `fiberlan-site.zip`. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
 
 ## Aktualizacja istniejącej witryny
 
 Zrób kopię bazy danych oraz `wp-content/uploads`. Zaktualizuj trzy pakiety przez mechanizm zastąpienia aktualnej wersji w WordPressie. Katalogi `fiberlan`, `fiberlan-child` i `fiberlan-site` identyfikują aktualizowane komponenty. Instalator stron jest potrzebny tylko przy tworzeniu witryny. Po aktualizacji wyczyść cache LiteSpeed i CDN, a następnie sprawdź obie wersje językowe.
+
+Na świeżej instalacji osiem stron otrzymuje treść klienta od razu. Przy aktualizacji z wersji 4.3 treść stron zapisana w bazie ma pierwszeństwo. Wstaw odpowiedni wzorzec **FIBERLAN · nazwa strony (PL/EN)** w szkicu i przenieś wybrane bloki do istniejącej strony. Kolejność sekcji strony głównej, odnośniki kart i wybór pełnego kadru opisuje [instrukcja redaktora](EDYCJA.md).
 
 Domyślne stopki automatycznie korzystają z nowego układu. Jeżeli stopkę zapisano wcześniej jako własną część szablonu, WordPress użyje tej wersji z bazy. Otwórz ją w Edytorze witryny. Skopiuj grupę **Regulacje prawne** z odpowiedniego wzorca **Stopka FIBERLAN (PL)** lub **FIBERLAN footer (EN)**. Wklej ją obok grupy **Kontakt**, przenieś własne adresy polityk i etykietę CookieYes, a następnie usuń stary pasek z powielonymi linkami. Zapisz i sprawdź osobno PL i EN.
 
