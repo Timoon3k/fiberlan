@@ -15,6 +15,9 @@ def check_seo(browser, base, public, rank_math):
     for pair in PAIRS:
         for path in pair:
             page.goto(base + path)
+            headings = page.locator("main :is(h1,h2,h3)").evaluate_all("nodes => nodes.map(n => Number(n.tagName[1]))")
+            assert headings and headings[0] == 1 and headings.count(1) == 1, (path, headings)
+            assert all(current <= previous + 1 for previous, current in zip(headings, headings[1:])), (path, headings)
             title = page.title()
             description = page.locator('meta[name="description"]')
             expect(description).to_have_count(1)
@@ -22,6 +25,10 @@ def check_seo(browser, base, public, rank_math):
             assert title and summary and title not in titles and summary not in descriptions, path
             titles.add(title)
             descriptions.add(summary)
+            if path in ("/", "/uslugi/"):
+                assert "spawanie światłowodów" in title.casefold() and "spawanie światłowodów" in summary.casefold(), path
+                search_heading = "h1" if path == "/" else "#spawanie h2"
+                expect(page.locator("main " + search_heading)).to_have_text("Spawanie światłowodów")
             policy = path in ('/polityka-prywatnosci/', '/polityka-cookies/', '/en/privacy-policy/', '/en/cookie-policy/')
             canonical = page.locator('link[rel="canonical"]')
             if not (rank_math and policy and not canonical.count()):
@@ -68,33 +75,40 @@ def check_seo(browser, base, public, rank_math):
 def check_campaign(browser, base, send_mail):
     page = browser.new_page(viewport={'width': 390, 'height': 1000})
     page.add_init_script("window.getCkyConsent = () => ({ categories: { analytics: false, advertisement: false } });")
-    page.goto(base + '/?utm_source=fiberlan-qa&gclid=test-campaign')
+    campaign = '?utm_source=fiberlan-qa&gclid=test-campaign&gbraid=test-app&wbraid=test-web'
+    page.goto(base + '/' + campaign)
     picture = page.locator('.fl-hero-figure picture img')
     picture.evaluate('img => img.decode()')
     assert picture.evaluate('img => img.currentSrc.endsWith(".webp")')
     assert page.evaluate("document.fonts.check('700 30px FIBERLAN Britannic')")
     page.locator('.fl-hero .wp-block-button__link').first.click()
-    expect(page).to_have_url(base + '/kontakt/?utm_source=fiberlan-qa&gclid=test-campaign')
+    expect(page).to_have_url(base + '/kontakt/' + campaign)
     assert not page.evaluate("(window.dataLayer || []).some(x => x.event === 'fiberlan_lead')")
     if send_mail:
-        subject = 'FIBERLAN conversion QA ' + uuid4().hex[:8]
-        for key, val in dict(name='Local QA', email='qa@example.test', subject=subject, message='Synthetic conversion test').items():
-            page.locator(f'[name="fl_{key}"]').fill(val)
-        page.locator('[name="fl_privacy"]').check()
-        page.locator('.fl-form button').click()
-        expect(page.locator('.fl-form-status.is-success')).to_be_visible()
-        assert 'received=' not in page.url and 'gclid=test-campaign' in page.url
-        assert not page.evaluate("(window.dataLayer || []).some(x => x.event === 'fiberlan_lead')")
-        events = page.evaluate("""() => {
-            for (let i=0; i<2; i++) {
-                document.dispatchEvent(new CustomEvent('cookieyes_consent_update', { detail: { accepted: ['necessary','analytics'] } }));
-            }
-            return (window.dataLayer || []).filter(x => x.event === 'fiberlan_lead');
-        }""")
-        assert events == [dict(event='fiberlan_lead', form_id='fiberlan_contact', form_language='pl', analytics_consent=True, advertising_consent=False)], events
-        page.reload()
-        expect(page.locator('[data-fiberlan-lead]')).to_have_count(0)
-        print('SMTP acknowledged; conversion queued once after consent, with no submitted data', flush=True)
+        for lang, route, accepted in (('pl', '/kontakt/', 'analytics'), ('en', '/en/contact/', 'advertisement')):
+            page.goto(base + route + campaign)
+            subject = 'FIBERLAN conversion QA ' + uuid4().hex[:8]
+            for key, val in dict(name='Local QA', email='qa@example.test', subject=subject, message='Synthetic conversion test').items():
+                page.locator(f'[name="fl_{key}"]').fill(val)
+            page.locator('[name="fl_privacy"]').check()
+            page.locator('.fl-form button').click()
+            expect(page.locator('.fl-form-status.is-success')).to_be_visible()
+            assert 'received=' not in page.url and campaign in page.url, page.url
+            assert not page.evaluate("(window.dataLayer || []).some(x => x.event === 'fiberlan_lead')")
+            events = page.evaluate("""accepted => {
+                for (let i = 0; i < 2; i++) {
+                    document.dispatchEvent(new CustomEvent('cookieyes_consent_update', {
+                        detail: { accepted: ['necessary', accepted] }
+                    }));
+                }
+                return (window.dataLayer || []).filter(x => x.event === 'fiberlan_lead');
+            }""", accepted)
+            expected = dict(event='fiberlan_lead', form_id='fiberlan_contact', form_language=lang,
+                            analytics_consent=accepted == 'analytics', advertising_consent=accepted == 'advertisement')
+            assert events == [expected], events
+            page.reload()
+            expect(page.locator('[data-fiberlan-lead]')).to_have_count(0)
+        print('SMTP acknowledged in PL/EN; one consent-gated conversion per receipt with no submitted data', flush=True)
     page.close()
     print('Campaign parameters and responsive WebP verified', flush=True)
 

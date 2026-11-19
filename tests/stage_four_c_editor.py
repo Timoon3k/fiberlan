@@ -165,6 +165,9 @@ def site_parts(page, base, suffix):
             if slug.startswith("footer"):
                 copyright = canvas(page).locator('[data-type="fiberlan/copyright"]')
                 fill_copy(copyright, "rights", "Rights " + text)
+                heading = canvas(page).locator('.fl-footer-legal h2[contenteditable="true"]')
+                heading.fill("Legal " + text)
+                heading.press("Tab")
             if slug.startswith("page-"):
                 index = canvas(page).locator('[data-type="fiberlan/service-links"]')
                 fill_copy(index, "heading", "Index " + text)
@@ -200,6 +203,7 @@ def site_parts(page, base, suffix):
                 elif slug.startswith("footer"):
                     expect(public.locator(".fl-consent-settings")).to_have_text(text)
                     expect(public.locator(".fl-copyright")).to_contain_text("Rights " + text)
+                    expect(public.locator(".fl-footer-legal h2")).to_have_text("Legal " + text)
                 else:
                     lang = "en" if slug.endswith("-en") else "pl"
                     expect(public.locator(f'.fl-languages [hreflang="{lang}"]').first).to_have_text(text)

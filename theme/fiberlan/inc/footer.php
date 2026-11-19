@@ -12,6 +12,28 @@ function fiberlan_footer_list( $links ) {
 	return $list ? '<!-- wp:list --><ul class="wp-block-list">' . $list . '</ul><!-- /wp:list -->' : '';
 }
 
+function fiberlan_footer_legal( $lang ) {
+	if ( ! function_exists( 'fl_url' ) ) {
+		return;
+	}
+	$english = 'en' === $lang;
+	$links = array(
+		$english ? 'Privacy policy' : 'Polityka prywatności' => fl_url( 'privacy', $lang ),
+		$english ? 'Cookie policy' : 'Polityka cookies' => fl_url( 'cookies', $lang ),
+	);
+	?>
+<!-- wp:group {"className":"fl-footer-links fl-footer-legal","layout":{"type":"default"}} -->
+<div class="wp-block-group fl-footer-links fl-footer-legal">
+	<!-- wp:heading -->
+	<h2 class="wp-block-heading"><?php echo esc_html( $english ? 'Legal' : 'Regulacje prawne' ); ?></h2>
+	<!-- /wp:heading -->
+	<?php echo fiberlan_footer_list( $links ); ?>
+	<?php echo fl_custom_block( 'consent', fl_block_defaults( 'consent', $lang ) ); ?>
+</div>
+<!-- /wp:group -->
+	<?php
+}
+
 function fiberlan_footer_pattern( $lang ) {
 	$english = 'en' === $lang;
 	$labels = $english
@@ -75,11 +97,7 @@ function fiberlan_footer_pattern( $lang ) {
 			<?php echo fiberlan_contact_reference(); ?>
 		</div>
 		<!-- /wp:group -->
-	</div>
-	<!-- /wp:group -->
-	<!-- wp:group {"className":"fl-footer-base fl-shell","layout":{"type":"default"}} -->
-	<div class="wp-block-group fl-footer-base fl-shell">
-		<?php echo fiberlan_policy_links( $lang ); ?>
+		<?php fiberlan_footer_legal( $lang ); ?>
 	</div>
 	<!-- /wp:group -->
 	<!-- wp:group {"className":"fl-footer-credit fl-shell","layout":{"type":"default"}} -->

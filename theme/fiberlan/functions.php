@@ -115,16 +115,3 @@ add_filter( 'render_block_core/navigation', static function ( $html, $block ) {
 	}
 	return $nav->get_updated_html();
 }, 10, 2 );
-
-function fiberlan_policy_links( $lang ) {
-	if ( ! function_exists( 'fl_url' ) || ! fl_page_id( 'privacy', $lang ) ) {
-		return '';
-	}
-	$labels = 'pl' === $lang ? array( 'Polityka prywatności', 'Polityka cookies', 'Ustawienia cookies' ) : array( 'Privacy policy', 'Cookie policy', 'Cookie settings' );
-	$links  = array();
-	foreach ( array( 'privacy', 'cookies' ) as $index => $key ) {
-		$links[] = '<a href="' . esc_url( fl_url( $key, $lang ) ) . '">' . esc_html( $labels[ $index ] ) . '</a>';
-	}
-	$html = '<!-- wp:paragraph {"className":"fl-policy-links"} --><p class="fl-policy-links">' . implode( ' · ', $links ) . '</p><!-- /wp:paragraph -->';
-	return $html . fl_custom_block( 'consent', array( 'label' => $labels[2] ) );
-}

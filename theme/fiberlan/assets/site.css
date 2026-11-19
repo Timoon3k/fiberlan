@@ -632,8 +632,8 @@
 .wp-site-blocks > footer p.fl-back-top:has(> a:only-child[href="#fl-page-top"]) { display: none; }
 .fl-footer-main.fl-footer-grid {
   display: grid;
-  grid-template-columns: minmax(12rem, 1.6fr) minmax(0, .8fr) minmax(0, 1fr) minmax(10rem, 1fr);
-  gap: clamp(1.5rem, 3.3vw, 3.75rem);
+  grid-template-columns: minmax(12rem, 1.5fr) minmax(0, .75fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, .9fr);
+  gap: clamp(1.25rem, 2.7vw, 3.25rem);
 }
 .fl-footer-grid .fl-footer-brand { border-inline-start: 2px solid #6393ff; padding-inline-start: clamp(.9rem, 2vw, 1.65rem); }
 .fl-footer-grid .fl-footer-brand > p { max-width: 31ch; }
@@ -642,15 +642,22 @@
 .fl-footer-links ul li + li { margin-block-start: .15rem; }
 .fl-footer-links a { display: inline-block; padding-block: .2rem; color: #d4ddea; text-decoration: none; }
 .fl-footer-links a:is(:hover, :focus-visible) { text-decoration: underline; color: white; }
+.fl-footer-legal .fl-consent-settings:not([hidden]) {
+  min-height: 2.75rem;
+  margin-block-start: .55rem;
+  border-color: #74849b;
+}
+.fl-footer-legal .fl-consent-settings:is(:hover, :focus-visible) { background: var(--wp--preset--color--slate); }
 .fl-footer-credit { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .4rem 1.5rem; padding-block: 1rem 1.3rem; border-top: 1px solid var(--fl-border-dark); color: #ced8e7; font-size: .81rem; }
 /* Keep the author link clear of the floating arrow on narrower layouts. */
 .fl-footer-credit { padding-inline-end: max(0px, calc(4.25rem - var(--fl-gutter))); }
 .fl-footer-credit > * { margin: 0; }
-@media (max-width: 57rem) {
-  .fl-footer-main.fl-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 69rem) {
+  .fl-footer-main.fl-footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
-@media (max-width: 37.5rem) {
-  .fl-footer-grid :is(.fl-footer-brand, .fl-footer-contact) { grid-column: 1 / -1; }
+@media (max-width: 43rem) {
+  .fl-footer-main.fl-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fl-footer-grid .fl-footer-brand { grid-column: 1 / -1; }
   .fl-footer-grid .fl-footer-links li > a { padding-block: .37rem; }
 }
 

@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 function fl_campaign_args() {
 	$query = array();
 	foreach ( $_GET as $name => $value ) {
-		if ( is_string( $value ) && preg_match( '/^(utm_[a-z0-9_]+|gclid)$/iD', $name ) ) {
+		if ( is_string( $value ) && preg_match( '/^(utm_[a-z0-9_]+|gclid|gbraid|wbraid)$/iD', $name ) ) {
 			$query[ $name ] = wp_html_excerpt( sanitize_text_field( wp_unslash( $value ) ), 256 );
 		}
 	}

@@ -2,11 +2,13 @@
 
 ## Instalacja na kopii testowej
 
-Na nowej witrynie zainstaluj motyw FIBERLAN 4.2.1, motyw FIBERLAN Child i wtyczkę **FIBERLAN Core**. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
+Rozpakuj pakiet wydania FIBERLAN 4.3.0. W WordPress wybierz **Wygląd → Motywy → Dodaj motyw** i wgraj osobno `fiberlan.zip` oraz `fiberlan-child.zip`. Przez **Wtyczki → Dodaj wtyczkę** wgraj `fiberlan-site.zip`. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
 
-Przy aktualizacji etapu 4 zastąp pliki w dotychczasowych katalogach `fiberlan`, `fiberlan-child` i `fiberlan-site`. Wtyczka zachowuje identyfikator aktywacji, a istniejące bloki korzystają z nowego edytora bez ponownej instalacji treści.
+## Aktualizacja istniejącej witryny
 
-WordPress wybiera zapisaną przez administratora wersję nagłówka i stopki. Aby dodać nowy układ do zapisanej wcześniej stopki, otwórz ją w Edytorze witryny i skopiuj potrzebne grupy z odpowiedniego wzorca **Stopka FIBERLAN (PL)** lub **FIBERLAN footer (EN)**. W starej nawigacji z etapu 1 podmień kotwice na adresy podstron.
+Zrób kopię bazy danych oraz `wp-content/uploads`. Zaktualizuj trzy pakiety przez mechanizm zastąpienia aktualnej wersji w WordPressie. Katalogi `fiberlan`, `fiberlan-child` i `fiberlan-site` identyfikują aktualizowane komponenty. Instalator stron jest potrzebny tylko przy tworzeniu witryny. Po aktualizacji wyczyść cache LiteSpeed i CDN, a następnie sprawdź obie wersje językowe.
+
+Domyślne stopki automatycznie korzystają z nowego układu. Jeżeli stopkę zapisano wcześniej jako własną część szablonu, WordPress użyje tej wersji z bazy. Otwórz ją w Edytorze witryny. Skopiuj grupę **Regulacje prawne** z odpowiedniego wzorca **Stopka FIBERLAN (PL)** lub **FIBERLAN footer (EN)**. Wklej ją obok grupy **Kontakt**, przenieś własne adresy polityk i etykietę CookieYes, a następnie usuń stary pasek z powielonymi linkami. Zapisz i sprawdź osobno PL i EN.
 
 Na świeżej instalacji możesz od razu wybrać **FIBERLAN Child** po zainstalowaniu motywu bazowego. Aktualizacje rodzica zachowują dodatkowe style dziecka. Przed przełączeniem istniejącej instalacji porównaj zapisane szablony, nawigację i style globalne na kopii. WordPress przechowuje część tych ustawień osobno dla każdego motywu. Na serwer trafiają paczki motywów i wtyczki. Narzędzia deweloperskie, testy, pliki z hasłami i lokalny transport Mailpit należą do środowiska testowego.
 

@@ -95,9 +95,13 @@ def check_footer(page, base):
         expect(footer.locator('a[href="tel:+48662211200"]')).to_have_count(1)
         expect(footer.locator('a[href="tel:+48696610440"]')).to_have_count(1)
         expect(footer.locator('a[href="mailto:info@fiberlan.pl"]')).to_have_count(1)
-        expect(footer.locator(".fl-policy-links a")).to_have_count(2)
-        expect(footer.locator(".fl-policy-links a").first).to_have_attribute("href", base + PAIRS[6][idx])
-        expect(footer.locator(".fl-policy-links a").last).to_have_attribute("href", base + PAIRS[7][idx])
+        legal = footer.locator(".fl-footer-main .fl-footer-legal")
+        expect(legal.get_by_role("heading")).to_have_text("Legal" if lang == "en" else "Regulacje prawne")
+        expect(legal.locator("a")).to_have_count(2)
+        expect(legal.locator("a").first).to_have_attribute("href", base + PAIRS[6][idx])
+        expect(legal.locator("a").last).to_have_attribute("href", base + PAIRS[7][idx])
+        expect(legal.locator(".fl-consent-settings")).to_have_text("Cookie settings" if lang == "en" else "Ustawienia cookies")
+        expect(footer.locator(".fl-footer-base")).to_have_count(0)
         rights = "Wszelkie prawa zastrzeżone." if lang == "pl" else "All rights reserved."
         expect(footer.locator(".fl-copyright")).to_have_text(re.compile(r"© 2026(–[0-9]{4})? FIBERLAN SC\. " + re.escape(rights)))
         expect(footer.locator('.fl-footer-credit a[href="https://majewskitomasz.pl"]')).to_have_text("majewskitomasz.pl")
@@ -114,7 +118,7 @@ def check_sticky_controls(page, base, mobile):
     page.evaluate("window.scrollTo(0, 670)")
     expect(button).to_be_visible()
     expect(button).to_have_accessible_name("Back to top")
-    page.locator("footer .fl-footer-base").evaluate("""footer => {
+    page.locator("footer .fl-footer-main").evaluate("""footer => {
         footer.insertAdjacentHTML('beforeend',
             '<p class="fl-back-top"><a href="#fl-page-top">Legacy return link</a></p>');
     }""")
@@ -151,7 +155,7 @@ def check_sticky_controls(page, base, mobile):
         window.revisitCkyConsent = () => { window.consentOpened = true; };
         document.dispatchEvent(new Event('cookieyes_banner_load'));
     }""")
-    control = page.locator("footer .fl-consent-settings")
+    control = page.locator("footer .fl-footer-legal .fl-consent-settings")
     expect(control).to_be_visible()
     control.click()
     assert page.evaluate("window.consentOpened")

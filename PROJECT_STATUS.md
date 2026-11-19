@@ -1,5 +1,17 @@
 # FIBERLAN SC · Status projektu
 
+## 4E–4G · Stopka prawna, SEO i paczki produkcyjne
+
+**19 listopada 2026 · FIBERLAN 4.3.0, WordPress 7.1.5.**
+
+- Główna stopka PL i EN zawiera edytowalną grupę **Regulacje prawne** z dwiema politykami oraz ustawieniami CookieYes. Po zapisie zmian w Edytorze witryny obie wersje wyświetliły zmieniony nagłówek, etykietę zgód i podpis. Stopki zapisane wcześniej jako własne części szablonu można przenieść na nowy układ według instrukcji aktualizacji.
+- Sprawdzono 22 adresy, hierarchię H1–H3, canonical, hreflang, pojedyncze grafy Schema.org i mapy witryny z Rank Math 1.0.282. LiteSpeed Cache 7.9.3 zwrócił publiczne dyrektywy dla stron treści i wyłączenie cache dla formularzy. CookieYes 3.2.7 oraz ręczny Site ID nie generują dwóch skryptów.
+- Formularze PL i EN zachowały UTM, GCLID, GBRAID i WBRAID. Wysyłki kontrolne dotarły do Mailpit. Każde potwierdzenie mogło uruchomić jedno zdarzenie konwersji po zgodzie. Test nie zawierał identyfikatorów kont pomiarowych klienta.
+- Sześć lokalnych pomiarów Lighthouse po zmianie uzyskało wynik wydajności 98–100, TBT 0 ms i CLS 0. Na mobilnych Usługach wynik zmienił się z 100 do 99, a LCP z 1,88 s do 1,96 s. Dane z hostingu i rzeczywiste zgody pozostają do sprawdzenia przed publikacją.
+- Z zawartości trzech ZIP-ów uruchomiono świeży WordPress z 22 stronami i czterema oryginalnymi plikami w bibliotece. Porównano zdjęcia, logo i Britannic z archiwum klienta. Paczka motywu obejmuje też licencję Manrope.
+
+[Instrukcja wdrożenia](docs/HOSTING.md) · [SEO, kampanie i pomiary](docs/SEO-KAMPANIE-WYDAJNOSC.md)
+
 ## 4D · Dopracowanie animacji i nawigacji
 
 **19 listopada 2026 · Motyw FIBERLAN 4.2.1.**

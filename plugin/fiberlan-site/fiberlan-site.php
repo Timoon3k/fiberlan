@@ -3,7 +3,7 @@
  * Plugin Name: FIBERLAN Core
  * Text Domain: fiberlan-core
  * Description: Powiązania językowe, katalog realizacji i zapytania ofertowe FIBERLAN.
- * Version: 4.2.0
+ * Version: 4.3.0
  * Author: Tomasz Majewski
  * Author URI: https://majewskitomasz.pl
  * Requires at least: 6.6
@@ -11,7 +11,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 define( 'FL_SITE_DIR', __DIR__ );
-define( 'FL_SITE_VERSION', '4.2.0' );
+define( 'FL_SITE_VERSION', '4.3.0' );
 require_once __DIR__ . '/inc/languages.php';
 require_once __DIR__ . '/inc/projects.php';
 require_once __DIR__ . '/inc/contact.php';
@@ -55,7 +55,7 @@ add_action( 'admin_init', static function () {
 
 add_action( 'wp_head', static function () {
 	$id = get_option( 'fl_cookieyes_id', '' );
-	if ( $id && ! defined( 'CKY_PLUGIN_VERSION' ) && ! defined( 'CLI_PLUGIN_VERSION' ) && preg_match( '/^[a-f0-9]{24}$/D', $id ) ) {
+	if ( $id && ! defined( 'CKY_PLUGIN_VERSION' ) && ! defined( 'CLI_PLUGIN_VERSION' ) && ! defined( 'CLI_VERSION' ) && preg_match( '/^[a-f0-9]{24}$/D', $id ) ) {
 		printf( '<script id="cookieyes" src="%s"></script>' . "\n", esc_url( 'https://cdn-cookieyes.com/client_data/' . $id . '/script.js' ) );
 	}
 }, 1 );

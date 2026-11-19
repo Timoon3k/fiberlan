@@ -17,7 +17,7 @@ function fl_seo_catalogue() {
 		),
 		'services' => array(
 			'Spawanie światłowodów Ribbon, instalacje i OTDR | FIBERLAN',
-			'Spawanie włókien SM, MM i Ribbon, instalacje światłowodowe, pomiary OTDR i tłumienia oraz certyfikacja okablowania. Sprawdź zakres usług FIBERLAN.',
+			'Spawanie światłowodów SM, MM i Ribbon, instalacje optyczne, pomiary OTDR i tłumienia oraz certyfikacja okablowania. Sprawdź zakres usług FIBERLAN.',
 			'Fibre optic services – ribbon splicing and OTDR | FIBERLAN',
 			'Explore single-mode, multimode and ribbon splicing, fibre optic installation, OTDR and insertion loss tests and copper cabling certification.',
 		),

@@ -59,9 +59,10 @@
 		'main .fl-form :is(.fl-form-privacy,.wp-element-button)',
 		'main .fl-project-report :is(.wp-block-image,.wp-block-gallery)'
 	].join(','));
-	for (const item of items) {
-		// Establish the starting state offscreen so already visible content stays steady.
-		if (item.getBoundingClientRect().top < innerHeight || item.closest('.fl-reveal-pending')) continue;
+	// Measure before applying styles so the initial pass does not alternate reads and writes.
+	const offscreen = Array.from(items).filter(item => item.getBoundingClientRect().top >= innerHeight);
+	for (const item of offscreen) {
+		if (item.parentElement.closest('.fl-reveal-pending')) continue;
 		item.classList.add('fl-reveal-pending');
 		observer.observe(item);
 	}

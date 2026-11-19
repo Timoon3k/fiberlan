@@ -22,7 +22,7 @@
 			}
 		}
 	}
-	const campaign = [...new URLSearchParams(location.search)].filter(([key]) => /^(utm_\w+|gclid)$/i.test(key));
+	const campaign = [...new URLSearchParams(location.search)].filter(([key]) => /^(utm_\w+|gclid|gbraid|wbraid)$/i.test(key));
 	if (campaign.length) {
 		document.addEventListener('click', event => {
 			const link = event.target.closest?.('a[href]');

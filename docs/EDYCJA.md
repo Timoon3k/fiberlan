@@ -38,7 +38,7 @@ Dla zdjęć z projektu dodaj natywny blok **Galeria** i wybierz styl **Galeria r
 
 Widok listy rozpoznaje m.in. grupy **Wprowadzenie**, **Karta usługi**, **Pozycja katalogu sprzętu** oraz **Doświadczenie i Ribbon**. Aby przenieść sekcję wraz z jej treścią, przeciągnij całą grupę w widoku listy lub skorzystaj ze strzałek przesuwania.
 
-W **Wygląd → Edytor → Wzorce → Części szablonu** wybierz **Stopka** lub **Footer (EN)**. Zmieniaj opis firmy i listy odnośników jak zwykłe bloki. Podpis i link autora są w dolnym pasku. W bloku **Prawa autorskie FIBERLAN** edytujesz nazwę firmy i treść informacji o prawach. Zakres dat rośnie automatycznie od 2026 roku.
+W **Wygląd → Edytor → Wzorce → Części szablonu** wybierz **Stopka** lub **Footer (EN)**. Zmieniaj opis firmy i listy odnośników jak zwykłe bloki. W grupie **Regulacje prawne** kliknij nagłówek, odnośnik do polityki lub etykietę ustawień CookieYes. Podpis i link autora znajdziesz pod główną stopką. W bloku **Prawa autorskie FIBERLAN** edytujesz nazwę firmy i treść informacji o prawach. Zakres dat rośnie automatycznie od 2026 roku.
 
 Motyw wyświetla pływającą strzałkę po przewinięciu 600 px. Zapisany wcześniej blok powrotu na górę można usunąć w edytorze stopki. Aktualna strzałka jest dostępna także przy własnym szablonie stopki.
 
