@@ -64,6 +64,26 @@ def check_motion(browser, base, mode):
         print(f"{width}px: motion preference {mode} verified on 12 pages", flush=True)
 
 
+def check_home_photograph(page, base):
+    for path in ("/", "/en/"):
+        page.goto(base + path)
+        figure = page.locator(".fl-hero-figure")
+        photo = figure.locator("picture.fl-splicer-scene img")
+        photo.evaluate("img => img.decode()")
+        mask = photo.evaluate("img => getComputedStyle(img).maskImage")
+        url = re.fullmatch(r'url\("(.+)"\)', mask).group(1)
+        response = page.request.get(url)
+        assert response.ok and "image/svg+xml" in response.headers["content-type"], url
+        assert "1600 1200" in response.text()
+        assert photo.evaluate("img => img.naturalWidth > 0 && img.getBoundingClientRect().height > 100")
+        figure.evaluate("node => node.classList.add('is-style-fiberlan-full')")
+        assert photo.evaluate("img => getComputedStyle(img).maskImage") == "none"
+        projects = page.locator(".fl-project-card h3 a")
+        expect(projects).to_have_count(3)
+        for index, pair in enumerate(PAIRS[-3:]):
+            expect(projects.nth(index)).to_have_attribute("href", base + pair[int(path == "/en/")])
+
+
 def check_reveal_timing(page, base):
     page.goto(base)
     cards = page.locator(".fl-service-grid > .fl-service-card")
@@ -219,6 +239,7 @@ if __name__ == "__main__":
             page = browser.new_page(viewport={"width": width, "height": 840}, reduced_motion="reduce" if width < 600 else "no-preference")
             if width == 1440:
                 check_reveal_timing(page, base)
+            check_home_photograph(page, base)
             check_footer(page, base)
             check_sticky_controls(page, base, width < 600)
             page.close()

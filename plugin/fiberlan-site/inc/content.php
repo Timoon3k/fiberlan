@@ -136,7 +136,7 @@ function fl_services_content( $lang, $title ) {
 		array( 'data-center', 'viavi-mpolx-client-photo.jpg', 'MPO/MTP i spawy taśmowe Ribbon', 'MPO/MTP systems and ribbon splicing',
 			'W centrach danych z dużą liczbą włókien wykonujemy spawy taśmowe Ribbon oraz połączenia MPO/MTP. Taki układ ułatwia rozbudowę i utrzymanie porządku w okablowaniu. Łącza wielowłóknowe sprawdzamy miernikami VIAVI.',
 			'In high-density data centres we use ribbon splicing and MPO/MTP connections to keep cabling organised and leave room for expansion. We test multi-fibre links with VIAVI instruments.' ),
-		array( 'serwis', 'service-splice', 'Serwis światłowodowy 24/7', '24/7 fibre fault repair',
+		array( 'serwis', '', 'Serwis światłowodowy 24/7', '24/7 fibre fault repair',
 			'Pełnimy całodobowe dyżury serwisowe w całej Polsce. Po zgłoszeniu awarii lokalizujemy przerwę w kablu za pomocą OTDR i przywracamy ciągłość transmisji.',
 			'Our fibre repair team is on call across Poland around the clock. When a fault is reported, we locate the cable break with an OTDR and restore transmission.' ),
 	);
@@ -145,6 +145,12 @@ function fl_services_content( $lang, $title ) {
 		'We design, build and diagnose optical networks. Our work combines fibre splicing with transmission testing, from a subscriber connection to multi-fibre links in a data centre.' ) );
 	foreach ( $services as $index => list( $anchor, $image, $pl, $en, $desc_pl, $desc_en ) ) {
 		$name = fl_text( $lang, $pl, $en );
+		if ( '' === $image ) {
+			$body .= fl_section( fl_group( 'fl-split-copy', fl_heading( $name ) . fl_paragraph( fl_text( $lang, $desc_pl, $desc_en ) ) )
+				. fl_button( fl_text( $lang, 'Kontakt z serwisem', 'Contact the repair team' ), fl_url( 'contact', $lang ) ),
+				'fl-repair-row', 'fl-repair', $anchor );
+			continue;
+		}
 		$visual = fl_equipment_visual( $image, $lang );
 		$copy = fl_heading( $name ) . fl_paragraph( fl_text( $lang, $desc_pl, $desc_en ) ) . fl_contact_cta( $lang );
 		$body .= fl_section( fl_group( 'fl-split-copy', $copy ) . $visual, 'fl-split', $index % 2 ? 'fl-alternate' : '', $anchor );
@@ -266,12 +272,24 @@ function fl_home_content( $lang, $existing = '' ) {
 	foreach ( $links as $subject => $url ) {
 		$replace[ 'href="mailto:info@fiberlan.pl?subject=' . rawurlencode( $subject ) . '"' ] = 'href="' . esc_url( $url ) . '"';
 	}
+	foreach ( array(
+		'frankfurt' => array( 'Centrum danych', 'Data centre' ),
+		'bordeaux'  => array( 'Fabryka szkła', 'Glass factory' ),
+		'marine'    => array( 'Statki wycieczkowe', 'Cruise ships' ),
+	) as $key => list( $pl, $en ) ) {
+		$url = fl_url( $key, $lang );
+		if ( $url ) {
+			$replace[ '>' . $pl . '</h3>' ] = '><a href="' . esc_url( $url ) . '">' . esc_html( fl_text( $lang, $pl, $en ) ) . '</a></h3>';
+		}
+	}
+	$replace['>Zapytaj o usługę</a>'] = '>' . fl_text( $lang, 'Wszystkie usługi', 'All services' ) . '</a>';
+	$replace['>Zapytaj o realizacje</a>'] = '>' . fl_text( $lang, 'Zobacz realizacje', 'View our projects' ) . '</a>';
 	if ( $existing ) {
 		$html = strtr( $existing, $replace );
 		if ( false !== strpos( $html, 'fl-ribbon' ) ) {
 			return $html;
 		}
-		$position = strpos( $html, '<!-- wp:group {"tagName":"section","anchor":"uslugi"' );
+		$position = strpos( $html, '<!-- wp:group {"tagName":"section","className":"fl-contact"' );
 		$ribbon = "\n" . fl_ribbon( $lang ) . "\n";
 		return false === $position ? $html . $ribbon : substr_replace( $html, $ribbon, $position, 0 );
 	}
@@ -317,6 +335,6 @@ function fl_home_content( $lang, $existing = '' ) {
 			'Poznaj nasze usługi' => 'Explore our services',
 		);
 	}
-	array_splice( $patterns, 2, 0, fl_ribbon( $lang ) );
+	array_splice( $patterns, 4, 0, fl_ribbon( $lang ) );
 	return strtr( implode( "\n", $patterns ), $replace );
 }

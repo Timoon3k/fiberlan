@@ -70,7 +70,10 @@ add_filter( 'render_block_core/image', static function ( $content, $block ) {
 	if ( ! $webp ) {
 		return $updated;
 	}
-	$source = sprintf( '<picture><source type="image/webp" sizes="%s" srcset="%s">', esc_attr( $sizes ), esc_attr( $webp ) );
+	// Only the supplied photograph matches the traced silhouette. Library replacements use the normal frame.
+	$cutout = 'fl-hero-figure' === $class && 'fiber-splicer-cleaver-client-photo.jpg' === $filename;
+	$source = sprintf( '<picture%s><source type="image/webp" sizes="%s" srcset="%s">',
+		$cutout ? ' class="fl-splicer-scene"' : '', esc_attr( $sizes ), esc_attr( $webp ) );
 	return preg_replace_callback(
 		'~<img\s[^>]+>~i',
 		static function ( $m ) use ( $source ) { return $source . $m[0] . '</picture>'; },

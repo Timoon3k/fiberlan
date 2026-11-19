@@ -66,3 +66,5 @@ Dostarczony plik BRITANIC.ttf nie zawiera m.in. znaków ą, ć, ę, ł, ń, ś, 
 ## Szablony i strona błędu
 
 W **Wygląd → Edytor → Szablony** wybierz szablon PL lub EN. W szablonie 404 kliknij nagłówek, opis albo przycisk. Po zaznaczeniu przycisku możesz też zmienić adres powrotu. Aby zmienić wspólny układ nowych realizacji, otwórz część **Realizacja · tytuł i treść**. Tytuł, zajawkę i zdjęcia konkretnego projektu wpisuj na jego stronie.
+
+Na stronie głównej układ wydania 4.4 prowadzi od wprowadzenia i paska doświadczenia do usług, realizacji, sekcji Ribbon i kontaktu. Na stronie aktualizowanej możesz odtworzyć tę kolejność przez przeciągnięcie grupy Ribbon przed końcową sekcję kontaktową. W tytułach trzech kart realizacji ustaw odnośniki do odpowiednich opisów w tym samym języku. W pierwszej sekcji styl obrazu **Pełny kadr** pokazuje również tło oryginalnej fotografii.
