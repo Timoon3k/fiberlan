@@ -138,6 +138,11 @@
 					copy('body', 'Opis błędu', 'p'), copy('button', 'Tekst przycisku', 'span', 'wp-element-button'),
 					destination('url', 'Adres przycisku'));
 				break;
+			case 'copyright':
+				content = h(Fragment, null, '© ' + config.copyrightYears + ' ',
+					copy('company', 'Nazwa w informacji o prawach autorskich'), '. ',
+					copy('rights', 'Informacja o prawach autorskich'));
+				break;
 			case 'consent':
 				content = copy('label', 'Tekst przycisku ustawień zgód', 'span', 'fl-editor-filter');
 				break;
@@ -145,7 +150,7 @@
 		return h('div', props, content);
 	}
 
-	for (const block of ['contact', 'projects', 'languages', 'breadcrumbs', 'service-links', 'not-found', 'consent']) {
+	for (const block of ['contact', 'projects', 'languages', 'breadcrumbs', 'service-links', 'not-found', 'consent', 'copyright']) {
 		registerBlockType('fiberlan/' + block, { edit: Edit, save: () => null });
 	}
 

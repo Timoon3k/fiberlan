@@ -16,7 +16,7 @@ function fl_block_defaults( $name, $lang ) {
 		case 'languages':
 			return array(
 				'label'      => fl_text( $lang, 'Język', 'Language' ),
-				'suggestion' => fl_text( $lang, 'View this page in English', 'Wyświetl tę stronę po polsku' ),
+				'suggestion' => fl_text( $lang, 'Wersja angielska', 'Switch to Polish' ),
 				'plText'     => 'PL',
 				'enText'     => 'EN',
 			);
@@ -32,8 +32,13 @@ function fl_block_defaults( $name, $lang ) {
 				'button'  => $home,
 				'url'     => fl_url( 'home', $lang ) ?: home_url( '/' ),
 			);
+		case 'copyright':
+			return array(
+				'company' => 'FIBERLAN SC',
+				'rights'  => fl_text( $lang, 'Wszelkie prawa zastrzeżone.', 'All rights reserved.' ),
+			);
 		case 'consent':
-			return array( 'label' => fl_text( $lang, 'Ustawienia zgód', 'Consent settings' ) );
+			return array( 'label' => fl_text( $lang, 'Ustawienia cookies', 'Cookie settings' ) );
 	}
 	return array();
 }
@@ -47,14 +52,25 @@ function fl_consent_render( $attrs ) {
 	return '<button type="button" class="fl-consent-settings" hidden>' . esc_html( $copy['label'] ) . '</button>';
 }
 
+function fl_copyright_years() {
+	$year = (int) wp_date( 'Y' );
+	return $year > 2026 ? '2026–' . $year : '2026';
+}
+
+function fl_copyright_render( $attrs ) {
+	$copy = fl_block_values( 'copyright', $attrs, fl_request_language() );
+	return '<p class="fl-copyright">© ' . esc_html( fl_copyright_years() . ' ' . $copy['company'] . '. ' . $copy['rights'] ) . '</p>';
+}
+
 add_action( 'enqueue_block_editor_assets', static function () {
 	$config = array();
 	foreach ( array( 'pl', 'en' ) as $lang ) {
-		foreach ( array( 'contact', 'projects', 'languages', 'breadcrumbs', 'service-links', 'not-found', 'consent' ) as $block ) {
+		foreach ( array( 'contact', 'projects', 'languages', 'breadcrumbs', 'service-links', 'not-found', 'consent', 'copyright' ) as $block ) {
 			$config['copy'][ $lang ][ $block ] = fl_block_defaults( $block, $lang );
 		}
 	}
 	$config['language'] = fl_page_lang( get_the_ID() );
+	$config['copyrightYears'] = fl_copyright_years();
 	$config['admin'] = admin_url();
 	$config['projectParents'] = array( fl_page_id( 'projects', 'pl' ), fl_page_id( 'projects', 'en' ) );
 	$config['newProjectNonce'] = wp_create_nonce( 'fl_create_project' );

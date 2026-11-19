@@ -1,5 +1,18 @@
 # FIBERLAN SC · Status projektu
 
+## 4D–4E · Nawigacja, animacje i stopka PL/EN
+
+**19 listopada 2026 · FIBERLAN 4.2.0, WordPress 7.1.5.**
+
+- Lekkie animacje uruchamiają się raz przy wejściu sekcji w obszar przewijania. Wybrane karty pojawiają się w krótkiej sekwencji, a zdjęcia i opisy wchodzą osobno. Treść jest dostępna bez JavaScriptu i przy ograniczonym ruchu. Moduł doświadczenia i Ribbon ma linię czasu oraz rozwijany panel.
+- Sticky header zachowuje wysokość przy przewijaniu, uwzględnia pasek administracyjny i wyróżnia także sekcję nadrzędną realizacji. Menu mobilne zachowuje pozycję przewijania po zamknięciu. Po 600 px pojawia się strzałka przewijania do góry, obsługiwana klawiaturą i dotykiem. Podczas widocznego banera zgód strzałka znika, a przy małym przycisku CookieYes po prawej przesuwa się wyżej.
+- Obie stopki mają osobne edytowalne listy stron, usług, odnośników formalnych i podpis autora. Telefon, e-mail i adres pochodzą ze współdzielonego wzorca. Informacja o prawach autorskich aktualizuje końcowy rok według strefy czasowej witryny. Potwierdzono zakres dat przy symulacji 2027 i 2032.
+- Testy Chromium objęły sześć stron w każdym języku przy szerokościach 320–1440 px, dwa ustawienia ruchu, pasek WordPressa i edycję obu stopek w Edytorze witryny. Sugestię sprawdzono z ustawieniami Londynu i Warszawy. Audyt 22 adresów potwierdził pary językowe, canonical, reguły robots oraz mapę witryny z włączonym indeksowaniem na kopii testowej.
+
+Widget CookieYes sprawdzono na symulowanym banerze i zdarzeniu otwarcia ustawień. Produkcyjna integracja CookieYes, stan indeksowania w Google i potwierdzenie danych firmy wymagają weryfikacji dla domeny klienta.
+
+[Obsługa stopki i nawigacji](docs/EDYCJA.md) · [Instalacja i aktualizacja](docs/HOSTING.md) · [Testy w przeglądarce](tests/stage_four_smoke.py)
+
 ## 4C · Edycja treści w Gutenbergu
 
 **19 listopada 2026 · WordPress 7.1.5, PHP 8.3.36, wydanie FIBERLAN 4.1.0.**

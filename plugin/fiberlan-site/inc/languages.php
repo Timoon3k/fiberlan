@@ -66,17 +66,26 @@ add_action( 'wp_head', static function () {
 function fl_languages_render( $attrs ) {
 	$id = get_queried_object_id();
 	$urls = fl_alternates( $id );
+	$lang = fl_request_language();
+	foreach ( array( 'pl', 'en' ) as $code ) {
+		if ( ! isset( $urls[ $code ] ) ) {
+			$home = fl_page_id( 'home', $code );
+			if ( $home && 'publish' === get_post_status( $home ) ) {
+				$urls[ $code ] = get_permalink( $home );
+			}
+		}
+	}
 	if ( count( $urls ) < 2 ) {
 		return '';
 	}
-	$lang = fl_page_lang( $id );
 	$other = 'pl' === $lang ? 'en' : 'pl';
 	$copy = fl_block_values( 'languages', $attrs, $lang );
 	$html = '<nav class="fl-languages" data-lang="' . $lang . '" aria-label="' . esc_attr( $copy['label'] ) . '">';
-	foreach ( $urls as $code => $url ) {
+	foreach ( array( 'pl', 'en' ) as $code ) {
+		$url = $urls[ $code ];
 		$html .= sprintf( '<a data-language="%1$s" lang="%1$s" hreflang="%1$s" href="%2$s" %3$s>%4$s</a>', esc_attr( $code ), esc_url( $url ), $lang === $code ? 'aria-current="true"' : '', esc_html( $copy[ $code . 'Text' ] ) );
 	}
-	return $html . '<a class="fl-language-hint" hidden data-language="' . $other . '" href="' . esc_url( $urls[ $other ] ) . '" lang="' . $other . '">' . esc_html( $copy['suggestion'] ) . '</a></nav>';
+	return $html . '<a class="fl-language-hint" hidden data-language="' . $other . '" href="' . esc_url( $urls[ $other ] ) . '" hreflang="' . $other . '">' . esc_html( $copy['suggestion'] ) . '</a></nav>';
 }
 
 // The linked English brand returns to the English home page.

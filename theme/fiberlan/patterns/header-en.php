@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || exit;
 	}
 endif; ?>
 <!-- /wp:navigation -->
-<?php if ( function_exists( 'fl_custom_block' ) ) { echo fl_custom_block( 'languages', array( 'label' => 'Language', 'suggestion' => 'Wyświetl tę stronę po polsku' ) ); } ?>
+<?php if ( function_exists( 'fl_custom_block' ) ) { echo fl_custom_block( 'languages', array( 'label' => 'Language' ) ); } ?>
 </div>
 <!-- /wp:group -->
 </div>

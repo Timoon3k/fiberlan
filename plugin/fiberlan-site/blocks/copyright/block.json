@@ -1,0 +1,14 @@
+{
+  "apiVersion": 3,
+  "textdomain": "fiberlan-core",
+  "name": "fiberlan/copyright",
+  "title": "Prawa autorskie FIBERLAN",
+  "category": "theme",
+  "attributes": {
+    "company": { "type": "string" },
+    "rights": { "type": "string" }
+  },
+  "supports": { "html": false },
+  "editorScript": "fiberlan-block-editor",
+  "editorStyle": "fiberlan-block-editor"
+}

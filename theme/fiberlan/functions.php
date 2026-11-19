@@ -8,6 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 require_once __DIR__ . '/inc/contact-content.php';
+require_once __DIR__ . '/inc/footer.php';
 require_once __DIR__ . '/inc/media.php';
 require_once __DIR__ . '/inc/starter.php';
 require_once __DIR__ . '/inc/responsive-media.php';
@@ -46,13 +47,15 @@ add_action(
 );
 
 add_filter( 'wp_preload_resources', static function ( $resources ) {
-	// The display face is used by the first heading on both language versions.
-	$resources[] = array(
-		'href'        => get_theme_file_uri( 'assets/fonts/BRITANIC.woff2' ),
-		'as'          => 'font',
-		'type'        => 'font/woff2',
-		'crossorigin' => 'anonymous',
-	);
+	// Load the heading and navigation fonts before the first paint.
+	foreach ( array( 'BRITANIC.woff2', 'Manrope.woff2' ) as $font ) {
+		$resources[] = array(
+			'href'        => get_theme_file_uri( 'assets/fonts/' . $font ),
+			'as'          => 'font',
+			'type'        => 'font/woff2',
+			'crossorigin' => 'anonymous',
+		);
+	}
 	return $resources;
 } );
 
@@ -84,11 +87,33 @@ add_action(
 	}
 );
 
+// Core marks exact navigation links. Mark the section on its descendant pages too.
+add_filter( 'render_block_core/navigation', static function ( $html, $block ) {
+	if ( ! is_page() || ! in_array( 'fl-nav', preg_split( '/\s+/', $block['attrs']['className'] ?? '' ), true ) ) {
+		return $html;
+	}
+	$parents = get_post_ancestors( get_queried_object_id() );
+	$paths = array_map( 'get_permalink', $parents );
+	if ( function_exists( 'fl_url' ) ) {
+		$paths = array_diff( $paths, array( fl_url( 'home', 'en' ), fl_url( 'home', 'pl' ) ) );
+	}
+	if ( ! $paths ) {
+		return $html;
+	}
+	$nav = new WP_HTML_Tag_Processor( $html );
+	while ( $nav->next_tag( array( 'tag_name' => 'A', 'class_name' => 'wp-block-navigation-item__content' ) ) ) {
+		if ( in_array( $nav->get_attribute( 'href' ), $paths, true ) ) {
+			$nav->set_attribute( 'aria-current', 'location' );
+		}
+	}
+	return $nav->get_updated_html();
+}, 10, 2 );
+
 function fiberlan_policy_links( $lang ) {
 	if ( ! function_exists( 'fl_url' ) || ! fl_page_id( 'privacy', $lang ) ) {
 		return '';
 	}
-	$labels = 'pl' === $lang ? array( 'Polityka prywatności', 'Polityka cookies', 'Ustawienia zgód' ) : array( 'Privacy policy', 'Cookie policy', 'Consent settings' );
+	$labels = 'pl' === $lang ? array( 'Polityka prywatności', 'Polityka cookies', 'Ustawienia cookies' ) : array( 'Privacy policy', 'Cookie policy', 'Cookie settings' );
 	$links  = array();
 	foreach ( array( 'privacy', 'cookies' ) as $index => $key ) {
 		$links[] = '<a href="' . esc_url( fl_url( $key, $lang ) ) . '">' . esc_html( $labels[ $index ] ) . '</a>';

@@ -2,11 +2,11 @@
 
 ## Instalacja na kopii testowej
 
-Na nowej witrynie zainstaluj motyw FIBERLAN 4.1.0, motyw FIBERLAN Child i wtyczkę **FIBERLAN Core**. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
+Na nowej witrynie zainstaluj motyw FIBERLAN 4.2.0, motyw FIBERLAN Child i wtyczkę **FIBERLAN Core**. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
 
 Przy aktualizacji etapu 4 zastąp pliki w dotychczasowych katalogach `fiberlan`, `fiberlan-child` i `fiberlan-site`. Wtyczka zachowuje identyfikator aktywacji, a istniejące bloki korzystają z nowego edytora bez ponownej instalacji treści.
 
-Jeśli nagłówek albo stopka zostały wcześniej zapisane przez administratora w Edytorze witryny, WordPress używa tych wersji. W zapisanej nawigacji podmień odnośniki kotwic etapu 1 na właściwe strony. Dodaj blok **Przełącznik języka** do obu nagłówków oraz odnośniki do polityk w obu stopkach. Domyślne części szablonu zawierają już te elementy.
+WordPress wybiera zapisaną przez administratora wersję nagłówka i stopki. Aby dodać nowy układ do zapisanej wcześniej stopki, otwórz ją w Edytorze witryny i skopiuj potrzebne grupy z odpowiedniego wzorca **Stopka FIBERLAN (PL)** lub **FIBERLAN footer (EN)**. W starej nawigacji z etapu 1 podmień kotwice na adresy podstron.
 
 Na świeżej instalacji możesz od razu wybrać **FIBERLAN Child** po zainstalowaniu motywu bazowego. Aktualizacje rodzica zachowują dodatkowe style dziecka. Przed przełączeniem istniejącej instalacji porównaj zapisane szablony, nawigację i style globalne na kopii. WordPress przechowuje część tych ustawień osobno dla każdego motywu. Na serwer trafiają paczki motywów i wtyczki. Narzędzia deweloperskie, testy, pliki z hasłami i lokalny transport Mailpit należą do środowiska testowego.
 

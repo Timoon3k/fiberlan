@@ -2,8 +2,7 @@
 	const feedback = document.querySelector('#fl-form-status');
 	if (feedback) feedback.focus();
 
-	const nav = document.querySelector('.fl-languages');
-	if (nav) {
+	for (const nav of document.querySelectorAll('.fl-languages')) {
 		const current = nav.dataset.lang;
 		const hint = nav.querySelector('.fl-language-hint');
 		let preference;
@@ -16,10 +15,11 @@
 			});
 		}
 		if (hint && preferred !== current) {
-			// Keep the first-visit suggestion in normal flow, above the sticky navigation.
-			const contacts = nav.closest('header')?.querySelector('.fl-contactbar .fl-contact-items');
-			if (contacts) contacts.insertBefore(hint, contacts.querySelector(':scope > .fl-phone'));
-			hint.hidden = false;
+			const strip = nav.closest('header')?.querySelector('.fl-contactbar .fl-shell');
+			if (strip) {
+				strip.append(hint);
+				hint.hidden = false;
+			}
 		}
 	}
 	const campaign = [...new URLSearchParams(location.search)].filter(([key]) => /^(utm_\w+|gclid)$/i.test(key));

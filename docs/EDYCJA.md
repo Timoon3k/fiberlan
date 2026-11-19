@@ -38,7 +38,9 @@ Dla zdjęć z projektu dodaj natywny blok **Galeria** i wybierz styl **Galeria r
 
 Widok listy rozpoznaje m.in. grupy **Wprowadzenie**, **Karta usługi**, **Pozycja katalogu sprzętu** oraz **Doświadczenie i Ribbon**. Aby przenieść sekcję wraz z jej treścią, przeciągnij całą grupę w widoku listy lub skorzystaj ze strzałek przesuwania.
 
-Link powrotu na górę w stopce prowadzi do `#fl-page-top`. Etykietę możesz zmienić w części szablonu **Stopka** lub **Footer (EN)**. Jeżeli masz już własną zapisaną stopkę, dodaj w niej zwykły odnośnik do tej kotwicy. Klasa akapitu `fl-back-top` nadaje mu wygląd przycisku.
+W **Wygląd → Edytor → Wzorce → Części szablonu** wybierz **Stopka** lub **Footer (EN)**. Zmieniaj opis firmy i listy odnośników jak zwykłe bloki. Podpis i link autora są w dolnym pasku. W bloku **Prawa autorskie FIBERLAN** edytujesz nazwę firmy i treść informacji o prawach. Zakres dat rośnie automatycznie od 2026 roku.
+
+Pływająca strzałka pojawia się po przewinięciu 600 px i korzysta z etykiety linku powrotu na górę w stopce. Przy tworzeniu własnej stopki dodaj akapit z klasą `fl-back-top` i odnośnikiem do `#fl-page-top`.
 
 ## Kontrola po zapisaniu
 
