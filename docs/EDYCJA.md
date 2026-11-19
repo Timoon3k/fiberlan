@@ -28,6 +28,18 @@ Menu edytujesz w bloku **Nawigacja** nagłówka. Po aktualizacji etapu 1 w zapis
 
 W **Wygląd → Edytor → Style** możesz zmienić paletę, typografię i globalny wygląd przycisków. Nagłówki korzystają z oryginalnego pliku Britannic Bold dostarczonego przez klienta. Motyw serwuje go z własnej domeny. Dla znaków nieobecnych w pliku przeglądarka wybiera krój zastępczy.
 
+Tekst, menu, przyciski, pola i tytuły kart używają lokalnego kroju Manrope. Ma on pełny polski alfabet. Britannic Bold pozostaje w H1, nagłówkach sekcji i wyróżniku liczbowym. Przy brakujących glifach przeglądarka dobiera znaki z Manrope.
+
+## Kadry i widok listy
+
+Wybierz **Obraz → Style → Pełny kadr**, aby pokazać całe zdjęcie z biblioteki, lub **Kadr panoramiczny**, aby uzyskać proporcje 16∶9. Po zmianie pliku sprawdź etykiety na urządzeniu w podglądzie telefonu. W katalogu sprzętu pierwsza pozycja zajmuje pełną szerokość. Kolejne są zestawiane parami na większych ekranach. Możesz przeciągnąć inną pozycję na początek w widoku listy.
+
+Dla zdjęć z projektu dodaj natywny blok **Galeria** i wybierz styl **Galeria realizacji**. Wpisz podpisy pod poszczególnymi zdjęciami. Liczbę kolumn, kolejność i przycinanie określasz w Gutenbergu.
+
+Widok listy rozpoznaje m.in. grupy **Wprowadzenie**, **Karta usługi**, **Pozycja katalogu sprzętu** oraz **Doświadczenie i Ribbon**. W bloku formularza panel **Teksty bloku** zmienia etykiety, a **Komunikaty po wysłaniu** zmienia potwierdzenia i błędy. Blok katalogu pokazuje tytuły opublikowanych stron potomnych.
+
+Link powrotu na górę w stopce prowadzi do `#fl-page-top`. Etykietę możesz zmienić w części szablonu **Stopka** lub **Footer (EN)**. Jeżeli masz już własną zapisaną stopkę, dodaj w niej zwykły odnośnik do tej kotwicy. Klasa akapitu `fl-back-top` nadaje mu wygląd przycisku.
+
 ## Kontrola po zapisaniu
 
 Otwórz stronę ponownie w edytorze. Sprawdź obrazy, podpisy, przyciski i podgląd mobilny. Po zmianach globalnych otwórz również stronę jako wylogowany użytkownik. Historię zmian treści strony znajdziesz w panelu wersji. Poniżej opisano edycję obu języków i katalogu realizacji.

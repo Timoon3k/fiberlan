@@ -10,12 +10,17 @@
 		try { preference = localStorage.getItem('fiberlan-language'); } catch {}
 		const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 		const preferred = preference || (zone === 'Europe/Warsaw' || /^pl\b/i.test(navigator.language) ? 'pl' : 'en');
-		if (hint && preferred !== current) hint.hidden = false;
-		nav.addEventListener('click', event => {
-			const link = event.target.closest('[data-language]');
-			if (!link) return;
-			try { localStorage.setItem('fiberlan-language', link.dataset.language); } catch {}
-		});
+		for (const link of nav.querySelectorAll('[data-language]')) {
+			link.addEventListener('click', () => {
+				try { localStorage.setItem('fiberlan-language', link.dataset.language); } catch {}
+			});
+		}
+		if (hint && preferred !== current) {
+			// Keep the first-visit suggestion in normal flow, above the sticky navigation.
+			const contacts = nav.closest('header')?.querySelector('.fl-contactbar .fl-contact-items');
+			if (contacts) contacts.insertBefore(hint, contacts.querySelector(':scope > .fl-phone'));
+			hint.hidden = false;
+		}
 	}
 	const campaign = [...new URLSearchParams(location.search)].filter(([key]) => /^(utm_\w+|gclid)$/i.test(key));
 	if (campaign.length) {

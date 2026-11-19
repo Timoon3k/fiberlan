@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || exit;
 	<div class="wp-block-group fl-footer-main fl-shell">
 		<!-- wp:group {"className":"fl-footer-brand","layout":{"type":"default"}} -->
 		<div class="wp-block-group fl-footer-brand">
+			<!-- wp:site-logo {"width":144} /-->
 			<!-- wp:site-title {"level":0,"className":"fl-footer-title"} /-->
 			<!-- wp:paragraph -->
 			<p>Instalacje i pomiary sieci światłowodowych.</p>
@@ -29,7 +30,14 @@ defined( 'ABSPATH' ) || exit;
 			<?php echo fiberlan_contact_reference(); ?>
 		</div>
 		<!-- /wp:group -->
-		<?php if ( function_exists( 'fiberlan_policy_links' ) ) { echo fiberlan_policy_links( 'pl' ); } ?>
+	</div>
+	<!-- /wp:group -->
+	<!-- wp:group {"className":"fl-footer-base fl-shell","layout":{"type":"default"}} -->
+	<div class="wp-block-group fl-footer-base fl-shell">
+		<?php echo fiberlan_policy_links( 'pl' ); ?>
+		<!-- wp:paragraph {"className":"fl-back-top"} -->
+		<p class="fl-back-top"><a href="#fl-page-top">Wróć na górę</a></p>
+		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:group -->
 </div>

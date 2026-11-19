@@ -40,6 +40,7 @@ services:
         define('DISABLE_WP_CRON', true);
     volumes:
       - wordpress:/var/www/html
+      - ./theme/fiberlan-child:/var/www/html/wp-content/themes/fiberlan-child:ro
       - ./theme/fiberlan:/var/www/html/wp-content/themes/fiberlan:ro
       - ./plugin/fiberlan-site:/var/www/html/wp-content/plugins/fiberlan-site:ro
       - ./dev/mail.php:/var/www/html/wp-content/mu-plugins/fiberlan-local-mail.php:ro

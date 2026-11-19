@@ -30,7 +30,7 @@ if ( $install && ! is_blog_installed() ) {
 }
 wp_installing( false );
 
-if ( $install && 'fiberlan' !== get_stylesheet() ) {
+if ( $install && 'fiberlan' !== get_template() ) {
     $theme = wp_get_theme( 'fiberlan' );
     if ( ! $theme->exists() || $theme->errors() ) {
         throw new RuntimeException( 'The Fiberlan block theme is missing or incomplete.' );
@@ -52,7 +52,7 @@ $result = fl_install_stage_two();
 if ( is_wp_error( $result ) ) {
     throw new RuntimeException( $result->get_error_message() );
 }
-if ( ! is_readable( get_stylesheet_directory() . '/templates/front-page.html' ) || ! get_option( 'page_on_front' ) ) {
+if ( ! is_readable( get_theme_file_path( 'templates/front-page.html' ) ) || ! get_option( 'page_on_front' ) ) {
     throw new RuntimeException( 'Missing front page or template.' );
 }
 printf( "WordPress %s, PHP %s, active theme %s, front page #%d\n", get_bloginfo( 'version' ), PHP_VERSION, get_stylesheet(), get_option( 'page_on_front' ) );

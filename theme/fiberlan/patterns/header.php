@@ -32,14 +32,15 @@ defined( 'ABSPATH' ) || exit;
 			<!-- wp:home-link {"label":"Strona główna"} /-->
 			<?php
 			$destinations = array(
-				array( 'o-nas', 'O nas', 'doswiadczenie' ),
-				array( 'uslugi', 'Usługi', 'uslugi' ),
-				array( 'sprzet', 'Sprzęt', 'sprzet' ),
-				array( 'realizacje', 'Realizacje', 'realizacje' ),
-				array( 'kontakt', 'Kontakt', 'kontakt' ),
+				array( 'about', 'o-nas', 'O nas', 'doswiadczenie' ),
+				array( 'services', 'uslugi', 'Usługi', 'uslugi' ),
+				array( 'equipment', 'sprzet', 'Sprzęt', 'sprzet' ),
+				array( 'projects', 'realizacje', 'Realizacje', 'realizacje' ),
+				array( 'contact', 'kontakt', 'Kontakt', 'kontakt' ),
 			);
-			foreach ( $destinations as list( $slug, $label, $anchor ) ) {
-				$page = get_page_by_path( $slug );
+			foreach ( $destinations as list( $key, $slug, $label, $anchor ) ) {
+				$id = function_exists( 'fl_page_id' ) ? fl_page_id( $key, 'pl' ) : 0;
+				$page = $id ? get_post( $id ) : get_page_by_path( $slug );
 				if ( $page && 'publish' === $page->post_status ) {
 					$attributes = array(
 						'label' => $label,

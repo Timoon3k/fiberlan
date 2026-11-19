@@ -1,10 +1,12 @@
-# Uruchomienie etapu 2 na hostingu
+# Uruchomienie FIBERLAN na hostingu
 
 ## Instalacja na kopii testowej
 
-W standardowej instalacji WordPress zaktualizuj motyw FIBERLAN do wersji 3.0.0. Dodaj i aktywuj wtyczkę **FIBERLAN – witryna PL/EN**. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
+W standardowej instalacji WordPress zaktualizuj motyw FIBERLAN do wersji 4.0.0. Dodaj i aktywuj wtyczkę **FIBERLAN – witryna PL/EN**. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
 
 Jeśli nagłówek albo stopka zostały wcześniej zapisane przez administratora w Edytorze witryny, WordPress używa tych wersji. W zapisanej nawigacji podmień odnośniki kotwic etapu 1 na właściwe strony. Dodaj blok **Przełącznik języka** do obu nagłówków oraz odnośniki do polityk w obu stopkach. Domyślne części szablonu zawierają już te elementy.
+
+Na świeżej instalacji możesz od razu wybrać **FIBERLAN Child** po zainstalowaniu motywu bazowego. Aktualizacje rodzica zachowują dodatkowe style dziecka. Przed przełączeniem istniejącej instalacji porównaj zapisane szablony, nawigację i style globalne na kopii. WordPress przechowuje część tych ustawień osobno dla każdego motywu. Na serwer trafiają paczki motywów i wtyczki. Narzędzia deweloperskie, testy, pliki z hasłami i lokalny transport Mailpit należą do środowiska testowego.
 
 ## Pocztę skonfiguruj przez SMTP
 
@@ -19,7 +21,7 @@ Poczta na środowisku Docker trafia do lokalnego Mailpit na porcie 8025. Plik `d
 
 W **Ustawienia → Czytanie → CookieYes – Site ID** można wpisać identyfikator ze skryptu klienta CookieYes. Alternatywnie można skorzystać z oficjalnej wtyczki CookieYes i pozostawić to pole puste. Po wczytaniu panelu zgód stopka pokazuje przycisk do ponownego otwarcia ustawień.
 
-W panelu CookieYes wybierz PL i EN, ustaw język zgodny z bieżącą wersją strony oraz dodaj przyciski akceptacji, odrzucenia i konfiguracji z równym poziomem dostępu. Przeskanuj wersję testową. Ustaw blokowanie usług opcjonalnych przed zgodą i sprawdź zmianę preferencji. Jeżeli w etapie 3 dojdzie GTM lub analityka, skonfiguruj Consent Mode v2 w CookieYes i sprawdź żądania przeglądarki po obu decyzjach.
+W panelu CookieYes wybierz PL i EN, ustaw język zgodny z bieżącą wersją strony oraz dodaj przyciski akceptacji, odrzucenia i konfiguracji z równym poziomem dostępu. Przeskanuj wersję testową. Ustaw blokowanie usług opcjonalnych przed zgodą i sprawdź zmianę preferencji. Przy podłączaniu GTM lub analityki skonfiguruj Consent Mode v2 w CookieYes i sprawdź żądania przeglądarki po obu decyzjach.
 
 Polityka prywatności i polityka cookies w PL i EN zawierają treści do zatwierdzenia. Przed publikacją uzupełnij nazwy usług, okresy przechowywania oraz faktyczne kategorie cookies. Po zatwierdzeniu usuń informację o wersji roboczej z czterech stron. W **Ustawienia → Czytanie → Dokumenty prywatności** zezwól na ich indeksowanie. Pozostałe strony obu wersji znajdą się w mapie witryny WordPressa po włączeniu indeksowania witryny.
 

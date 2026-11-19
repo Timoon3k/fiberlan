@@ -23,15 +23,18 @@
     "typography": {
       "defaultFontSizes": false,
       "fontFamilies": [
-        { "slug": "display", "name": "Britannic Bold", "fontFamily": "'FIBERLAN Britannic', 'Britannic Bold', 'Arial Black', 'Arial', sans-serif" },
-        { "slug": "body", "name": "Tekst", "fontFamily": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif" },
+        { "slug": "display", "name": "Britannic Bold", "fontFamily": "'FIBERLAN Britannic', 'Britannic Bold', 'Manrope', Arial, sans-serif" },
+        { "slug": "body", "name": "Manrope", "fontFamily": "'Manrope', Arial, sans-serif",
+          "fontFace": [
+            { "fontFamily": "Manrope", "fontStyle": "normal", "fontWeight": "200 800", "fontDisplay": "swap", "src": ["file:./assets/fonts/Manrope.woff2"] }
+          ] },
         { "slug": "mono", "name": "Opisy techniczne", "fontFamily": "ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace" }
       ],
       "fontSizes": [
         { "slug": "small", "name": "Mały", "size": "0.875rem" },
         { "slug": "normal", "name": "Tekst", "size": "1rem" },
         { "slug": "lead", "name": "Wprowadzenie", "size": "clamp(1.0625rem, 0.92rem + 0.42vw, 1.375rem)" },
-        { "slug": "subheading", "name": "Tytuł karty", "size": "clamp(1.375rem, 1.02rem + 0.72vw, 1.875rem)" },
+        { "slug": "subheading", "name": "Tytuł karty", "size": "clamp(1.125rem, 1rem + 0.6vw, 1.65rem)" },
         { "slug": "section", "name": "Tytuł sekcji", "size": "clamp(2rem, 1.36rem + 2.2vw, 3.875rem)" },
         { "slug": "hero", "name": "Tytuł główny", "size": "clamp(2.85rem, 1.86rem + 3.6vw, 6rem)" }
       ]
@@ -51,14 +54,14 @@
   "styles": {
     "color": { "background": "var:preset|color|canvas", "text": "var:preset|color|navy" },
     "spacing": { "blockGap": "1.25rem", "padding": { "top": "0", "bottom": "0", "left": "0", "right": "0" } },
-    "typography": { "fontFamily": "var:preset|font-family|body", "fontSize": "var:preset|font-size|normal", "lineHeight": "1.55" },
+    "typography": { "fontFamily": "var:preset|font-family|body", "fontSize": "var:preset|font-size|normal", "lineHeight": "1.6" },
     "elements": {
       "heading": {
-        "typography": { "fontFamily": "var:preset|font-family|display", "fontWeight": "700", "lineHeight": "1.06", "letterSpacing": "-0.035em" }
+        "typography": { "fontFamily": "var:preset|font-family|display", "fontWeight": "700", "lineHeight": "1.06", "letterSpacing": "-0.023em" }
       },
       "h1": { "typography": { "fontSize": "var:preset|font-size|hero" } },
       "h2": { "typography": { "fontSize": "var:preset|font-size|section" } },
-      "h3": { "typography": { "fontSize": "var:preset|font-size|subheading", "lineHeight": "1.15" } },
+      "h3": { "typography": { "fontFamily": "var:preset|font-family|body", "fontSize": "var:preset|font-size|subheading", "fontWeight": "700", "lineHeight": "1.22" } },
       "link": {
         "color": { "text": "inherit" },
         "typography": { "textDecoration": "underline" }

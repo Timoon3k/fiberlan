@@ -81,8 +81,7 @@ function fl_languages_render( $attrs ) {
 
 // The linked English brand returns to the English home page.
 function fl_english_ui( $html ) {
-	$id = get_queried_object_id();
-	if ( ! is_page() || 'en' !== fl_page_lang( $id ) ) {
+	if ( ( ! is_page() && ! is_404() ) || 'en' !== fl_request_language() ) {
 		return $html;
 	}
 	$logo = new WP_HTML_Tag_Processor( $html );

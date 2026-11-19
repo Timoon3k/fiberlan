@@ -1,6 +1,6 @@
 # FIBERLAN SC · Motyw blokowy WordPress
 
-Etap 3 serwisu FIBERLAN obejmuje dwujęzyczne strony, katalog realizacji, formularz zapytania, metadane, zoptymalizowane obrazy i przygotowanie kampanii. Motyw znajduje się w `theme/fiberlan`. Wtyczka `plugin/fiberlan-site` dodaje powiązania językowe, katalog, formularz i przygotowanie CookieYes. Do instalacji nie są potrzebne Node.js, kompilator ani płatne wtyczki.
+FIBERLAN SC 4.0.0 to dwujęzyczna witryna WordPress. Motyw blokowy w `theme/fiberlan` odpowiada za wygląd strony i edytora, a opcjonalny `theme/fiberlan-child` służy do własnych zmian w kodzie. Wtyczka `plugin/fiberlan-site` obsługuje powiązania językowe, katalog realizacji, formularz, SEO i integrację zgód. Instalacja korzysta z gotowych plików PHP, CSS i JavaScript.
 
 ## Lokalna instalacja deweloperska
 
@@ -21,7 +21,7 @@ docker compose --env-file .local/compose.env stop
 ## Instalacja w standardowym WordPressie
 
 1. Przygotuj paczkę zawierającą folder `fiberlan` z plikiem `style.css` bezpośrednio w tym folderze. Z katalogu repozytorium możesz wykonać `(cd theme && zip -rq ../fiberlan-theme.zip fiberlan)`.
-2. Na witrynie testowej otwórz **Wygląd → Motywy → Dodaj motyw → Wyślij motyw na serwer**. Wskaż paczkę i aktywuj motyw.
+2. Na witrynie testowej otwórz **Wygląd → Motywy → Dodaj motyw → Wyślij motyw na serwer**. Wskaż paczkę i aktywuj motyw. Jeśli chcesz utrzymywać własne pliki poza motywem bazowym, wgraj osobno katalog `fiberlan-child` spakowany jako ZIP i aktywuj **FIBERLAN Child**. W istniejącej witrynie sprawdź na kopii zapisane style i części szablonu, które WordPress przypisuje do aktywnego motywu.
 3. Ustaw język witryny na polski i jej nazwę na **FIBERLAN SC**. Zainstaluj i aktywuj paczkę wtyczki `fiberlan-site`. Włącz bezpośrednie odnośniki **Nazwa wpisu** i wybierz **Wygląd → FIBERLAN PL/EN → Przygotuj strony PL i EN**. Instalator zachowuje istniejącą statyczną stronę innego projektu i zgłasza kolizję adresu lub ustawień.
 4. W istniejącym serwisie możesz również wstawiać poszczególne wzorce do nowej strony roboczej. Przed zmianą ustawień czytania sprawdź podgląd i zrób kopię bazy.
 5. Instalator importuje oryginalne logo i trzy fotografie klienta do biblioteki mediów. Ustawia logo na nowej witrynie, a bloki zdjęć korzystają z responsywnych wariantów generowanych przez WordPress. Sprawdź kadry w podglądzie i potwierdź dane kontaktowe przed publikacją.

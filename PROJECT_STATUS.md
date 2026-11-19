@@ -1,5 +1,24 @@
 # FIBERLAN SC · Status projektu
 
+**19 listopada 2026 · Etap 4A–4B gotowy do odbioru na środowisku testowym.**
+
+## Etap 4
+
+Dopracowano sześć typów stron w PL i EN na podstawie makiety i rzeczywistych fotografii FIBERLAN. Nowy układ katalogu sprzętu pokazuje spawarkę z akcesoriami i obydwa mierniki Fluke. Nagłówek przykleja się przy przewijaniu, stopka ma lokalny powrót na górę. Lokalny Manrope uzupełnia Britannic Bold. Redaktor może zmienić kadr, podpisy i układ galerii oraz rozpoznać sekcje w widoku listy Gutenberga.
+
+| Obszar | Pliki |
+| --- | --- |
+| Wygląd, zdjęcia i typografia | `theme/fiberlan/theme.json`, `assets/site.css`, `assets/view.js`, `assets/fonts/Manrope*`, `screenshot.png` w katalogu motywu |
+| Części witryny i motyw potomny | `theme/fiberlan/functions.php`, `theme/fiberlan/patterns/header.php`, `footer.php`, `footer-en.php`, `theme/fiberlan-child/style.css` |
+| Edytor i języki | `plugin/fiberlan-site/assets/editor.js`, `assets/site.js`, `blocks/projects/block.json`, `inc/languages.php`, nagłówek wtyczki |
+| Instalacja i regresja | `compose.yaml`, `dev/start.sh`, `dev/initialize.php`, `dev/cloud-setup.json`, `tests/editor_smoke.py`, `tests/stage_four_smoke.py` |
+
+Sprawdzono oba języki na pięciu szerokościach od 320 do 1440 px, stronę główną do 1920 px, edycję bloków i czystą instalację motywu potomnego. Na testowej kopii z Rank Math sprawdzono dziedziczenie stylów w edytorze i na stronie oraz metadane dla 22 adresów. Do publikacji potrzebne są finalne teksty, akceptacja polityk i weryfikacja integracji z usługami klienta.
+
+[Odbiór wizualny, pomiary i ograniczenia](docs/ODBIOR-ETAP-4.md) · [Edycja](docs/EDYCJA.md)
+
+## Archiwum etapu 3
+
 **19 listopada 2026 · Etap 3 zweryfikowany lokalnie.**
 
 ## Etap 3

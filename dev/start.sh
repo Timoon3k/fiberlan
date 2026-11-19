@@ -15,7 +15,7 @@ if [[ ! -f .local/admin-password ]]; then
 fi
 
 # Apache reads the public theme through a read-only bind mount.
-chmod -R a+rX theme/fiberlan plugin/fiberlan-site
+chmod -R a+rX theme/fiberlan theme/fiberlan-child plugin/fiberlan-site
 chmod a+r dev/initialize.php dev/mail.php
 compose=(docker compose --env-file .local/compose.env)
 "${compose[@]}" up -d --wait

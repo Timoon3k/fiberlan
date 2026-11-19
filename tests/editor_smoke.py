@@ -62,11 +62,11 @@ def open_entity(page, base, path, entity_id):
     }""", arg=entity_id, timeout=30000)
 
 
-def roundtrip(page, base, path, raw, suffix, slug, image):
+def roundtrip(page, base, path, raw, suffix, slug, image, theme=None):
     # Use unpublished copies for page content and distinct, unreferenced slugs for parts.
     data = {"title": f"Test FIBERLAN {suffix}", "content": raw}
     if path == "template-parts":
-        data.update({"slug": f"fiberlan-qa-{slug}-{suffix}", "theme": "fiberlan", "area": slug.split("-")[0]})
+        data.update({"slug": f"fiberlan-qa-{slug}-{suffix}", "theme": theme, "area": slug.split("-")[0]})
     else:
         data["status"] = "draft"
     entity = rest(page, f"/wp/v2/{path}", "POST", data)
@@ -151,15 +151,49 @@ def roundtrip(page, base, path, raw, suffix, slug, image):
         rest(page, endpoint + "?force=true", "DELETE")
 
 
+def check_image_styles(page, base):
+    raw = page.evaluate("""async () => {
+        const [photo] = await wp.apiFetch({path: '/wp/v2/media?search=Fluke'});
+        const image = className => wp.blocks.createBlock('core/image', {
+            id: photo.id, url: photo.source_url, alt: 'Fluke Networks Versiv 2',
+            caption: 'Zestaw pomiarowy '.repeat(6), className
+        });
+        return wp.blocks.serialize([
+            image('fl-section-image is-style-fiberlan-full'),
+            image('fl-section-image is-style-fiberlan-wide'),
+            wp.blocks.createBlock('core/gallery', {className: 'is-style-fiberlan-gallery'}, [image(), image()])
+        ]);
+    }""")
+    check_blocks(page, raw, "Gallery and image styles")
+    preview = page.context.new_page()
+    draft = rest(page, "/wp/v2/pages", "POST", {"title": "QA kadrowanie", "status": "draft", "content": raw})
+    try:
+        preview.set_viewport_size({"width": 390, "height": 840})
+        preview.goto(f"{base}/?page_id={draft['id']}&preview=true")
+        for style, expected in (("full", 3 / 4), ("wide", 16 / 9)):
+            image = preview.locator(f".is-style-fiberlan-{style} img")
+            image.scroll_into_view_if_needed()
+            image.evaluate("img => img.decode()")
+            ratio = image.evaluate("img => img.clientWidth / img.clientHeight")
+            assert abs(ratio - expected) < 0.02, (style, ratio)
+        caption = preview.locator(".is-style-fiberlan-gallery figcaption").first
+        assert caption.evaluate("node => getComputedStyle(node).position") == "static"
+    finally:
+        preview.close()
+        rest(page, f"/wp/v2/pages/{draft['id']}?force=true", "DELETE")
+
+
 def run(page, base, username, password, stage_two):
     page.goto(base + "/wp-login.php")
     page.locator("#user_login").fill(username)
     page.locator("#user_pass").fill(password)
     page.locator("#wp-submit").click()
+    page.wait_for_url("**/wp-admin/**")
     page.goto(base + "/wp-admin/post-new.php?post_type=page", wait_until="domcontentloaded")
     wait_editor(page)
     settings = rest(page, "/wp/v2/settings")
     home = rest(page, f"/wp/v2/pages/{settings['page_on_front']}?context=edit")
+    theme = rest(page, "/wp/v2/themes?status=active&context=edit")[0]["stylesheet"]
     patterns = rest(page, "/wp/v2/block-patterns/patterns")
     theme_patterns = {x["name"]: x["content"] for x in patterns if x["name"].startswith("fiberlan/")}
     assert len(theme_patterns) >= 7, theme_patterns.keys()
@@ -167,6 +201,7 @@ def run(page, base, username, password, stage_two):
         check_blocks(page, raw, name)
     pages_to_edit = []
     if stage_two:
+        check_image_styles(page, base)
         managed = [x for x in rest(page, "/wp/v2/pages?per_page=100&context=edit")
                    if x["template"] in ("page-fiberlan", "page-en") or x["id"] == home["id"]]
         assert len(managed) >= 22
@@ -175,6 +210,18 @@ def run(page, base, username, password, stage_two):
         paths = {"/o-nas/", "/uslugi/", "/sprzet/", "/realizacje/", "/kontakt/", "/en/", "/en/contact/"}
         pages_to_edit = [x for x in managed if urlparse(x["link"]).path in paths]
         assert len(pages_to_edit) == len(paths)
+        archive = next(x for x in pages_to_edit if urlparse(x["link"]).path == "/realizacje/")
+        open_entity(page, base, "pages", archive["id"])
+        canvas = page.frame_locator('iframe[name="editor-canvas"]')
+        preview = canvas.locator(".fl-editor-projects li")
+        preview.first.wait_for()
+        assert preview.count() == 3
+        fonts = canvas.locator("body").evaluate("""async () => {
+            await document.fonts.ready;
+            return [...document.fonts].filter(f => f.status === 'loaded').map(f => f.family);
+        }""")
+        assert {"Manrope", "FIBERLAN Britannic"} <= set(fonts), fonts
+        print(f"{theme}: project catalogue and both editor fonts OK", flush=True)
     suffix = uuid4().hex[:8]
     # A locally created solid swatch exercises Media Library attachment replacement.
     image = page.evaluate("""async suffix => {
@@ -193,7 +240,7 @@ def run(page, base, username, password, stage_two):
             roundtrip(page, base, "pages", entry["content"]["raw"], suffix, entry["link"], image)
         parts = ["header", "footer", "header-en", "footer-en"] if stage_two else ["header", "footer"]
         for slug in parts:
-            roundtrip(page, base, "template-parts", theme_patterns[f"fiberlan/{slug}"], suffix, slug, image)
+            roundtrip(page, base, "template-parts", theme_patterns[f"fiberlan/{slug}"], suffix, slug, image, theme)
         contacts = rest(page, "/wp/v2/blocks?context=edit&search=FIBERLAN")
         contact = next(item for item in contacts if "kontaktowe" in item["title"]["raw"])
         roundtrip(page, base, "blocks", contact["content"]["raw"], suffix, "contact", image)
@@ -212,7 +259,7 @@ def main():
         parser.error("This test requires a disposable, local WordPress installation.")
     with sync_playwright() as p:
         browser = p.chromium.launch(executable_path=shutil.which("chromium"))
-        page = browser.new_page(viewport={"width": 1440, "height": 1000})
+        page = browser.new_context(viewport={"width": 1440, "height": 1000}).new_page()
         run(page, args.base_url.rstrip("/"), args.user, args.password_file.read_text().strip(), args.stage_two)
         browser.close()
 

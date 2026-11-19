@@ -3,6 +3,7 @@
   "name": "fiberlan/projects",
   "title": "Katalog realizacji",
   "category": "widgets",
+  "usesContext": ["postId", "postType"],
   "attributes": {
     "label": {
       "type": "string"
