@@ -76,6 +76,19 @@ def check_home_photograph(page, base):
         assert response.ok and "image/svg+xml" in response.headers["content-type"], url
         assert "1600 1200" in response.text()
         assert photo.evaluate("img => img.naturalWidth > 0 && img.getBoundingClientRect().height > 100")
+        # The retained silhouette spans x=156..810 and y=262..1111 on the original.
+        rect = photo.bounding_box()
+        frame = figure.locator("picture").bounding_box()
+        for axis, size, fraction in (("x", "width", 483 / 1600), ("y", "height", 686.5 / 1200)):
+            object_centre = rect[axis] + rect[size] * fraction
+            frame_centre = frame[axis] + frame[size] / 2
+            assert abs(object_centre - frame_centre) < 2, (path, axis)
+        assert response.text().count("<path ") == 1
+        for selector in (".fl-hero .fl-eyebrow", ".fl-services .fl-section-head h2", ".fl-projects .fl-eyebrow"):
+            marker = page.locator(selector).evaluate("n => getComputedStyle(n, '::before').content")
+            assert marker in ("none", "normal"), (selector, marker)
+        expect(figure.locator("figcaption")).to_have_count(0)
+        expect(photo).to_have_attribute("alt", re.compile("open and display lit" if path == "/en/" else "włączonym ekranem"))
         figure.evaluate("node => node.classList.add('is-style-fiberlan-full')")
         assert photo.evaluate("img => getComputedStyle(img).maskImage") == "none"
         projects = page.locator(".fl-project-card h3 a")

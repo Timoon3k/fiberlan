@@ -18,7 +18,7 @@ Treści z dokumentu klienta znajdują się na stronach **O nas**, **Usługi**, *
 
 ## Zdjęcia, podpisy i logo
 
-Wybierz blok **Obraz → Zastąp**. Wskaż plik z biblioteki albo prześlij nowy. Sprawdź kadr, podpis i tekst alternatywny. Dekoracyjna ilustracja obok pełnego opisu może mieć pusty tekst alternatywny. Po wymianie fotografii spawarki w pierwszej sekcji zaktualizuj również jej podpis. WordPress tworzy warianty rozmiarów dla obsługiwanych fotografii w bibliotece mediów.
+Wybierz blok **Obraz → Zastąp**. Wskaż plik z biblioteki albo prześlij nowy. Sprawdź kadr, podpis i tekst alternatywny. Dekoracyjna ilustracja obok pełnego opisu może mieć pusty tekst alternatywny. Zdjęcie spawarki w pierwszej sekcji ma opis ALT. Pole podpisu pozostaw puste, aby pod zdjęciem nie pojawiał się tekst. WordPress tworzy warianty rozmiarów dla obsługiwanych fotografii w bibliotece mediów.
 
 W **Wygląd → Edytor → Wzorce → Części szablonu → Nagłówek** wybierz blok **Logo witryny** z widoku listy. Instalator wybiera oryginalne logo z pełnym napisem SC. W tym bloku możesz zastąpić je późniejszą wersją. Motyw zachowuje proporcje grafiki. Przed dodaniem pliku nagłówek pokazuje tytuł witryny. Ustaw go na „FIBERLAN SC” w ustawieniach ogólnych WordPressa.
 

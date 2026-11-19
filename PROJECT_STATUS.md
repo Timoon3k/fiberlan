@@ -1,5 +1,9 @@
 # FIBERLAN SC · Status projektu
 
+## Korekta strony głównej · 4.4.1
+
+W wersjach PL i EN wyśrodkowano samą spawarkę w głównym kadrze. Zdjęcie ma opis ALT i pusty podpis. W tle pozostała delikatna siatka o większych oczkach. Usunięto trzy ozdobne kreski zaznaczone na zrzucie klienta. W Chromium sprawdzono oba języki przy 320, 390, 768, 1024 i 1440 px.
+
 ## 4H · Treści klienta, kompozycja strony i odbiór
 
 **20 listopada 2026 r. · FIBERLAN 4.4.0.** Treści z `www1.docx` są na czterech podstronach w każdym języku. Dla aktualizowanych witryn dodano osiem wzorców z edytowalnymi blokami. Zdjęcie sprzętu w sekcji głównej korzysta z maski konturowej. Po pasku doświadczenia następują usługi i realizacje, a nazwy projektów prowadzą do opisów w wybranym języku.

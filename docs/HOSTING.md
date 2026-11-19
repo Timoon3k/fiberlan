@@ -2,7 +2,7 @@
 
 ## Instalacja na kopii testowej
 
-Rozpakuj pakiet wydania FIBERLAN 4.4.0. W WordPress wybierz **Wygląd → Motywy → Dodaj motyw** i wgraj osobno `fiberlan.zip` oraz `fiberlan-child.zip`. Przez **Wtyczki → Dodaj wtyczkę** wgraj `fiberlan-site.zip`. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
+Rozpakuj pakiet wydania FIBERLAN 4.4.1. W WordPress wybierz **Wygląd → Motywy → Dodaj motyw** i wgraj osobno `fiberlan.zip` oraz `fiberlan-child.zip`. Przez **Wtyczki → Dodaj wtyczkę** wgraj `fiberlan-site.zip`. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
 
 ## Aktualizacja istniejącej witryny
 

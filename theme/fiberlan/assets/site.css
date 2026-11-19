@@ -212,7 +212,7 @@
   letter-spacing: .11em;
   text-transform: uppercase;
 }
-.fl-eyebrow::before {
+.fl-subhero .fl-eyebrow::before {
   flex: none;
   width: 1.9rem;
   height: 2px;
@@ -290,14 +290,18 @@
   background-color: var(--wp--preset--color--navy);
   background-image:
     linear-gradient(90deg, #0b132b 3%, rgba(11,19,43,.93) 24%, transparent 85%),
-    linear-gradient(to right, #91b7df21 1px, transparent 1px),
-    linear-gradient(to bottom, #91b7df21 1px, transparent 1px),
-    linear-gradient(to right, #91b7df0e 1px, transparent 1px),
-    linear-gradient(to bottom, #91b7df0e 1px, transparent 1px),
+    linear-gradient(to right, var(--fl-grid-major, #91b7df21) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--fl-grid-major, #91b7df21) 1px, transparent 1px),
+    linear-gradient(to right, var(--fl-grid-minor, #91b7df0e) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--fl-grid-minor, #91b7df0e) 1px, transparent 1px),
     radial-gradient(ellipse at 75% 55%, #26425c, #101d35 72%);
   background-size: auto, 6rem 6rem, 6rem 6rem, 1.5rem 1.5rem, 1.5rem 1.5rem, auto;
 }
-@supports (mask-image: url('diagrams/splicer-photo-mask.svg')) {
+.fl-hero {
+  --fl-grid-major: #91b7df0c;
+  --fl-grid-minor: transparent;
+}
+@supports (mask-image: url('diagrams/splicer-portrait-mask.svg')) {
   .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide):has(.fl-splicer-scene) {
     border: 0;
     background: transparent;
@@ -306,24 +310,19 @@
   .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene {
     position: relative;
     display: block;
-    aspect-ratio: 1.62;
+    height: clamp(14rem, 27vw, 26rem);
     overflow: hidden;
   }
   .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene img {
     position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: auto;
+    inset: 50% auto auto 50%;
+    /* The splicer's centre is at (483, 687) in the 1600 × 1200 photograph. */
+    translate: -30.2% -57.25%;
+    height: 134%;
+    width: auto;
+    max-width: none;
     aspect-ratio: 4 / 3;
-    mask: url('diagrams/splicer-photo-mask.svg') center / 100% 100% no-repeat;
-  }
-  .fl-hero-figure:has(.fl-splicer-scene) figcaption {
-    width: fit-content;
-    border: 0;
-    border-inline-start: 2px solid #78a9df;
-    padding: .2rem .75rem;
-    color: #d9e2ef;
-    background: var(--wp--preset--color--navy);
+    mask: url('diagrams/splicer-portrait-mask.svg') center / 100% 100% no-repeat;
   }
 }
 
@@ -356,14 +355,6 @@
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: clamp(1.35rem, 2.3vw, 2.5rem);
-}
-.fl-section-head h2::before {
-  content: '';
-  display: block;
-  width: 2.75rem;
-  height: 4px;
-  margin-bottom: .8rem;
-  background-color: var(--wp--preset--color--blue);
 }
 .fl-text-link a {
   display: inline-flex;

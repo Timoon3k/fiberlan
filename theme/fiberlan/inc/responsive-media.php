@@ -72,6 +72,18 @@ add_filter( 'render_block_core/image', static function ( $content, $block ) {
 	}
 	// Only the supplied photograph matches the traced silhouette. Library replacements use the normal frame.
 	$cutout = 'fl-hero-figure' === $class && 'fiber-splicer-cleaver-client-photo.jpg' === $filename;
+	// Earlier installations stored the original starter caption and ALT directly in the page.
+	if ( $cutout ) {
+		$updated = strtr( $updated, array(
+			'alt="Spawarka światłowodowa z otwartą osłoną, obcinarką i akcesoriami."' => 'alt="Spawarka światłowodowa z otwartą osłoną i włączonym ekranem."',
+			'alt="Fibre optic fusion splicer with its cover open, a cleaver and accessories."' => 'alt="Fibre optic fusion splicer with its cover open and display lit."',
+		) );
+		$updated = preg_replace(
+			'~<figcaption\b[^>]*>\s*(?:Spawarka światłowodowa(?: z obcinarką)?|Fusion splicer and cleaver|Fibre optic fusion splicer)\s*</figcaption>~u',
+			'',
+			$updated
+		);
+	}
 	$source = sprintf( '<picture%s><source type="image/webp" sizes="%s" srcset="%s">',
 		$cutout ? ' class="fl-splicer-scene"' : '', esc_attr( $sizes ), esc_attr( $webp ) );
 	return preg_replace_callback(
