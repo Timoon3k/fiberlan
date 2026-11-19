@@ -64,6 +64,13 @@ add_action( 'wp_body_open', static function () {
 	echo '<div id="fl-page-top" tabindex="-1"></div>';
 } );
 
+// The floating control works independently of the active footer template part.
+add_action( 'wp_footer', static function () {
+	$lang = function_exists( 'fl_request_language' ) ? fl_request_language() : substr( get_locale(), 0, 2 );
+	$label = 'en' === $lang ? 'Back to top' : 'Wróć na górę';
+	printf( '<a class="fl-floating-top" href="#fl-page-top" aria-label="%s"></a>', esc_attr( $label ) );
+} );
+
 // Keep the public keyboard controls in Polish on hosts missing the core language pack.
 add_action(
 	'wp',

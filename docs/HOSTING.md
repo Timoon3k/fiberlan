@@ -2,7 +2,7 @@
 
 ## Instalacja na kopii testowej
 
-Na nowej witrynie zainstaluj motyw FIBERLAN 4.2.0, motyw FIBERLAN Child i wtyczkę **FIBERLAN Core**. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
+Na nowej witrynie zainstaluj motyw FIBERLAN 4.2.1, motyw FIBERLAN Child i wtyczkę **FIBERLAN Core**. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
 
 Przy aktualizacji etapu 4 zastąp pliki w dotychczasowych katalogach `fiberlan`, `fiberlan-child` i `fiberlan-site`. Wtyczka zachowuje identyfikator aktywacji, a istniejące bloki korzystają z nowego edytora bez ponownej instalacji treści.
 

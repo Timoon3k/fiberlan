@@ -619,7 +619,7 @@
 .fl-field textarea { resize: vertical; min-height: 6rem; }
 .fl-form .wp-element-button:hover { background-color: #163eaf; }
 .fl-filters a:hover, .fl-languages > a:not([aria-current],.fl-language-hint):hover { box-shadow: inset 0 -2px currentColor; }
-.fl-actions a:active, .fl-form button:active, .fl-back-top a:active { transform: translateY(1px); }
+.fl-actions a:active, .fl-form button:active { transform: translateY(1px); }
 .fl-shell :is(input,textarea,button):disabled { opacity: .65; cursor: not-allowed; }
 .fl-service-index ul { list-style: none; padding: 0; }
 .fl-service-index li { border-block-end: 1px solid #bac7d7; padding-block: .5rem; }
@@ -628,10 +628,8 @@
 .fl-footer-brand .wp-block-site-logo { margin-bottom: .8rem; }
 .fl-footer-base { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.4rem; border-top: 1px solid var(--fl-border-dark); padding-block: 1rem; }
 .fl-footer-base > * { margin: 0; }
-.fl-back-top { margin-inline-start: auto; }
-.fl-back-top a { display: inline-flex; align-items: center; min-height: 2.75rem; gap: 1rem; padding: .4rem .9rem; border: 1px solid #74849b; text-decoration: none; font-weight: 600; font-size: .875rem; }
-.fl-back-top a::after { content: ''; width: .5em; height: .5em; border-top: 1.5px solid; border-left: 1.5px solid; transform: translateY(.12em) rotate(45deg); }
-.fl-back-top a:is(:hover,:focus-visible) { background: var(--wp--preset--color--slate); }
+/* Hide the former control in saved footer parts while keeping the block editable. */
+.wp-site-blocks > footer p.fl-back-top:has(> a:only-child[href="#fl-page-top"]) { display: none; }
 .fl-footer-main.fl-footer-grid {
   display: grid;
   grid-template-columns: minmax(12rem, 1.6fr) minmax(0, .8fr) minmax(0, 1fr) minmax(10rem, 1fr);
@@ -645,6 +643,8 @@
 .fl-footer-links a { display: inline-block; padding-block: .2rem; color: #d4ddea; text-decoration: none; }
 .fl-footer-links a:is(:hover, :focus-visible) { text-decoration: underline; color: white; }
 .fl-footer-credit { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .4rem 1.5rem; padding-block: 1rem 1.3rem; border-top: 1px solid var(--fl-border-dark); color: #ced8e7; font-size: .81rem; }
+/* Keep the author link clear of the floating arrow on narrower layouts. */
+.fl-footer-credit { padding-inline-end: max(0px, calc(4.25rem - var(--fl-gutter))); }
 .fl-footer-credit > * { margin: 0; }
 @media (max-width: 57rem) {
   .fl-footer-main.fl-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -652,10 +652,9 @@
 @media (max-width: 37.5rem) {
   .fl-footer-grid :is(.fl-footer-brand, .fl-footer-contact) { grid-column: 1 / -1; }
   .fl-footer-grid .fl-footer-links li > a { padding-block: .37rem; }
-  .fl-footer-base .fl-back-top { margin-inline-start: 0; }
 }
 
-/* The ordinary footer link also works without JavaScript. */
+/* The floating link stays available as a normal fragment link without scripts. */
 .fl-floating-top {
   position: fixed;
   z-index: 15;
@@ -683,17 +682,35 @@
 }
 .fl-floating-top:is(.is-visible, :focus) { visibility: visible; opacity: 1; }
 .fl-floating-top:is(:hover, :focus-visible) { background: var(--wp--preset--color--blue); }
+.fl-floating-top:focus-visible { outline: 3px solid #2775ff; outline-offset: 3px; }
 body:has(.cky-revisit-bottom-right:not(.cky-hide,[hidden])) .fl-floating-top { inset-block-end: calc(max(1rem, env(safe-area-inset-bottom)) + 3.5rem); }
 body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-open,.fl-nav .is-menu-open) .fl-floating-top { visibility: hidden; pointer-events: none; }
 
+@media (scripting: none) {
+  .fl-floating-top { visibility: visible; opacity: 1; }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .fl-floating-top { transition: opacity .18s ease; }
-  .fl-in-view { animation: fl-arrive .42s ease-out both; }
-  .fl-in-view:focus-within { translate: none !important; opacity: 1 !important; }
-  :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-sector-grid) > .fl-in-view:nth-child(3n + 2),
-  .fl-split > .fl-section-image.fl-in-view { animation-delay: .055s; }
-  :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-sector-grid) > .fl-in-view:nth-child(3n + 3) { animation-delay: .11s; }
-  @keyframes fl-arrive { from { translate: 0 .5rem; opacity: .86; } to { translate: 0 0; opacity: 1; } }
+  .fl-reveal-pending { opacity: .94; translate: 0 .75rem; }
+  .fl-in-view {
+    --fl-reveal-duration: 800ms;
+    --fl-reveal-delay: 0ms;
+    transition: opacity var(--fl-reveal-duration) ease-out,
+      translate var(--fl-reveal-duration) cubic-bezier(.2, .7, .25, 1);
+    transition-delay: var(--fl-reveal-delay);
+  }
+  :is(.fl-reveal-pending, .fl-in-view):focus-within,
+  :is(.fl-reveal-pending, .fl-in-view):target {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+  :is(.fl-service-grid, .fl-project-grid, .fl-case-grid, .fl-sector-grid) > .fl-in-view:nth-child(3n + 2) { --fl-reveal-delay: 70ms; }
+  :is(.fl-service-grid, .fl-project-grid, .fl-case-grid, .fl-sector-grid) > .fl-in-view:nth-child(3n + 3) { --fl-reveal-delay: 140ms; }
+  .fl-reveal-pending:is(figure, .wp-block-gallery):not(:focus-within) img { opacity: .55; }
+  .fl-in-view:is(figure, .fl-section-image, .wp-block-gallery) { --fl-reveal-duration: 900ms; }
+  .fl-in-view:is(figure, .wp-block-gallery) img { transition: opacity var(--fl-reveal-duration) ease-out; }
 }
 
 /* Gutenberg image styles apply to library replacements as well as starter photographs. */

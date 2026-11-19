@@ -40,7 +40,7 @@ Widok listy rozpoznaje m.in. grupy **Wprowadzenie**, **Karta usługi**, **Pozycj
 
 W **Wygląd → Edytor → Wzorce → Części szablonu** wybierz **Stopka** lub **Footer (EN)**. Zmieniaj opis firmy i listy odnośników jak zwykłe bloki. Podpis i link autora są w dolnym pasku. W bloku **Prawa autorskie FIBERLAN** edytujesz nazwę firmy i treść informacji o prawach. Zakres dat rośnie automatycznie od 2026 roku.
 
-Pływająca strzałka pojawia się po przewinięciu 600 px i korzysta z etykiety linku powrotu na górę w stopce. Przy tworzeniu własnej stopki dodaj akapit z klasą `fl-back-top` i odnośnikiem do `#fl-page-top`.
+Motyw wyświetla pływającą strzałkę po przewinięciu 600 px. Zapisany wcześniej blok powrotu na górę można usunąć w edytorze stopki. Aktualna strzałka jest dostępna także przy własnym szablonie stopki.
 
 ## Kontrola po zapisaniu
 

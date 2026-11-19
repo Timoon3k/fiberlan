@@ -80,9 +80,6 @@ function fiberlan_footer_pattern( $lang ) {
 	<!-- wp:group {"className":"fl-footer-base fl-shell","layout":{"type":"default"}} -->
 	<div class="wp-block-group fl-footer-base fl-shell">
 		<?php echo fiberlan_policy_links( $lang ); ?>
-		<!-- wp:paragraph {"className":"fl-back-top"} -->
-		<p class="fl-back-top"><a href="#fl-page-top"><?php echo esc_html( $english ? 'Back to top' : 'Wróć na górę' ); ?></a></p>
-		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:group -->
 	<!-- wp:group {"className":"fl-footer-credit fl-shell","layout":{"type":"default"}} -->

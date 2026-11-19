@@ -1,5 +1,18 @@
 # FIBERLAN SC · Status projektu
 
+## 4D · Dopracowanie animacji i nawigacji
+
+**19 listopada 2026 · Motyw FIBERLAN 4.2.1.**
+
+- Zachowano rozwiązania 4D i 4E z commita `50e8cab`. W repozytorium i dostępnych materiałach nie znaleziono osobnych kryteriów 4F, 4G ani 4H.
+- Treści wchodzą w 800 ms, zdjęcia w 900 ms, a kolejne karty mają opóźnienia 70 i 140 ms. Animacja rozpoczyna się poza widocznym obszarem, a treści widoczne przy otwarciu strony pozostają stabilne. Efekty respektują ustawienie ograniczonego ruchu.
+- Strzałka powrotu działa niezależnie od stopki. Wcześniej zapisany blok powrotu pozostaje dostępny w edytorze, a na stronie widoczna jest jedna pływająca strzałka. Przy końcu strony strzałka nie zasłania linku autora.
+- Sprawdzono sześć stron w PL i EN na szerokościach 320–1440 px. Testy objęły czas animacji, redukcję ruchu, pasek WordPressa, menu mobilne, powrót dotykiem i klawiaturą, działanie bez JavaScriptu oraz walidację obu stopek w Gutenbergu.
+
+Dostęp do publicznego portfolio z tego środowiska zwrócił HTTP 403. Czas i charakter animacji oparto na opisie 4D.
+
+[Testy w przeglądarce](tests/stage_four_smoke.py) · [Edycja stopki](docs/EDYCJA.md)
+
 ## 4D–4E · Nawigacja, animacje i stopka PL/EN
 
 **19 listopada 2026 · FIBERLAN 4.2.0, WordPress 7.1.5.**

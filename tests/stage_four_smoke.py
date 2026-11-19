@@ -17,10 +17,14 @@ def check_layout(page, base, path):
     page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight)")
     top = nav.bounding_box()
     assert top and -2 <= top["y"] <= 2, (path, top)
-    back = page.locator("footer .fl-back-top a")
-    back.press("Enter")
-    expect(page.locator("#fl-page-top")).to_be_focused()
-    assert page.evaluate("scrollY") == 0, path
+    back = page.locator(".fl-floating-top")
+    if page.evaluate("scrollY >= 600"):
+        expect(back).to_be_visible()
+        back.press("Enter")
+        expect(page.locator("#fl-page-top")).to_be_focused()
+        assert page.evaluate("scrollY") == 0, path
+    else:
+        expect(back).to_be_hidden()
     assert page.evaluate("""['Manrope', 'FIBERLAN Britannic'].every(name =>
         [...document.fonts].some(font => font.family === name && font.status === 'loaded'))"""), path
     # Exercise unsupplied final copy without changing any WordPress record.
@@ -41,7 +45,7 @@ def check_motion(browser, base, mode):
                 page.goto(base + path)
                 page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight)")
                 if mode == "reduce":
-                    expect(page.locator(".fl-in-view")).to_have_count(0)
+                    expect(page.locator(".fl-in-view, .fl-reveal-pending")).to_have_count(0)
                     continue
                 page.wait_for_function("""() => {
                     const top = scrollY;
@@ -49,7 +53,9 @@ def check_motion(browser, base, mode):
                     return document.querySelector('main .fl-in-view');
                 }""", polling=100, timeout=6000)
                 target = page.locator("main .fl-in-view").first
-                assert target.evaluate("n => getComputedStyle(n).animationName") == "fl-arrive", path
+                timings = target.evaluate("""node => getComputedStyle(node).transitionDuration
+                    .split(',').map(value => parseFloat(value))""")
+                assert all(.7 <= seconds <= 1.0 for seconds in timings), (path, timings)
         page.goto(base + "/uslugi/#pomiary")
         heading = page.locator("#pomiary h2").bounding_box()
         nav = page.locator(".fl-nav-row").bounding_box()
@@ -58,11 +64,30 @@ def check_motion(browser, base, mode):
         print(f"{width}px: motion preference {mode} verified on 12 pages", flush=True)
 
 
+def check_reveal_timing(page, base):
+    page.goto(base)
+    cards = page.locator(".fl-service-grid > .fl-service-card")
+    for index, delay in enumerate((0, .07, .14)):
+        card = cards.nth(index)
+        card.scroll_into_view_if_needed()
+        expect(card).to_have_class(re.compile(r"\bfl-in-view\b"))
+        assert card.evaluate("n => parseFloat(getComputedStyle(n).transitionDelay)") == delay
+        card.evaluate("async n => await Promise.all(n.getAnimations().map(animation => animation.finished))")
+        assert card.evaluate("n => getComputedStyle(n).opacity") == "1"
+    page.goto(base + "/uslugi/")
+    photo = page.locator("#pomiary .fl-section-image")
+    photo.scroll_into_view_if_needed()
+    expect(photo).to_have_class(re.compile(r"\bfl-in-view\b"))
+    assert photo.locator("img").evaluate("n => getComputedStyle(n).transitionDuration") == "0.9s"
+
+
 def check_footer(page, base):
     for idx, lang in enumerate(("pl", "en")):
         page.goto(base + PAIRS[0][idx])
         footer = page.locator("footer")
         assert footer.locator(".custom-logo").is_visible()
+        expect(footer.locator('a[href="#fl-page-top"]')).to_have_count(0)
+        expect(page.locator(".fl-floating-top")).to_have_count(1)
         expect(footer.locator(".fl-footer-links").first.locator("a")).to_have_count(6)
         for anchor, pair in zip(footer.locator(".fl-footer-links").first.locator("a").all(), PAIRS[:6]):
             expect(anchor).to_have_attribute("href", base + pair[idx])
@@ -89,6 +114,12 @@ def check_sticky_controls(page, base, mobile):
     page.evaluate("window.scrollTo(0, 670)")
     expect(button).to_be_visible()
     expect(button).to_have_accessible_name("Back to top")
+    page.locator("footer .fl-footer-base").evaluate("""footer => {
+        footer.insertAdjacentHTML('beforeend',
+            '<p class="fl-back-top"><a href="#fl-page-top">Legacy return link</a></p>');
+    }""")
+    expect(page.locator("footer .fl-back-top a")).to_be_hidden()
+    expect(button).to_be_visible()
     switch = page.locator('.fl-languages a[data-language="pl"]').first
     assert switch.bounding_box()["y"] >= 0
     if mobile:
@@ -182,6 +213,8 @@ if __name__ == "__main__":
             check_motion(browser, base, mode)
         for width in (390, 1440):
             page = browser.new_page(viewport={"width": width, "height": 840}, reduced_motion="reduce" if width < 600 else "no-preference")
+            if width == 1440:
+                check_reveal_timing(page, base)
             check_footer(page, base)
             check_sticky_controls(page, base, width < 600)
             page.close()
@@ -192,7 +225,7 @@ if __name__ == "__main__":
         page.goto(base + "/en/services/")
         expect(page.locator("#pomiary h2")).to_be_visible()
         expect(page.locator('header .fl-nav a[href$="/en/services/"]')).to_be_visible()
-        page.locator(".fl-back-top a").click()
+        page.locator(".fl-floating-top").click()
         assert page.url.endswith("#fl-page-top")
         print("Reduced motion, scroll animation, anchor clearance and no-JS return OK")
         browser.close()
