@@ -44,7 +44,7 @@ function fl_alternates( $id ) {
 }
 
 add_filter( 'language_attributes', static function ( $attributes ) {
-	if ( is_page() && 'en' === fl_page_lang( get_queried_object_id() ) ) {
+	if ( ( is_page() || is_404() ) && 'en' === fl_request_language() ) {
 		return preg_replace( '/\blang="[^"]*"/', 'lang="en-GB"', $attributes );
 	}
 	return $attributes;
@@ -95,7 +95,7 @@ add_filter( 'render_block_core/site-logo', 'fl_english_ui' );
 add_filter( 'render_block_core/site-title', 'fl_english_ui' );
 
 add_action( 'template_redirect', static function () {
-	if ( is_page() && 'en' === fl_page_lang( get_queried_object_id() ) ) {
+	if ( ( is_page() || is_404() ) && 'en' === fl_request_language() ) {
 		switch_to_locale( in_array( 'en_GB', get_available_languages(), true ) ? 'en_GB' : 'en_US' );
 	}
 }, 0 );

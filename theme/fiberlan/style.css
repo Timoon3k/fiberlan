@@ -1,7 +1,7 @@
 /*
 Theme Name: FIBERLAN
 Description: Autorski motyw blokowy FIBERLAN SC dla edytora witryny WordPress.
-Version: 2.0.0
+Version: 3.0.0
 Requires at least: 6.6
 Requires PHP: 7.4
 Author: FIBERLAN SC
@@ -13,7 +13,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 /* Client-supplied face, served by WordPress without third-party requests. */
 @font-face {
   font-family: 'FIBERLAN Britannic';
-  src: url('assets/fonts/BRITANIC.ttf') format('truetype'), local('Britannic Bold');
+  src: url('assets/fonts/BRITANIC.woff2') format('woff2'), url('assets/fonts/BRITANIC.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -515,3 +515,13 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
   .fl-contact-layout { display: flex; flex-direction: column; }
   .fl-nav-row { gap: .5rem; }
 }
+
+.fl-crumb-bar { background: var(--wp--preset--color--navy); border-bottom: 1px solid var(--fl-border-dark); color: var(--fl-pale); }
+.fl-crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .75rem; margin: 0; padding: .7rem 0; list-style: none; font-size: .85rem; }
+.fl-crumbs li + li::before { content: '/'; margin-inline-end: .75rem; color: #a8b8d2; }
+.fl-crumbs a { color: inherit; text-underline-offset: .18em; }
+.fl-crumbs [aria-current] { color: white; }
+.fl-service-index { background: #e5ecf4; }
+.fl-service-index ul { columns: 2; column-gap: 2rem; padding-inline-start: 1.2rem; }
+.fl-service-index li { break-inside: avoid; padding-block: .22rem; }
+@media (max-width: 42rem) { .fl-service-index ul { columns: 1; } }

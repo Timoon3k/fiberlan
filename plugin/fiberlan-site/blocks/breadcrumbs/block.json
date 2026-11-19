@@ -1,0 +1,11 @@
+{
+  "apiVersion": 3,
+  "name": "fiberlan/breadcrumbs",
+  "title": "Ścieżka nawigacji",
+  "category": "theme",
+  "supports": {
+    "html": false,
+    "multiple": false
+  },
+  "editorScript": "fiberlan-block-editor"
+}

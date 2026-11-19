@@ -1,5 +1,27 @@
 # FIBERLAN SC · Status projektu
 
+**19 listopada 2026 · Etap 3 zweryfikowany lokalnie.**
+
+## Etap 3
+
+- Dodano unikalne tytuły i opisy dla 22 adresów, edycję SEO w WordPressie, karty Open Graph i Twitter, ścieżki nawigacji, spis usług, 404 w obu językach oraz 301 po zmianie ścieżki. Mapy witryny uwzględniają oba języki i pomijają robocze polityki. Test obejmował również przekierowanie strony potomnej z UTM i GCLID.
+- Dane Schema.org obejmują Organization, LocalBusiness, Service i BreadcrumbList. Na stronach instalatora graf pochodzi z jednego źródła. Z Rank Math 1.0.282 sprawdzono metadane, canonical, hreflang, pojedynczy graf, mapę i `robots.txt` na 22 adresach w odizolowanej instalacji. Dla repozytorium źródłowego Rank Math wygenerowano ponownie mapę autoloadera Composer. Wersja użytkowa powinna pochodzić z dystrybucji WordPressa.
+- Przygotowano dwa wzorce stron kampanii i przenoszenie parametrów UTM/GCLID. Testowa strona EN z wzorca miała jeden H1, formularz poza cache i zapisane nadpisania SEO. Po dostarczeniu wiadomości do lokalnego SMTP test ze zdarzeniem odpowiadającym CookieYes potwierdził jeden wpis `fiberlan_lead` po zgodzie, bez danych z formularza. Sprawdzono też brak zdarzenia przy odmowie i po odświeżeniu.
+- Oryginalne zdjęcia pozostały w bibliotece. Motyw serwuje responsywne WebP dla trzech oryginalnych fotografii oraz plik WOFF2 o identycznym zestawie glifów. Zmiany zdjęć w Gutenberg nadal zapisują się jako bloki WordPressa.
+- Test z działającym cache Nginx sprawdził osobne wejścia PL/EN oraz filtry realizacji. Odpowiedzi formularza miały `no-store` i przy drugim odwiedzeniu nadal omijały cache. Motyw używa w WordPressie sygnału wykluczenia LiteSpeed. Ustawienia LiteSpeed i jednego CDN są w instrukcji wdrożenia.
+- Regresja obejmowała 22 adresy w 390 i 1440 px, automatyczne reguły WCAG dla strony głównej, realizacji i formularzy, walidację 22 stron i 11 wzorców w Gutenberg oraz zapis i ponowne otwarcie testowych kopii stron i części szablonu.
+
+| Obszar | Pliki |
+| --- | --- |
+| SEO, Rank Math, Schema, 404 i 301 | `plugin/fiberlan-site/inc/seo.php`, `seo-copy.php`, `schema.php`, `navigation.php`, szablony `404*.html` |
+| Strony kampanii i konwersje | `plugin/fiberlan-site/inc/marketing.php`, `contact.php`, `assets/site.js`, `assets/lead.js` |
+| Optymalizacja | `theme/fiberlan/inc/responsive-media.php`, `style.css`, `assets/webp/`, `assets/fonts/BRITANIC.woff2` |
+| Testy i instrukcje | `tests/stage_three_smoke.py`, [Pomiary Lighthouse](docs/POMIARY-ETAP-3.md), [SEO, kampanie i cache](docs/SEO-KAMPANIE-WYDAJNOSC.md) |
+
+Przed uruchomieniem produkcyjnym pozostały pomiary PageSpeed Insights na publicznym adresie wdrożenia, weryfikacja LiteSpeed i QUIC.cloud na hostingu, rzeczywisty test CookieYes i Google Consent Mode z identyfikatorami klienta, próba SMTP na właściwej skrzynce oraz zatwierdzenie polityk. Testy Lighthouse dotyczą lokalnego WordPressa. Dane INP i wyniki produkcyjne nie zostały zmierzone.
+
+## Archiwum etapu 2
+
 **19 listopada 2026 · Etap 2 gotowy do odbioru na środowisku testowym.**
 
 ## Etap 2

@@ -1,6 +1,6 @@
 # FIBERLAN SC · Motyw blokowy WordPress
 
-Etap 2 serwisu FIBERLAN obejmuje dwujęzyczne strony, katalog realizacji i formularz zapytania. Motyw znajduje się w `theme/fiberlan`. Wtyczka `plugin/fiberlan-site` dodaje powiązania językowe, katalog, formularz i przygotowanie CookieYes. Do instalacji nie są potrzebne Node.js, kompilator ani płatne wtyczki.
+Etap 3 serwisu FIBERLAN obejmuje dwujęzyczne strony, katalog realizacji, formularz zapytania, metadane, zoptymalizowane obrazy i przygotowanie kampanii. Motyw znajduje się w `theme/fiberlan`. Wtyczka `plugin/fiberlan-site` dodaje powiązania językowe, katalog, formularz i przygotowanie CookieYes. Do instalacji nie są potrzebne Node.js, kompilator ani płatne wtyczki.
 
 ## Lokalna instalacja deweloperska
 
@@ -35,3 +35,5 @@ Treść strony znajduje się w edytorze stron. Elementy wspólne są w Edytorze 
 [Instrukcja edycji](docs/EDYCJA.md) · [Status projektu i wyniki testów](PROJECT_STATUS.md)
 
 [Konfiguracja SMTP, CookieYes i publikacja](docs/HOSTING.md)
+
+[SEO, Google Ads i wydajność](docs/SEO-KAMPANIE-WYDAJNOSC.md)

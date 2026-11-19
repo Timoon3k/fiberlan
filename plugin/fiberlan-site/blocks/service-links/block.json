@@ -1,0 +1,11 @@
+{
+  "apiVersion": 3,
+  "name": "fiberlan/service-links",
+  "title": "Spis usług",
+  "category": "theme",
+  "supports": {
+    "html": false,
+    "multiple": false
+  },
+  "editorScript": "fiberlan-block-editor"
+}

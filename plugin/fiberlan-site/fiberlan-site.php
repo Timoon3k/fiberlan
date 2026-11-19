@@ -2,23 +2,33 @@
 /**
  * Plugin Name: FIBERLAN – witryna PL/EN
  * Description: Powiązania językowe, katalog realizacji i zapytania ofertowe FIBERLAN.
- * Version: 2.0.0
+ * Version: 3.0.0
  * Requires at least: 6.6
  * Requires PHP: 7.4
  */
 defined( 'ABSPATH' ) || exit;
 define( 'FL_SITE_DIR', __DIR__ );
+define( 'FL_SITE_VERSION', '3.0.0' );
 require_once __DIR__ . '/inc/languages.php';
 require_once __DIR__ . '/inc/projects.php';
 require_once __DIR__ . '/inc/contact.php';
 require_once __DIR__ . '/inc/content.php';
 require_once __DIR__ . '/inc/install.php';
+require_once __DIR__ . '/inc/navigation.php';
+require_once __DIR__ . '/inc/seo.php';
+require_once __DIR__ . '/inc/schema.php';
+require_once __DIR__ . '/inc/marketing.php';
 
 add_action( 'init', static function () {
-	wp_register_script( 'fiberlan-block-editor', plugins_url( 'assets/editor.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor' ), '2.0.0', true );
-	wp_register_script( 'fiberlan-languages', plugins_url( 'assets/site.js', __FILE__ ), array(), '2.0.0', true );
+	wp_register_script( 'fiberlan-block-editor', plugins_url( 'assets/editor.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor' ), FL_SITE_VERSION, true );
 	foreach ( array( 'contact' => 'fl_contact_render', 'projects' => 'fl_projects_render', 'languages' => 'fl_languages_render' ) as $name => $render ) {
 		register_block_type( __DIR__ . '/blocks/' . $name, array( 'render_callback' => $render ) );
+	}
+	foreach ( array( 'breadcrumbs', 'service-links', 'not-found' ) as $name ) {
+		register_block_type(
+			__DIR__ . '/blocks/' . $name,
+			array( 'render_callback' => 'fl_' . str_replace( '-', '_', $name ) . '_render' )
+		);
 	}
 } );
 

@@ -1,0 +1,11 @@
+{
+  "apiVersion": 3,
+  "name": "fiberlan/not-found",
+  "title": "Strona błędu 404",
+  "category": "theme",
+  "supports": {
+    "html": false,
+    "multiple": false
+  },
+  "editorScript": "fiberlan-block-editor"
+}

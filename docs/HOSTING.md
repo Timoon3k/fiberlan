@@ -2,7 +2,7 @@
 
 ## Instalacja na kopii testowej
 
-W standardowej instalacji WordPress zaktualizuj motyw FIBERLAN do wersji 2.0.0. Dodaj i aktywuj wtyczkę **FIBERLAN – witryna PL/EN**. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
+W standardowej instalacji WordPress zaktualizuj motyw FIBERLAN do wersji 3.0.0. Dodaj i aktywuj wtyczkę **FIBERLAN – witryna PL/EN**. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
 
 Jeśli nagłówek albo stopka zostały wcześniej zapisane przez administratora w Edytorze witryny, WordPress używa tych wersji. W zapisanej nawigacji podmień odnośniki kotwic etapu 1 na właściwe strony. Dodaj blok **Przełącznik języka** do obu nagłówków oraz odnośniki do polityk w obu stopkach. Domyślne części szablonu zawierają już te elementy.
 
@@ -22,3 +22,5 @@ W **Ustawienia → Czytanie → CookieYes – Site ID** można wpisać identyfik
 W panelu CookieYes wybierz PL i EN, ustaw język zgodny z bieżącą wersją strony oraz dodaj przyciski akceptacji, odrzucenia i konfiguracji z równym poziomem dostępu. Przeskanuj wersję testową. Ustaw blokowanie usług opcjonalnych przed zgodą i sprawdź zmianę preferencji. Jeżeli w etapie 3 dojdzie GTM lub analityka, skonfiguruj Consent Mode v2 w CookieYes i sprawdź żądania przeglądarki po obu decyzjach.
 
 Polityka prywatności i polityka cookies w PL i EN zawierają treści do zatwierdzenia. Przed publikacją uzupełnij nazwy usług, okresy przechowywania oraz faktyczne kategorie cookies. Po zatwierdzeniu usuń informację o wersji roboczej z czterech stron. W **Ustawienia → Czytanie → Dokumenty prywatności** zezwól na ich indeksowanie. Pozostałe strony obu wersji znajdą się w mapie witryny WordPressa po włączeniu indeksowania witryny.
+
+[Konfiguracja SEO, Google Ads i cache](SEO-KAMPANIE-WYDAJNOSC.md)

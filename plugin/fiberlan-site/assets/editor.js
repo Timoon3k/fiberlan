@@ -14,12 +14,15 @@
 	for (const [name, title] of Object.entries({
 		'fiberlan/contact': 'Formularz zapytania',
 		'fiberlan/projects': 'Katalog realizacji',
-		'fiberlan/languages': 'Przełącznik języka'
+		'fiberlan/languages': 'Przełącznik języka',
+		'fiberlan/breadcrumbs': 'Ścieżka nawigacji',
+		'fiberlan/service-links': 'Spis usług',
+		'fiberlan/not-found': 'Strona błędu 404'
 	})) {
 		registerBlockType(name, {
 			title,
 			edit({ attributes, setAttributes }) {
-				const keys = Object.keys(getBlockType(name).attributes).filter(key => key in labels);
+				const keys = Object.keys(getBlockType(name).attributes || {}).filter(key => key in labels);
 				const props = useBlockProps({ className: 'fl-editor-preview' });
 				const fields = keys.map(key => h(TextControl, {
 					key, label: labels[key], value: attributes[key] ?? '', onChange: value => setAttributes({ [key]: value })
@@ -27,7 +30,7 @@
 				const preview = name === 'fiberlan/contact' ? h('div', { className: 'fl-form-grid' },
 					...['name', 'company', 'email', 'phone', 'subject', 'message'].map(key => h('div', { key, className: 'fl-editor-field' }, attributes[key] || labels[key])),
 					h('strong', null, attributes.submit || 'Wyślij wiadomość')
-				) : h('p', null, name === 'fiberlan/languages' ? 'PL / EN' : attributes.all || 'Wszystkie realizacje');
+				) : h('p', null, name === 'fiberlan/languages' ? 'PL / EN' : attributes.all || title);
 				return h(Fragment, null,
 					h(InspectorControls, null, h(PanelBody, { title: 'Teksty bloku' }, ...fields)),
 					h('div', props, h('strong', null, title), preview)

@@ -63,12 +63,7 @@ function fl_contact_submit( $id ) {
 	}
 	$receipt = wp_generate_password( 32, false );
 	set_transient( 'fl_received_' . $receipt, $id, 5 * MINUTE_IN_SECONDS );
-	$query = array( 'received' => $receipt );
-	foreach ( $_GET as $name => $value ) {
-		if ( preg_match( '/^(utm_[a-z0-9_]+|gclid)$/iD', $name ) && is_string( $value ) ) {
-			$query[ $name ] = wp_html_excerpt( sanitize_text_field( wp_unslash( $value ) ), 256 );
-		}
-	}
+	$query = array( 'received' => $receipt ) + fl_campaign_args();
 	wp_safe_redirect( add_query_arg( $query, get_permalink( $id ) ) . '#fl-form-status', 303 );
 	exit;
 }
@@ -82,6 +77,7 @@ add_action( 'template_redirect', static function () {
 		define( 'DONOTCACHEPAGE', true );
 	}
 	nocache_headers();
+	do_action( 'litespeed_control_set_nocache', 'FIBERLAN contact form' );
 	if ( 'POST' === ( $_SERVER['REQUEST_METHOD'] ?? '' ) && 'contact' === fl_post_string( 'fl_action' ) ) {
 		$GLOBALS['fl_contact_result'] = fl_contact_submit( $id );
 	}
@@ -95,14 +91,17 @@ function fl_contact_render( $attrs ) {
 	$receipt = $_GET['received'] ?? '';
 	$success = is_string( $receipt ) && preg_match( '/^[a-z0-9]{32}$/iD', $receipt ) && $id && (int) get_transient( 'fl_received_' . $receipt ) === $id;
 	if ( $success ) {
-		delete_transient( 'fl_received_' . $receipt );
+		$success = delete_transient( 'fl_received_' . $receipt );
+		if ( $success ) {
+			wp_enqueue_script( 'fiberlan-lead' );
+		}
 	}
 	$status = $success ? 'success' : $result['status'];
 	ob_start();
 	?>
 	<form class="fl-form" id="formularz" method="post">
 		<?php if ( $status ) : ?>
-			<p id="fl-form-status" tabindex="-1" class="fl-form-status <?php echo $success ? 'is-success' : 'is-error'; ?>" role="<?php echo $success ? 'status' : 'alert'; ?>"><?php echo esc_html( $a[ $status ] ); ?></p>
+			<p id="fl-form-status" tabindex="-1" class="fl-form-status <?php echo $success ? 'is-success' : 'is-error'; ?>" role="<?php echo $success ? 'status' : 'alert'; ?>"<?php if ( $success ) { printf( ' data-fiberlan-lead="%s"', esc_attr( $lang ) ); } ?>><?php echo esc_html( $a[ $status ] ); ?></p>
 		<?php endif; ?>
 		<input type="hidden" name="fl_action" value="contact">
 		<?php wp_nonce_field( 'fl_contact_' . $id, 'fl_nonce', false ); ?>

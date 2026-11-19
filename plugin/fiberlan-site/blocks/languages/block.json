@@ -15,6 +15,5 @@
     "html": false,
     "multiple": false
   },
-  "editorScript": "fiberlan-block-editor",
-  "viewScript": "fiberlan-languages"
+  "editorScript": "fiberlan-block-editor"
 }

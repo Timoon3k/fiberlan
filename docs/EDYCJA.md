@@ -42,3 +42,5 @@ Dostarczony plik BRITANIC.ttf nie zawiera m.in. znaków ą, ć, ę, ł, ń, ś, 
 - Aby dodać projekt, utwórz stronę z rodzicem **Realizacje** albo **Projects** i wybierz odpowiedni szablon FIBERLAN. Dodaj tytuł, opis w blokach, lokalizację w polu **Zajawka**, obrazek wyróżniający i kategorie. Fotografie dodaj blokiem **Galeria**. Datę możesz dodać w treści, a branżę przypisać w panelu **Branże**. Katalog pobiera opublikowane strony potomne.
 - Aby powiązać nowy projekt w dwóch językach, nadaj obu stronom ten sam uproszczony adres końcowy, np. `sieci-optyczne-2026`, przy dwóch różnych stronach nadrzędnych. Wybieraj kategorie języka projektu. Dla nowej kategorii zastosuj prefiks `pl-` lub `en-` w adresie terminu.
 - Sekcja Ribbon jest zbudowana z grup i natywnego bloku **Szczegóły**. Edytuj liczbę, lata, opis i tytuł rozwijanego panelu w widoku listy. Sekcje na stronie głównej i podstronie **O nas** są edytowane osobno.
+
+[Metadane SEO, wzorce stron kampanii i indeksowanie](SEO-KAMPANIE-WYDAJNOSC.md)

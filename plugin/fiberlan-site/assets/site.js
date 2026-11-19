@@ -15,12 +15,20 @@
 			const link = event.target.closest('[data-language]');
 			if (!link) return;
 			try { localStorage.setItem('fiberlan-language', link.dataset.language); } catch {}
+		});
+	}
+	const campaign = [...new URLSearchParams(location.search)].filter(([key]) => /^(utm_\w+|gclid)$/i.test(key));
+	if (campaign.length) {
+		document.addEventListener('click', event => {
+			const link = event.target.closest?.('a[href]');
+			if (!link || link.hasAttribute('download') || link.getAttribute('href').startsWith('#')) return;
 			const url = new URL(link.href);
-			for (const [key, value] of new URLSearchParams(location.search)) {
-				if (/^(utm_\w+|gclid)$/i.test(key)) url.searchParams.set(key, value);
+			if (url.origin !== location.origin || url.pathname.includes('/wp-admin/')) return;
+			for (const [key, value] of campaign) {
+				if (!url.searchParams.has(key)) url.searchParams.set(key, value);
 			}
 			link.href = url.href;
-		});
+		}, true);
 	}
 	document.addEventListener('keydown', event => {
 		const details = event.target.closest?.('.fl-ribbon details[open]');

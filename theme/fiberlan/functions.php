@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 require_once __DIR__ . '/inc/contact-content.php';
 require_once __DIR__ . '/inc/media.php';
 require_once __DIR__ . '/inc/starter.php';
+require_once __DIR__ . '/inc/responsive-media.php';
 
 add_action(
 	'after_setup_theme',
@@ -37,7 +38,7 @@ add_action(
 add_action(
 	'wp',
 	static function () {
-		if ( 'pl_PL' !== get_locale() || ( function_exists( 'fl_page_lang' ) && 'en' === fl_page_lang( get_queried_object_id() ) ) ) {
+		if ( 'pl_PL' !== get_locale() || ( function_exists( 'fl_request_language' ) && 'en' === fl_request_language() ) ) {
 			return;
 		}
 		add_filter(
@@ -54,33 +55,6 @@ add_action(
 			2
 		);
 	}
-);
-
-// Match the responsive image request to the width of its Gutenberg layout.
-add_filter(
-	'render_block_core/image',
-	static function ( $html, $block ) {
-		$classes = explode( ' ', $block['attrs']['className'] ?? '' );
-		$hero    = in_array( 'fl-hero-figure', $classes, true );
-		if ( ! $hero && ! in_array( 'fl-card-image', $classes, true ) ) {
-			return $html;
-		}
-		$image = new WP_HTML_Tag_Processor( $html );
-		if ( ! $image->next_tag( 'img' ) ) {
-			return $html;
-		}
-		if ( $hero ) {
-			$image->set_attribute( 'sizes', '(max-width: 52rem) 92vw, (max-width: 106rem) 45vw, 48rem' );
-			$image->set_attribute( 'fetchpriority', 'high' );
-			$image->set_attribute( 'loading', 'eager' );
-		} else {
-			$image->set_attribute( 'sizes', '(max-width: 37.5rem) 92vw, (max-width: 64rem) 45vw, (max-width: 106rem) 22vw, 23rem' );
-			$image->set_attribute( 'loading', 'lazy' );
-		}
-		return $image->get_updated_html();
-	},
-	10,
-	2
 );
 
 function fiberlan_policy_links( $lang ) {
