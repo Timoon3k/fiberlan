@@ -2,7 +2,7 @@
 
 ## Instalacja na kopii testowej
 
-Rozpakuj pakiet wydania FIBERLAN 4.5.0. W WordPress wybierz **Wygląd → Motywy → Dodaj motyw** i wgraj osobno `fiberlan.zip` oraz `fiberlan-child.zip`. Przez **Wtyczki → Dodaj wtyczkę** wgraj `fiberlan-site.zip`. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
+Rozpakuj pakiet wydania FIBERLAN 4.5.1. W WordPress wybierz **Wygląd → Motywy → Dodaj motyw** i wgraj osobno `fiberlan.zip` oraz `fiberlan-child.zip`. Przez **Wtyczki → Dodaj wtyczkę** wgraj `fiberlan-site.zip`. Aktywuj motyw potomny i wtyczkę. W **Ustawienia → Bezpośrednie odnośniki** wybierz strukturę **Nazwa wpisu**. Następnie otwórz **Wygląd → FIBERLAN PL/EN** i wybierz **Przygotuj strony PL i EN**. Warto zawczasu wykonać kopię bazy. Instalator zachowuje opublikowane treści i zgłasza kolizje adresów.
 
 ## Aktualizacja istniejącej witryny
 
@@ -10,7 +10,9 @@ Zrób kopię bazy danych oraz `wp-content/uploads`. Zaktualizuj trzy pakiety prz
 
 Na świeżej instalacji osiem stron otrzymuje treść klienta od razu. Przy aktualizacji z wersji 4.3 treść stron zapisana w bazie ma pierwszeństwo. Wstaw odpowiedni wzorzec **FIBERLAN · nazwa strony (PL/EN)** w szkicu i przenieś wybrane bloki do istniejącej strony. Kolejność sekcji strony głównej, odnośniki kart i wybór pełnego kadru opisuje [instrukcja redaktora](EDYCJA.md).
 
-Pierwsze otwarcie panelu administratora po aktualizacji do 4.5.0 wymieni domyślny baner kontaktowy na sekcję opinii w obu językach. Jeśli na stronie jest własna wersja banera, wymień ją we wstawiaczu bloków na wzorzec **Strona główna · Opinie z Google**. Wtyczkę opinii instaluje się w panelu **Wtyczki**. Jej blok lub shortcode umieść w wyznaczonej grupie Gutenberga.
+Pierwsze otwarcie panelu administratora po aktualizacji z wersji wcześniejszej niż 4.5.0 wymieni domyślny baner kontaktowy na sekcję opinii w obu językach. Jeśli na stronie jest własna wersja banera, wymień ją we wstawiaczu bloków na wzorzec **Strona główna · Opinie z Google**. Wtyczkę opinii instaluje się w panelu **Wtyczki**. Jej blok lub shortcode umieść w wyznaczonej grupie Gutenberga.
+
+Przy aktualizacji do 4.5.1 panel administratora zaktualizuje domyślny zapis głównego numeru oraz domyślne nazwy sprzętu w zapisanych stronach PL i EN. Podgląd Fujikury jest powiązany z oryginalnym zdjęciem w głównej sekcji.
 
 Domyślne stopki automatycznie korzystają z nowego układu. Jeżeli stopkę zapisano wcześniej jako własną część szablonu, WordPress użyje tej wersji z bazy. Otwórz ją w Edytorze witryny. Skopiuj grupę **Regulacje prawne** z odpowiedniego wzorca **Stopka FIBERLAN (PL)** lub **FIBERLAN footer (EN)**. Wklej ją obok grupy **Kontakt**, przenieś własne adresy polityk i etykietę CookieYes, a następnie usuń stary pasek z powielonymi linkami. Zapisz i sprawdź osobno PL i EN.
 

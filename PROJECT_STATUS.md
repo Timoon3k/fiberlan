@@ -1,5 +1,11 @@
 # FIBERLAN SC · Status projektu
 
+## Sprzęt i nawigacja mobilna · 4.5.1
+
+Porównano ponownie przesłany `www1.docx` z plikiem użytym w etapie 4H. Treści dokumentu są widoczne na stronach O nas, Usługi, Sprzęt i Realizacje w PL i EN. Format numeru w części wspólnej to **+48 66 22 11 200**. W katalogu uzupełniono nazwy Fujikura FSM-62S, VIAVI SmartClass Fiber MPOLx i Fluke Networks DSX-5000. Fotografia Fluke pokazuje platformę Versiv 2 z widocznym ekranem FiberInspector Pro.
+
+Menu mobilne ma szersze pola dotykowe i animację wejścia. Na zdjęciu głównym etykieta Fujikura pojawia się po najechaniu lub ustawieniu fokusu. Kliknięcie, dotyk albo Enter otwiera opis w oknie dialogowym.
+
 ## Opinie z Google i wygląd strony głównej · 4.5.0
 
 Sekcja opinii PL i EN zawiera odnośnik do Map Google i grupę Gutenberga na blok lub shortcode wybranej wtyczki. Aktualizacja zastępuje domyślną wersję wcześniejszego banera. Karty i odnośniki mają dopasowane stany najechania i fokusu, a PL/EN ma osobne wyróżnienie aktywnego języka. Animacja pojedynczego wejścia fotografii działa z zachowaniem maski i respektuje ustawienie ograniczonego ruchu.

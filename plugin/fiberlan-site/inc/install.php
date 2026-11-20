@@ -282,3 +282,64 @@ function fl_update_home_reviews() {
 	}
 }
 add_action( 'admin_init', 'fl_update_home_reviews' );
+
+// Bring the original photos and shared contact details up to date in already installed content.
+function fl_update_equipment_details() {
+	if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) || ! get_option( 'fl_stage_two_ready' ) || get_option( 'fl_equipment_details_updated' ) ) {
+		return;
+	}
+
+	$replacements = array(
+		'pl' => array(
+			'Spawarka światłowodowa z otwartą osłoną i włączonym ekranem.' => 'Spawarka światłowodowa Fujikura FSM-62S z otwartą osłoną i włączonym ekranem.',
+			'Spawarka światłowodowa z obcinarką i akcesoriami' => 'Spawarka światłowodowa Fujikura FSM-62S z obcinarką i akcesoriami',
+			'Dwa mierniki VIAVI z torbą transportową.' => 'Dwa mierniki VIAVI SmartClass Fiber MPOLx z torbą transportową.',
+			'Dwa mierniki VIAVI MPOLx obok torby transportowej' => 'Dwa mierniki VIAVI SmartClass Fiber MPOLx obok torby transportowej',
+			'>Mierniki VIAVI MPOLx</h2>' => '>VIAVI SmartClass Fiber MPOLx</h2>',
+			'>Dwoma analizatorami Fluke Networks certyfikujemy okablowanie miedziane oraz tory optyczne w zakresie Tier 1. Mierzymy długość i tłumienie, sprawdzamy stan złączy i przygotowujemy raporty odbiorowe.</p>' => '>Dwoma analizatorami Fluke Networks certyfikujemy okablowanie miedziane oraz tory optyczne w zakresie Tier 1. Mierzymy długość i tłumienie, sprawdzamy stan złączy i przygotowujemy raporty odbiorowe. DSX-5000 służy do certyfikacji okablowania miedzianego, a zdjęcie przedstawia platformę Versiv 2 z ekranem FiberInspector Pro.</p>',
+		),
+		'en' => array(
+			'Fibre optic fusion splicer with its cover open and display lit.' => 'Fujikura FSM-62S fusion splicer with its cover open and display lit.',
+			'Fusion splicer with a fibre cleaver and accessories' => 'Fujikura FSM-62S fusion splicer with a fibre cleaver and accessories',
+			'Two VIAVI testers and their carrying case.' => 'Two VIAVI SmartClass Fiber MPOLx testers and their carrying case.',
+			'Two VIAVI MPOLx instruments beside their carrying case' => 'Two VIAVI SmartClass Fiber MPOLx instruments beside their carrying case',
+			'>VIAVI MPOLx test sets</h2>' => '>VIAVI SmartClass Fiber MPOLx</h2>',
+			'>Our two Fluke Networks analysers certify copper cabling and perform Tier 1 optical testing. We measure link length and loss, inspect connectors and prepare acceptance reports.</p>' => '>Our two Fluke Networks analysers certify copper cabling and perform Tier 1 optical testing. We measure link length and loss, inspect connectors and prepare acceptance reports. The DSX-5000 certifies copper cabling. The photo shows the Versiv 2 platform displaying FiberInspector Pro.</p>',
+		),
+	);
+	$updates = array();
+	foreach ( $replacements as $lang => $copy ) {
+		foreach ( array( 'home', 'services', 'equipment' ) as $page ) {
+			$id = fl_page_id( $page, $lang );
+			if ( $id ) {
+				$updates[ $id ] = $copy;
+			}
+		}
+		$equipment = fl_page_id( 'equipment', $lang );
+		if ( $equipment ) {
+			$updates[ $equipment ]['>Fluke Networks Versiv 2</h2>'] = '>Fluke Networks DSX-5000</h2>';
+		}
+	}
+	$contact = absint( get_option( 'fiberlan_contact_block_id' ) );
+	if ( $contact && 'wp_block' === get_post_type( $contact ) ) {
+		$updates[ $contact ] = array(
+			'href="tel:+48662211200">+48 662 211 200</a>' => 'href="tel:+48662211200">+48 66 22 11 200</a>',
+		);
+	}
+	$complete = true;
+	foreach ( $updates as $id => $copy ) {
+		$original = get_post_field( 'post_content', $id );
+		$content = strtr( $original, $copy );
+		if ( $content === $original ) {
+			continue;
+		}
+		if ( wp_check_post_lock( $id ) || get_post_field( 'post_content', $id ) !== $original
+			|| is_wp_error( wp_update_post( wp_slash( array( 'ID' => $id, 'post_content' => $content ) ), true ) ) ) {
+			$complete = false;
+		}
+	}
+	if ( $complete ) {
+		update_option( 'fl_equipment_details_updated', true, false );
+	}
+}
+add_action( 'admin_init', 'fl_update_equipment_details' );

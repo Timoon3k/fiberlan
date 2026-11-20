@@ -23,9 +23,9 @@ function fl_seo_catalogue() {
 		),
 		'equipment' => array(
 			'Sprzęt do spawania i pomiarów światłowodów | FIBERLAN',
-			'Zobacz sprzęt FIBERLAN do spawania włókien, pomiarów MPO i inspekcji złączy. Wykorzystujemy m.in. VIAVI MPOLx oraz Fluke Networks Versiv 2.',
+			'Poznaj sprzęt FIBERLAN do spawania i pomiarów. Fujikura FSM-62S, VIAVI SmartClass Fiber MPOLx i Fluke Networks DSX-5000.',
 			'Fusion splicing and fibre optic test equipment | FIBERLAN',
-			'See FIBERLAN equipment for fibre preparation, fusion splicing, MPO fibre testing and connector inspection, including VIAVI and Fluke Networks.',
+			'Explore FIBERLAN splicing and test equipment, including Fujikura FSM-62S, VIAVI SmartClass Fiber MPOLx and Fluke Networks DSX-5000.',
 		),
 		'projects' => array(
 			'Realizacje światłowodowe w Polsce i za granicą | FIBERLAN',

@@ -109,9 +109,9 @@ function fl_about_content( $lang, $title ) {
 
 function fl_equipment_visual( $file, $lang ) {
 	$photos = array(
-		'fiber-splicer-cleaver-client-photo.jpg'   => array( 'Spawarka światłowodowa z obcinarką i akcesoriami', 'Fusion splicer with a fibre cleaver and accessories' ),
+		'fiber-splicer-cleaver-client-photo.jpg'   => array( 'Spawarka światłowodowa Fujikura FSM-62S z obcinarką i akcesoriami', 'Fujikura FSM-62S fusion splicer with a fibre cleaver and accessories' ),
 		'fluke-networks-versiv-2-client-photo.jpg' => array( 'Dwa moduły Fluke Networks Versiv 2 z ekranem inspekcji złączy', 'Fluke Networks Versiv 2 main and remote units with the connector inspection screen' ),
-		'viavi-mpolx-client-photo.jpg'             => array( 'Dwa mierniki VIAVI MPOLx obok torby transportowej', 'Two VIAVI MPOLx instruments beside their carrying case' ),
+		'viavi-mpolx-client-photo.jpg'             => array( 'Dwa mierniki VIAVI SmartClass Fiber MPOLx obok torby transportowej', 'Two VIAVI SmartClass Fiber MPOLx instruments beside their carrying case' ),
 	);
 	if ( isset( $photos[ $file ] ) ) {
 		return fiberlan_image_block( $file, fl_text( $lang, ...$photos[ $file ] ), 'fl-section-image' );
@@ -163,10 +163,10 @@ function fl_equipment_content( $lang, $title ) {
 		array( 'fiber-splicer-cleaver-client-photo.jpg', 'Spawarki Fujikura', 'Fujikura fusion splicers',
 			'Mamy cztery spawarki jednowłóknowe Fujikura z modeli FSM-62S i FSM-70S. Serię S wykorzystujemy w klasycznych instalacjach i magistralach. Do jednoczesnego łączenia wielu włókien w centrach danych wykorzystujemy serię R do spawów taśmowych Ribbon.',
 			'We have four single-fibre Fujikura splicers across the FSM-62S and FSM-70S models. We use the S series on conventional installations and backbones, and R-series ribbon splicers for joining multiple fibres in a single operation in data centres.', 'spawanie' ),
-		array( 'fluke-networks-versiv-2-client-photo.jpg', 'Fluke Networks Versiv 2', 'Fluke Networks Versiv 2',
-			'Dwoma analizatorami Fluke Networks certyfikujemy okablowanie miedziane oraz tory optyczne w zakresie Tier 1. Mierzymy długość i tłumienie, sprawdzamy stan złączy i przygotowujemy raporty odbiorowe.',
-			'Our two Fluke Networks analysers certify copper cabling and perform Tier 1 optical testing. We measure link length and loss, inspect connectors and prepare acceptance reports.', 'lan' ),
-		array( 'viavi-mpolx-client-photo.jpg', 'Mierniki VIAVI MPOLx', 'VIAVI MPOLx test sets',
+		array( 'fluke-networks-versiv-2-client-photo.jpg', 'Fluke Networks DSX-5000', 'Fluke Networks DSX-5000',
+			'Dwoma analizatorami Fluke Networks certyfikujemy okablowanie miedziane oraz tory optyczne w zakresie Tier 1. Mierzymy długość i tłumienie, sprawdzamy stan złączy i przygotowujemy raporty odbiorowe. DSX-5000 służy do certyfikacji okablowania miedzianego, a zdjęcie przedstawia platformę Versiv 2 z ekranem FiberInspector Pro.',
+			'Our two Fluke Networks analysers certify copper cabling and perform Tier 1 optical testing. We measure link length and loss, inspect connectors and prepare acceptance reports. The DSX-5000 certifies copper cabling. The photo shows the Versiv 2 platform displaying FiberInspector Pro.', 'lan' ),
+		array( 'viavi-mpolx-client-photo.jpg', 'VIAVI SmartClass Fiber MPOLx', 'VIAVI SmartClass Fiber MPOLx',
 			'Dwa przyrządy VIAVI pozwalają nam testować jednomodowe i wielomodowe tory MPO/MTP. W instalacjach o dużej gęstości sprawdzamy polaryzację, czystość złączy i parametry transmisyjne poszczególnych włókien.',
 			'Our two VIAVI instruments test single-mode and multimode MPO/MTP links. In high-density installations we check polarity, connector cleanliness and transmission performance for individual fibres.', 'data-center' ),
 		array( 'service-splice', 'Reflektometry EXFO', 'EXFO optical time-domain reflectometers',
@@ -312,7 +312,7 @@ function fl_home_content( $lang, $existing = '' ) {
 		$replace += array(
 			'Profesjonalne usługi telekomunikacyjne' => 'Professional telecommunications services',
 			'Łączymy, instalujemy i mierzymy sieci światłowodowe dla firm, przemysłu i centrów danych. Pracujemy w Polsce i za granicą.' => 'We splice, install and test fibre optic networks for businesses, industrial facilities and data centres in Poland and abroad.',
-			'Spawarka światłowodowa z otwartą osłoną i włączonym ekranem.' => 'Fibre optic fusion splicer with its cover open and display lit.',
+			'Spawarka światłowodowa Fujikura FSM-62S z otwartą osłoną i włączonym ekranem.' => 'Fujikura FSM-62S fusion splicer with its cover open and display lit.',
 			'20 lat doświadczenia' => '20 years of experience',
 			'Działamy od 2006 roku' => 'Operating since 2006',
 			'Polska i świat' => 'Poland and abroad',
@@ -325,7 +325,7 @@ function fl_home_content( $lang, $existing = '' ) {
 			'Zapytaj o usługę' => 'Explore our services',
 			'Spawanie światłowodów' => 'Fibre optic splicing',
 			'Łączenie włókien jedno- i wielomodowych oraz spawanie w technologii Ribbon.' => 'Single-mode, multimode and ribbon fibre splicing.',
-			'Dwa mierniki VIAVI z torbą transportową.' => 'Two VIAVI testers and their carrying case.',
+			'Dwa mierniki VIAVI SmartClass Fiber MPOLx z torbą transportową.' => 'Two VIAVI SmartClass Fiber MPOLx testers and their carrying case.',
 			'Pomiary i certyfikacja' => 'Testing and certification',
 			'Pomiary OTDR, testy tłumienia oraz dokumentacja odbiorowa sieci.' => 'OTDR and insertion loss testing with acceptance reports.',
 			'Zestaw Fluke Networks Versiv 2 do sprawdzania instalacji.' => 'Fluke Networks Versiv 2 cabling tester.',

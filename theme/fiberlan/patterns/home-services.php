@@ -42,7 +42,7 @@ defined( 'ABSPATH' ) || exit;
 <!-- /wp:group -->
 <!-- wp:group {"tagName":"article","className":"fl-service-card","layout":{"type":"default"}} -->
 <article class="wp-block-group fl-service-card">
-<?php echo fiberlan_image_block( 'viavi-mpolx-client-photo.jpg', 'Dwa mierniki VIAVI z torbą transportową.', 'fl-card-image' ); ?>
+<?php echo fiberlan_image_block( 'viavi-mpolx-client-photo.jpg', 'Dwa mierniki VIAVI SmartClass Fiber MPOLx z torbą transportową.', 'fl-card-image' ); ?>
 <!-- wp:group {"className":"fl-card-body","layout":{"type":"default"}} -->
 <div class="wp-block-group fl-card-body">
 <!-- wp:heading {"level":3} -->

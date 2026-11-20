@@ -1,6 +1,6 @@
 # FIBERLAN SC · Motyw blokowy WordPress
 
-FIBERLAN SC 4.5.0 to dwujęzyczna witryna WordPress. Motyw blokowy w `theme/fiberlan` odpowiada za wygląd strony i edytora, a `theme/fiberlan-child` dziedziczy jego szablony i paletę, dodaje wzorzec karty usługi oraz własny układ fotorelacji. Wtyczka **FIBERLAN Core** w `plugin/fiberlan-site` obsługuje powiązania językowe, katalog realizacji, formularz, SEO i integrację zgód. Instalacja korzysta z gotowych plików PHP, CSS i JavaScript.
+FIBERLAN SC 4.5.1 to dwujęzyczna witryna WordPress. Motyw blokowy w `theme/fiberlan` odpowiada za wygląd strony i edytora, a `theme/fiberlan-child` dziedziczy jego szablony i paletę, dodaje wzorzec karty usługi oraz własny układ fotorelacji. Wtyczka **FIBERLAN Core** w `plugin/fiberlan-site` obsługuje powiązania językowe, katalog realizacji, formularz, SEO i integrację zgód. Instalacja korzysta z gotowych plików PHP, CSS i JavaScript.
 
 [Odbiór wydania 4.4.0](docs/ODBIOR-4H.md)
 

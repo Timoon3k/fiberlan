@@ -114,6 +114,26 @@ def check_home_photograph(page, base):
             expect(projects.nth(index)).to_have_attribute("href", base + pair[int(path == "/en/")])
 
 
+def check_device_details(page, base):
+    for lang, path in enumerate(("/", "/en/")):
+        page.goto(base + path)
+        trigger = page.get_by_role("button", name=re.compile("Fujikura FSM-62S"))
+        dialog = page.get_by_role("dialog", name="Fujikura FSM-62S")
+        expect(dialog).to_be_hidden()
+        trigger.press("Enter")
+        expect(dialog).to_be_visible()
+        expect(dialog.get_by_role("button", name=("Zamknij", "Close")[lang])).to_be_focused()
+        page.keyboard.press("Escape")
+        expect(dialog).to_be_hidden()
+        expect(trigger).to_be_focused()
+        expect(page.locator('header a[href="tel:+48662211200"]')).to_have_text("+48 66 22 11 200")
+        expect(page.locator('main img[alt*="VIAVI SmartClass Fiber MPOLx"]')).to_have_count(1)
+        page.goto(base + PAIRS[3][lang])
+        expect(page.get_by_role("heading", name="Fluke Networks DSX-5000")).to_be_visible()
+        mask = page.locator(".fl-equipment-item .fl-fluke-cutout img").evaluate("img => getComputedStyle(img).maskImage")
+        assert "fluke-versiv-mask.svg" in mask
+
+
 def check_reveal_timing(page, base):
     page.goto(base)
     cards = page.locator(".fl-service-grid > .fl-service-card")
@@ -180,7 +200,11 @@ def check_sticky_controls(page, base, mobile):
         before = page.evaluate("scrollY")
         menu = nav.get_by_role("button", name="Open menu")
         menu.click()
-        expect(nav.locator(".is-menu-open")).to_be_visible()
+        panel = nav.locator(".is-menu-open")
+        expect(panel).to_be_visible()
+        items = panel.locator("li a")
+        expect(items).to_have_count(6)
+        assert all(item.bounding_box()["width"] >= page.viewport_size["width"] * .8 for item in items.all())
         expect(button).to_be_hidden()
         page.keyboard.press("Escape")
         expect(menu).to_be_focused()
@@ -270,6 +294,7 @@ if __name__ == "__main__":
             if width == 1440:
                 check_reveal_timing(page, base)
             check_home_photograph(page, base)
+            check_device_details(page, base)
             check_footer(page, base)
             check_sticky_controls(page, base, width < 600)
             page.close()

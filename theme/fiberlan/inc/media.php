@@ -10,8 +10,8 @@ defined( 'ABSPATH' ) || exit;
 function fiberlan_starter_media() {
 	$files = array(
 		'fiberlan-logo-original.jpg'                 => 'FIBERLAN SC',
-		'fiber-splicer-cleaver-client-photo.jpg'     => 'Spawarka światłowodowa z obcinarką i akcesoriami',
-		'viavi-mpolx-client-photo.jpg'               => 'Dwa urządzenia pomiarowe VIAVI z torbą transportową',
+		'fiber-splicer-cleaver-client-photo.jpg'     => 'Spawarka światłowodowa Fujikura FSM-62S z obcinarką i akcesoriami',
+		'viavi-mpolx-client-photo.jpg'               => 'Dwa mierniki VIAVI SmartClass Fiber MPOLx z torbą transportową',
 		'fluke-networks-versiv-2-client-photo.jpg'   => 'Zestaw pomiarowy Fluke Networks Versiv 2',
 	);
 

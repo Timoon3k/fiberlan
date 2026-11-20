@@ -34,7 +34,7 @@ defined( 'ABSPATH' ) || exit;
 <!-- /wp:buttons -->
 </div>
 <!-- /wp:group -->
-<?php echo fiberlan_image_block( 'fiber-splicer-cleaver-client-photo.jpg', 'Spawarka światłowodowa z otwartą osłoną i włączonym ekranem.', 'fl-hero-figure', 'sprzet' ); ?>
+<?php echo fiberlan_image_block( 'fiber-splicer-cleaver-client-photo.jpg', 'Spawarka światłowodowa Fujikura FSM-62S z otwartą osłoną i włączonym ekranem.', 'fl-hero-figure', 'sprzet' ); ?>
 </div>
 <!-- /wp:group -->
 </section>

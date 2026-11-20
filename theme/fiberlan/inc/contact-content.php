@@ -15,7 +15,7 @@ function fiberlan_contact_blocks() {
 <p class="fl-address">ul. Wojskowa 8A lok. 1, 03-599 Warszawa</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph {"className":"fl-phone"} -->
-<p class="fl-phone"><a href="tel:+48662211200">+48 662 211 200</a></p>
+<p class="fl-phone"><a href="tel:+48662211200">+48 66 22 11 200</a></p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph {"className":"fl-phone fl-secondary-phone"} -->
 <p class="fl-phone fl-secondary-phone"><a href="tel:+48696610440">+48 696 610 440</a></p>
