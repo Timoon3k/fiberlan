@@ -1,0 +1,67 @@
+/* Gutenberg: keep the FIBERLAN home controls usable and the preview inside the canvas. */
+.fl-home-editor-panel {
+  box-sizing: border-box;
+  padding: 1rem;
+  color: #1e293b;
+}
+.fl-home-editor-panel > h2 {
+  font-size: 1.1rem;
+  line-height: 1.35;
+  margin: 0 0 .7rem;
+}
+.fl-home-editor-help {
+  font-size: .8rem;
+  line-height: 1.5;
+  color: #526077;
+  margin-bottom: 1.2rem;
+}
+.fl-home-editor-heading {
+  font-size: .9rem;
+  font-weight: 700;
+  margin: 1.25rem 0 .75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #dbe2ea;
+}
+.fl-home-editor-image .components-button { margin-bottom: 1rem; }
+.fl-home-editor-thumb {
+  display: block;
+  width: 100%;
+  max-height: 11rem;
+  margin-bottom: .75rem;
+  border: 1px solid #dbe2ea;
+  object-fit: contain;
+  background: #eef2f7;
+}
+.fl-home-editor-panel .components-base-control { max-width: 100%; }
+.fl-home-editor-panel :is(input, textarea) { max-width: 100%; box-sizing: border-box; }
+
+/* Move the Gutenberg plugin sidebar to the LEFT on large screens only.
+   When List View is open, it remains further left. Below this breakpoint
+   WordPress keeps its native sidebar arrangement and responsive controls. */
+@media (min-width: 1200px) {
+  .interface-interface-skeleton__body:has(.fl-home-editor-panel) {
+    display: flex;
+    flex-direction: row;
+    min-width: 0;
+  }
+  .interface-interface-skeleton__body:has(.fl-home-editor-panel) > .interface-interface-skeleton__secondary-sidebar {
+    order: -2;
+    flex-shrink: 0;
+  }
+  .interface-interface-skeleton__body:has(.fl-home-editor-panel) > .interface-interface-skeleton__sidebar {
+    order: -1;
+    flex: 0 0 320px;
+    width: 320px;
+    min-width: 0;
+    max-width: min(320px, 33vw);
+    border-inline-start: none;
+    border-inline-end: 1px solid #dbe2ea;
+  }
+  .interface-interface-skeleton__body:has(.fl-home-editor-panel) > .interface-interface-skeleton__content {
+    order: 0;
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+}

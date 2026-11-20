@@ -404,72 +404,71 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.has-device-details .fl-splicer-scene { cursor: pointer; }
+/* Device details appear directly over the original client photograph. */
+.fl-hero-figure:has(.fl-device-trigger) { position: relative; }
 .fl-device-trigger {
   position: absolute;
-  inset: auto 3% 5% auto;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: .6rem;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
   padding: 0;
-  color: #eff5ff;
-  background: transparent;
   border: 0;
-  border-radius: 2rem;
-  cursor: pointer;
+  border-radius: inherit;
+  background: transparent;
+  color: #f5f8ff;
+  cursor: help;
+  text-align: left;
 }
-.fl-device-trigger[hidden] { display: none; }
-.fl-device-model, .fl-device-icon {
-  border: 1px solid #86abd8;
-  background: #122444;
+.fl-device-trigger:focus-visible {
+  outline: 3px solid #86b7ff;
+  outline-offset: -4px;
+  box-shadow: none;
 }
-.fl-device-model {
-  padding: .42rem .75rem;
-  border-radius: .6rem;
-  visibility: hidden;
-  opacity: 0;
-  translate: .35rem 0;
-  transition: opacity .2s, translate .2s, visibility .2s;
-  font-size: .875rem;
-  font-weight: 700;
-}
-.fl-device-icon {
+.fl-device-tooltip {
+  position: absolute;
+  inset: auto .9rem .9rem auto;
+  box-sizing: border-box;
   display: grid;
-  place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 50%;
-  font-weight: 800;
+  gap: .4rem;
+  width: min(22rem, calc(100% - 1.8rem));
+  padding: 1rem 1.15rem;
+  border: 1px solid #87aee5;
+  border-radius: .8rem;
+  background: #101c32f2;
+  box-shadow: 0 .9rem 2rem #02081680;
+  font: 400 .85rem/1.52 var(--wp--preset--font-family--body);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(.35rem);
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
 }
-@media (hover: hover) {
-  .fl-hero-figure:hover .fl-device-model { visibility: visible; opacity: 1; translate: none; }
+.fl-device-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -.42rem;
+  right: 1.15rem;
+  width: .75rem;
+  height: .75rem;
+  background: #101c32;
+  border-bottom: 1px solid #87aee5;
+  border-right: 1px solid #87aee5;
+  transform: rotate(45deg);
 }
-.fl-device-trigger:focus-visible .fl-device-model { visibility: visible; opacity: 1; translate: none; }
-.fl-device-dialog {
-  width: min(31rem, calc(100% - 2rem));
-  max-height: calc(100% - 2rem);
-  padding: clamp(1.35rem, 5vw, 2.5rem);
-  border: 1px solid #6688b9;
-  border-radius: 1rem;
-  color: #e7efff;
-  background: #101e36;
-  box-shadow: 0 1.2rem 3rem #01081588;
-  overflow: auto;
+.fl-device-tooltip strong { display: block; font-size: 1rem; }
+.fl-device-tooltip > span { color: #dbe7f7; }
+.fl-device-trigger:is(:hover, :focus-visible, .is-open) .fl-device-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
 }
-.fl-device-dialog::backdrop { background: #060c19c9; }
-.fl-device-kicker {
-  color: #b5c9e7;
-  font-size: .8rem;
-  font-weight: 700;
-  letter-spacing: .11em;
-  text-transform: uppercase;
+@media (prefers-reduced-motion: reduce) {
+  .fl-device-tooltip { transition: none; }
 }
-.fl-device-dialog h2 { margin-block: .65rem 1rem; font-size: clamp(1.9rem, 5vw, 3rem); }
-.fl-device-dialog form { margin-block-start: 1.5rem; }
-.fl-device-dialog button { cursor: pointer; }
-@media (prefers-reduced-motion: no-preference) {
-  .fl-device-dialog[open] { animation: fl-mobile-nav-in 200ms ease-out both; }
+@media (max-width: 37.5rem) {
+  .fl-device-tooltip { inset: auto .65rem .65rem auto; font-size: .78rem; padding: .8rem; }
 }
 
 /* The experience strip keeps its editorial divisions on tablet. */
@@ -1038,4 +1037,30 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
   border-bottom: 1px solid #afbecf;
   text-align: start;
   overflow-wrap: anywhere;
+}
+
+/* Gutenberg canvas adapts to a docked side panel; no horizontally cropped text. */
+.editor-styles-wrapper {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: clip;
+}
+.editor-styles-wrapper .wp-block-post-content {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.editor-styles-wrapper .fl-shell {
+  width: min(calc(100% - 2 * clamp(.875rem, 3vw, 3rem)), var(--fl-width));
+  max-width: 100%;
+  min-width: 0;
+}
+.editor-styles-wrapper .fl-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.editor-styles-wrapper :is(.fl-hero-copy, .fl-hero-figure, .fl-equipment-item, .fl-service-grid) {
+  min-width: 0;
+  max-width: 100%;
+}
+@media (max-width: 74rem) {
+  .editor-styles-wrapper .fl-hero-grid { grid-template-columns: minmax(0, 1fr); }
 }

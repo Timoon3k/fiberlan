@@ -18,22 +18,35 @@
 		syncHeader();
 	}
 
-	for (const trigger of document.querySelectorAll('.fl-device-trigger')) {
-		const dialog = document.getElementById(trigger.getAttribute('aria-controls'));
-		if (!dialog?.showModal) continue;
-		trigger.hidden = false;
-		trigger.parentElement.classList.add('has-device-details');
-		const open = () => { if (!dialog.open) dialog.showModal(); };
-		trigger.addEventListener('click', open);
-		trigger.parentElement.querySelector('.fl-splicer-scene')?.addEventListener('click', open);
-		dialog.addEventListener('close', () => trigger.focus({ preventScroll: true }));
-		dialog.addEventListener('click', event => {
-			if (event.target !== dialog) return;
-			const bounds = dialog.getBoundingClientRect();
-			if (event.clientX < bounds.left || event.clientX > bounds.right ||
-				event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+	// A focusable, icon-free tooltip: hover or keyboard focus on desktop,
+	// touch/click toggles the same description on mobile.
+	const deviceTriggers = [...document.querySelectorAll('.fl-device-trigger')];
+	for (const trigger of deviceTriggers) {
+		trigger.addEventListener('click', () => {
+			const opening = trigger.getAttribute('aria-expanded') !== 'true';
+			for (const item of deviceTriggers) {
+				item.classList.remove('is-open');
+				item.setAttribute('aria-expanded', 'false');
+			}
+			if (opening) {
+				trigger.classList.add('is-open');
+				trigger.setAttribute('aria-expanded', 'true');
+			}
+		});
+		trigger.addEventListener('keydown', event => {
+			if (event.key !== 'Escape') return;
+			trigger.classList.remove('is-open');
+			trigger.setAttribute('aria-expanded', 'false');
+			trigger.blur();
 		});
 	}
+	document.addEventListener('click', event => {
+		if (deviceTriggers.some(trigger => trigger.contains(event.target))) return;
+		for (const trigger of deviceTriggers) {
+			trigger.classList.remove('is-open');
+			trigger.setAttribute('aria-expanded', 'false');
+		}
+	});
 
 	const motion = matchMedia('(prefers-reduced-motion: no-preference)');
 	const link = document.querySelector('.fl-floating-top');

@@ -1,10 +1,14 @@
 # Edycja witryny FIBERLAN
 
-## Wprowadzenie w panelu po lewej
+## Wprowadzenie w panelu po lewej — Gutenberg
 
-W WordPress wybierz **Wygląd → Dostosuj**, a następnie **Strona główna · PL** lub **Strona główna · EN**. Po lewej znajdziesz nadtytuł, nagłówek, opis, zdjęcie, tekst ALT oraz teksty i adresy obu przycisków. Wybierz **Zmień obraz**, aby przesłać plik albo wybrać go z biblioteki. Po zmianie zdjęcia sprawdź ALT.
+Przejdź do **Strony → Strona główna → Edytuj**. W edytorze Gutenberg otwiera się panel **FIBERLAN · Strona główna**. Na ekranach od 1200 px panel znajduje się **po lewej stronie podglądu**. Na węższych ekranach używa natywnego położenia panelu WordPress. Jeżeli go zamkniesz, otwórz ponownie z menu edytora w sekcji wtyczek / paneli.
 
-Podgląd po prawej przechodzi do wybranego języka. Dopiero kliknięcie **Opublikuj** zapisuje zmiany w blokach danej strony. WordPress przechowuje zmiany w historii wersji strony.
+Możesz tam edytować nadtytuł, H1, opis, zdjęcie, ALT, tekst i adres obu przycisków. Wybierz **Zmień zdjęcie**, aby skorzystać z biblioteki mediów. Panel zmienia **istniejące bloki Gutenberga**, nie osobną kopię treści. Podgląd dostosowuje się do dostępnej szerokości: nie trzeba przesuwać poziomo obciętej strony. Kliknij **Zapisz** w górnym pasku i ponownie otwórz stronę, aby potwierdzić zmiany.
+
+Dalsze sekcje nadal edytujesz przez **Widok listy** po lewej w Gutenbergu oraz kliknięcie odpowiedniego bloku na podglądzie. Edycja angielskiej strony głównej jest niezależna — otwórz odpowiednią stronę EN w panelu **Strony**.
+
+Zachowano również starszą metodę przez **Wygląd → Dostosuj → Strona główna · PL/EN** (Customizer), ale podstawową metodą edycji treści jest teraz Gutenberg. Nie edytuj tej samej strony jednocześnie w obu oknach.
 
 ## Strona i jej sekcje
 

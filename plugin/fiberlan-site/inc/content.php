@@ -160,7 +160,7 @@ function fl_services_content( $lang, $title ) {
 
 function fl_equipment_content( $lang, $title ) {
 	$items = array(
-		array( 'fiber-splicer-cleaver-client-photo.jpg', 'Spawarki Fujikura', 'Fujikura fusion splicers',
+		array( 'fiber-splicer-cleaver-client-photo.jpg', 'Fujikura FSM-62S', 'Fujikura FSM-62S',
 			'Mamy cztery spawarki jednowłóknowe Fujikura z modeli FSM-62S i FSM-70S. Serię S wykorzystujemy w klasycznych instalacjach i magistralach. Do jednoczesnego łączenia wielu włókien w centrach danych wykorzystujemy serię R do spawów taśmowych Ribbon.',
 			'We have four single-fibre Fujikura splicers across the FSM-62S and FSM-70S models. We use the S series on conventional installations and backbones, and R-series ribbon splicers for joining multiple fibres in a single operation in data centres.', 'spawanie' ),
 		array( 'fluke-networks-versiv-2-client-photo.jpg', 'Fluke Networks DSX-5000', 'Fluke Networks DSX-5000',
