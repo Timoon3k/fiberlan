@@ -217,8 +217,9 @@
    not rectangular filled buttons. Keep WordPress's accessible labels. */
 .fl-nav :is(.wp-block-navigation__responsive-container-open,.wp-block-navigation__responsive-container-close) {
   position: relative;
-  display: grid;
-  place-items: center;
+  /* Let WordPress hide the opener at desktop widths. */
+  align-items: center;
+  justify-content: center;
   flex: none;
   width: 2.75rem;
   height: 2.75rem;
