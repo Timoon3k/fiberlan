@@ -645,7 +645,25 @@ html[lang^='en'] .fl-nav .is-menu-open .wp-block-navigation__responsive-containe
       linear-gradient(178deg, transparent 39%, black 55% 94%, transparent);
     mask-composite: intersect;
   }
+  /* The softly focused cable sits on the back of the worktop, behind the camera image. */
+  .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene::after {
+    content: '';
+    position: absolute;
+    left: 66%;
+    top: 17%;
+    width: 87%;
+    aspect-ratio: 2.85;
+    transform: rotate(-8deg);
+    pointer-events: none;
+    --fl-cable-jacket: transparent 85%, #8b681b 86%, #e5ae10 88%, #ffe675 91%, #efb917 95%, #a47a0f 98%, transparent;
+    background:
+      radial-gradient(ellipse 42% 29% at 48% 60%, var(--fl-cable-jacket)),
+      radial-gradient(ellipse 45% 39% at 54% 51%, var(--fl-cable-jacket)),
+      radial-gradient(ellipse 45% 34% at 50% 44%, var(--fl-cable-jacket));
+    filter: blur(clamp(1.5px, .25vw, 4px)) drop-shadow(0 3px 3px #28241770);
+  }
   .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene img {
+    z-index: 1;
     object-fit: contain;
     mask: url('diagrams/splicer-photo-mask.svg') center / contain no-repeat;
   }
