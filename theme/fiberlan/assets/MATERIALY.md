@@ -25,7 +25,6 @@ Pliki WebP w `scenes` to lokalne, pomniejszone fotografie ilustracyjne. Przedsta
 
 | Plik | Źródło | Warunki |
 | --- | --- | --- |
-| optical-fibres.webp | [Włókna optyczne, Pexels 12932191](https://www.pexels.com/photo/12932191/) | [Pexels License](https://www.pexels.com/license/) |
 | production-line.webp | [Linia produkcyjna, Pexels 34207359](https://www.pexels.com/photo/34207359/) | [Pexels License](https://www.pexels.com/license/) |
 | server-room.webp | [Szafa serwerowa w otwartej serwerowni, Unsplash](https://images.unsplash.com/photo-1695668548342-c0c1ad479aee) | [Unsplash License](https://unsplash.com/license) |
 | server-racks.webp | [Szafy serwerowe, Unsplash](https://images.unsplash.com/photo-1558494949-ef010cbdcc31) | [Unsplash License](https://unsplash.com/license) |

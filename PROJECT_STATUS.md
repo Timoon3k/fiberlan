@@ -1,12 +1,18 @@
 # FIBERLAN SC · Status projektu
 
-## Wariant podglądowy z fotografiami · 4.6.2
+## Menu dotykowe i przewijanie · 4.7.0
+
+Menu korzysta z nawigacji WordPressa i logo ustawionego w nagłówku. Na telefonie pozycje łączy cienka linia, a bursztynowy punkt wskazuje bieżącą stronę. Na szerszych ekranach dotykowych odnośniki układają się w dwóch kolumnach. Przełącznik PL/EN prowadzi do odpowiednika otwartej podstrony.
+
+Podczas przewijania sekcje wchodzą od dołu, karty pojawiają się kolejno, a fotografie stopniowo odsłaniają kadr. Ustawienie ograniczonego ruchu pokazuje treść od razu. [Nagranie z mobilnego WordPressa](docs/menu-i-przewijanie-4.7.mp4)
+
+## Wariant podglądowy z fotografiami
 
 Gałąź `preview/szata-fotograficzna` bazuje na `c6e5194`. Motyw korzysta z bieżących bloków PL/EN i ustawień widżetu opinii w danej instalacji WordPressa. W hero wyświetla oryginalny plik Fujikury FSM-62S. Na blacie widać spawarkę, obcinarkę, uchwyt i butelkę. Ich położenie, proporcje i cienie pochodzą z tego samego zdjęcia. Fotografie obiektów w kartach są ilustracyjne. Źródła znajdują się w [wykazie materiałów](theme/fiberlan/assets/MATERIALY.md).
 
 Za obcinarką widać rozmyty zwój żółtego przewodu. Jest dekoracją tła wykonaną w CSS. [Podgląd strony głównej, usług, realizacji i kontaktu](docs/podglad-4.6.webp) pochodzi z lokalnego WordPressa.
 
-Wersję można ocenić na kopii WordPressa z aktualnymi treściami klienta. Motyw rozpoznaje stare adresy pięciu ilustracji wzorcowych i wyświetla ich fotograficzne odpowiedniki. Własne zdjęcia z biblioteki mediów zachowują pierwszeństwo.
+Wersję można ocenić na kopii WordPressa z aktualnymi treściami klienta. W karcie spawania i w zapisanych blokach odwołujących się do wycofanego zdjęcia świecących włókien motyw wyświetla rysunek techniczny. Własne zdjęcia z biblioteki mediów zachowują pierwszeństwo.
 
 ## Edycja strony głównej z panelu bocznego · 4.5.2
 

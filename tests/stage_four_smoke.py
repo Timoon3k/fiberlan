@@ -53,7 +53,7 @@ def check_motion(browser, base, mode):
                     return document.querySelector('main .fl-in-view');
                 }""", polling=100, timeout=6000)
                 target = page.locator("main .fl-in-view").first
-                timings = target.evaluate("""node => getComputedStyle(node).transitionDuration
+                timings = target.evaluate("""node => getComputedStyle(node).animationDuration
                     .split(',').map(value => parseFloat(value))""")
                 assert all(.7 <= seconds <= 1.0 for seconds in timings), (path, timings)
         page.goto(base + "/uslugi/#pomiary")
@@ -143,18 +143,26 @@ def check_device_details(page, base):
 def check_reveal_timing(page, base):
     page.goto(base)
     cards = page.locator(".fl-service-grid > .fl-service-card")
-    for index, delay in enumerate((0, .07, .14)):
+    pending = cards.last
+    expect(pending).to_have_class(re.compile(r"\bfl-reveal-pending\b"))
+    assert pending.evaluate("n => getComputedStyle(n).opacity") == "1"
+    assert "38%" in pending.locator("img").evaluate("n => getComputedStyle(n).clipPath")
+    for index, delay in enumerate((0, .09, .18, .24)):
         card = cards.nth(index)
         card.scroll_into_view_if_needed()
         expect(card).to_have_class(re.compile(r"\bfl-in-view\b"))
-        assert card.evaluate("n => parseFloat(getComputedStyle(n).transitionDelay)") == delay
+        assert card.evaluate("n => parseFloat(getComputedStyle(n).animationDelay)") == delay
         card.evaluate("async n => await Promise.all(n.getAnimations().map(animation => animation.finished))")
         assert card.evaluate("n => getComputedStyle(n).opacity") == "1"
     page.goto(base + "/uslugi/")
     photo = page.locator("#pomiary .fl-section-image")
     photo.scroll_into_view_if_needed()
     expect(photo).to_have_class(re.compile(r"\bfl-in-view\b"))
-    assert photo.locator("img").evaluate("n => getComputedStyle(n).transitionDuration") == "0.9s"
+    assert "clip-path" in photo.locator("img").evaluate("n => getComputedStyle(n).transitionProperty")
+    page.emulate_media(reduced_motion="reduce")
+    expect(page.locator(".fl-reveal-pending, .fl-in-view")).to_have_count(0)
+    assert photo.locator("img").evaluate("n => getComputedStyle(n).clipPath") == "none"
+    page.emulate_media(reduced_motion="no-preference")
 
 
 def check_footer(page, base):
@@ -251,6 +259,19 @@ def check_sticky_controls(page, base, mobile):
     expect(page.locator('head link[rel="alternate"][hreflang]')).to_have_count(0)
 
 
+def check_tablet_menu(browser, base):
+    page = browser.new_page(viewport={"width": 1180, "height": 820}, has_touch=True, is_mobile=True)
+    page.goto(base + "/uslugi/")
+    menu = page.locator("header .wp-block-navigation__responsive-container-open")
+    menu.tap()
+    dialog = page.get_by_role("dialog")
+    expect(dialog.locator(".fl-menu-brand img")).to_be_visible()
+    expect(dialog.locator("li a[aria-current]")).to_have_text("Usługi")
+    dialog.locator('.fl-mobile-locales a[data-language="en"]').tap()
+    expect(page).to_have_url(base + "/en/services/")
+    page.close()
+
+
 def check_admin_bar(browser, base, password):
     page = browser.new_page(viewport={"width": 1440, "height": 850})
     page.goto(base + "/wp-login.php")
@@ -261,6 +282,9 @@ def check_admin_bar(browser, base, password):
     for width, height in ((1440, 850), (768, 840), (390, 840), (740, 390)):
         page.set_viewport_size({"width": width, "height": height})
         page.goto(base + "/en/equipment/")
+        if width < 960:
+            page.get_by_role("button", name="Open menu").click()
+            page.get_by_role("button", name="Close menu").click()
         admin = page.locator("#wpadminbar")
         expect(admin).to_be_visible()
         h1 = page.locator("main h1")
@@ -295,6 +319,7 @@ if __name__ == "__main__":
             print(f"{width}px: 12 pages, long copy, local fonts, sticky navigation and keyboard return OK", flush=True)
         for mode in ("reduce", "no-preference"):
             check_motion(browser, base, mode)
+        check_tablet_menu(browser, base)
         for width in (390, 1440):
             page = browser.new_page(viewport={"width": width, "height": 840}, reduced_motion="reduce" if width < 600 else "no-preference")
             if width == 1440:

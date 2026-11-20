@@ -19,10 +19,22 @@
 	}
 
 
-	// Keep language switching available while the native WP mobile overlay is open.
-	// Build it from the same translated links used in the desktop header.
+	// Use the header's configured identity and translated links inside the native dialog.
 	const languageNav = row?.querySelector('.fl-languages');
 	const mobileContent = row?.querySelector('.fl-nav .wp-block-navigation__responsive-container-content');
+	if (mobileContent) {
+		const brand = document.createElement('div');
+		brand.className = 'fl-menu-brand';
+		const logo = row.querySelector('.fl-brand .wp-block-site-logo img');
+		if (logo) {
+			const image = logo.cloneNode(false);
+			image.removeAttribute('id');
+			brand.append(image);
+		} else {
+			brand.textContent = row.querySelector('.fl-brand .wp-block-site-title')?.textContent || '';
+		}
+		mobileContent.before(brand);
+	}
 	if (languageNav && mobileContent && !mobileContent.querySelector('.fl-mobile-locales')) {
 		const switcher = document.createElement('div');
 		switcher.className = 'fl-mobile-locales';
@@ -134,7 +146,7 @@
 		});
 	}
 
-	if (!window.IntersectionObserver || !motion.matches) return;
+	if (!window.IntersectionObserver) return;
 	const observer = new IntersectionObserver(entries => {
 		for (const { target, isIntersecting } of entries) {
 			if (!isIntersecting) continue;
@@ -143,19 +155,28 @@
 		}
 	});
 	const items = document.querySelectorAll([
-		'main .fl-section > .fl-shell:not(.fl-split,.fl-contact-layout):not(:has(.fl-sector-grid,.fl-equipment-item,.fl-case-grid))',
+		'main .fl-section > .fl-shell:not(.fl-split,.fl-contact-layout):not(:has(.fl-section-head,.fl-project-grid,.fl-service-grid,.fl-sector-grid,.fl-equipment-item,.fl-case-grid))',
 		'main .fl-section-head', 'main .fl-project-intro', 'main .fl-contact-row', 'main .fl-reviews-layout',
 		'main :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-sector-grid) > *',
 		'main .fl-split > :is(.fl-split-copy,.fl-section-image)', 'main .fl-equipment-item > *',
 		'main :is(.fl-milestone,.fl-ribbon-copy,.fl-contact-sidebar,.fl-service-index)',
-		'main .fl-form :is(.fl-form-privacy,.wp-element-button)',
+		'main .fl-form-panel > h2', 'main .fl-form .wp-element-button',
 		'main .fl-project-report :is(.wp-block-image,.wp-block-gallery)'
 	].join(','));
-	// Measure before applying styles so the initial pass does not alternate reads and writes.
-	const offscreen = Array.from(items).filter(item => item.getBoundingClientRect().top >= innerHeight);
-	for (const item of offscreen) {
-		if (item.parentElement.closest('.fl-reveal-pending')) continue;
-		item.classList.add('fl-reveal-pending');
-		observer.observe(item);
+	function syncReveals() {
+		observer.disconnect();
+		if (!motion.matches) {
+			for (const item of items) item.classList.remove('fl-reveal-pending', 'fl-in-view');
+			return;
+		}
+		// Measure before applying styles. Content already on screen stays in place.
+		const offscreen = Array.from(items).filter(item => item.getBoundingClientRect().top >= innerHeight);
+		for (const item of offscreen) {
+			if (item.parentElement.closest('.fl-reveal-pending')) continue;
+			item.classList.add('fl-reveal-pending');
+			observer.observe(item);
+		}
 	}
+	syncReveals();
+	motion.addEventListener('change', syncReveals);
 })();

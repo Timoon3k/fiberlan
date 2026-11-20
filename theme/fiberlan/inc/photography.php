@@ -4,7 +4,6 @@ defined( 'ABSPATH' ) || exit;
 
 function fiberlan_scene_files() {
 	return array(
-		'service-splice'     => 'optical-fibres',
 		'service-lan'        => 'patch-panel',
 		'project-datacenter' => 'server-racks',
 		'project-factory'    => 'production-line',
@@ -23,9 +22,14 @@ add_filter( 'theme_file_uri', static function ( $url, $file ) {
 		? get_theme_file_uri( 'assets/scenes/' . $files[ $key ] . '.webp' ) : $url;
 }, 10, 2 );
 
-// Previously saved pages contain absolute URLs. Resolve only the five bundled images,
+// Previously saved pages contain absolute URLs. Resolve only the bundled images,
 // keeping author-selected uploads, captions, alternative text and links intact.
 function fiberlan_resolve_scene_images( $html ) {
+	// Some saved blocks already point directly to the retired stock photograph.
+	$retired = '/assets/scenes/optical-fibres.webp';
+	if ( false !== strpos( $html, $retired ) ) {
+		$html = str_replace( get_template_directory_uri() . $retired, get_theme_file_uri( 'assets/diagrams/service-splice.svg' ), $html );
+	}
 	if ( false === strpos( $html, '/assets/diagrams/' ) ) {
 		return $html;
 	}
