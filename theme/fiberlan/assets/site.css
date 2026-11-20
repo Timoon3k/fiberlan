@@ -1064,3 +1064,35 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
 @media (max-width: 74rem) {
   .editor-styles-wrapper .fl-hero-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+
+/* Contact page: align the company details with the enquiry form,
+   reduce unused side space and keep the mobile single-column layout. */
+.fl-section .fl-shell.fl-contact-layout {
+  max-width: 78rem;
+  grid-template-columns: minmax(0,.9fr) minmax(0,1.3fr);
+  align-items: center;
+  gap: clamp(1.5rem,4.6vw,4rem);
+}
+.fl-contact-layout > .fl-contact-sidebar { align-self: center; }
+.fl-contact-layout > .fl-form-panel { align-self: start; width: 100%; }
+@media (max-width: 48rem) {
+  .fl-section .fl-shell.fl-contact-layout {
+    grid-template-columns: minmax(0,1fr);
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+  .fl-contact-layout > .fl-contact-sidebar { align-self: stretch; }
+}
+@media (max-width: 36rem) {
+  .fl-section .fl-shell.fl-contact-layout { display: flex; flex-direction: column; }
+}
+/* Keep Google review widgets within the content width on PL and EN. */
+.fl-reviews .fl-reviews-layout { min-width: 0; max-width: 100%; }
+.fl-reviews .fl-reviews-widget { min-width: 0; width: 100%; max-width: 100%; }
+.fl-reviews .fl-reviews-widget :is(.ti-widget,.ti-widget-container,.ti-reviews-container) {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+.fl-reviews .fl-reviews-widget :is(.ti-review-item,.ti-review-content,.ti-review-text) { overflow-wrap: break-word; }

@@ -1,14 +1,16 @@
 # Edycja witryny FIBERLAN
 
-## Wprowadzenie w panelu po lewej — Gutenberg
+## Panel edycji Gutenberga — wszystkie podstrony
 
-Przejdź do **Strony → Strona główna → Edytuj**. W edytorze Gutenberg otwiera się panel **FIBERLAN · Strona główna**. Na ekranach od 1200 px panel znajduje się **po lewej stronie podglądu**. Na węższych ekranach używa natywnego położenia panelu WordPress. Jeżeli go zamkniesz, otwórz ponownie z menu edytora w sekcji wtyczek / paneli.
+Otwórz **Strony → Wszystkie strony → Edytuj** i wybierz dowolną stronę FIBERLAN, np. O nas, Usługi, Sprzęt, Realizacje, Kontakt, polityki lub stronę projektu — w języku PL albo EN. Panel **FIBERLAN · Edycja strony** otwiera się automatycznie. Na dużym ekranie pojawi się po lewej, na węższym w standardowym układzie WordPressa. W panelu rozwijaj poszczególne sekcje i zmieniaj nagłówki, opisy, odnośniki, zdjęcia, ich teksty ALT oraz shortcode opinii. Kliknij **Zapisz**. Treści pozostają zapisane w natywnych blokach, nie w osobnej kopii.
 
-Możesz tam edytować nadtytuł, H1, opis, zdjęcie, ALT, tekst i adres obu przycisków. Wybierz **Zmień zdjęcie**, aby skorzystać z biblioteki mediów. Panel zmienia **istniejące bloki Gutenberga**, nie osobną kopię treści. Podgląd dostosowuje się do dostępnej szerokości: nie trzeba przesuwać poziomo obciętej strony. Kliknij **Zapisz** w górnym pasku i ponownie otwórz stronę, aby potwierdzić zmiany.
+Bloki z formatowaniem (np. link w nagłówku lub pogrubienia) oraz specjalne bloki FIBERLAN (formularz, katalog) edytuj po wybraniu bloku w podglądzie — panel daje przycisk **Edytuj na podglądzie** i nie niszczy formatowania. Współdzielone dane kontaktowe edytuje się w oryginalnym wzorcu, nie osobno na każdej stronie.
 
-Dalsze sekcje nadal edytujesz przez **Widok listy** po lewej w Gutenbergu oraz kliknięcie odpowiedniego bloku na podglądzie. Edycja angielskiej strony głównej jest niezależna — otwórz odpowiednią stronę EN w panelu **Strony**.
+W sekcji **SEO strony** możesz zmienić tytuł i opis meta, gdy Rank Math nie zarządza tym widokiem. Te same pola są dostępne przez REST i zapisywane razem ze stroną. Dolny metabox **FIBERLAN – SEO** nie jest już pokazywany w Gutenbergu — nie usuwa to jego dotychczasowych wartości. W edytorze klasycznym metabox pozostaje dostępny.
 
-Zachowano również starszą metodę przez **Wygląd → Dostosuj → Strona główna · PL/EN** (Customizer), ale podstawową metodą edycji treści jest teraz Gutenberg. Nie edytuj tej samej strony jednocześnie w obu oknach.
+Opinie z Google na stronie angielskiej zachowują oryginalne wypowiedzi klientów. Skrypt tłumaczy wyłącznie dokładnie rozpoznane etykiety interfejsu Trustindex. Jeśli widget zostanie załadowany wewnątrz ramki iframe lub udostępnia własny język EN, skonfiguruj język angielski w samej wtyczce Trustindex i sprawdź podgląd. W razie dynamicznych zmian widżetu nie edytuj tekstów klientów.
+
+Sekcja Kontakt ma węższy, wyśrodkowany układ danych firmy względem formularza; na ekranach mobilnych przechodzi w jedną kolumnę.
 
 ## Strona i jej sekcje
 

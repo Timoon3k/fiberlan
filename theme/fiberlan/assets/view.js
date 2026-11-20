@@ -48,6 +48,47 @@
 		}
 	});
 
+
+	// Localise only Trustindex's display labels on English pages.
+	// Customer-authored review content remains in the original language.
+	if ((document.documentElement.lang || '').toLowerCase().startsWith('en')) {
+		const reviewWidget = document.querySelector('.fl-reviews-widget');
+		if (reviewWidget) {
+			const translations = new Map([
+				['DOSKONAŁA', 'EXCELLENT'],
+				['Doskonała', 'Excellent'],
+				['Na podstawie', 'Based on'],
+				['opinii', 'reviews'],
+				['Opublikowano na Google', 'Posted on Google'],
+				['Potwierdzono przez:', 'Verified by:'],
+				['Potwierdzono przez', 'Verified by'],
+				['Dowiedz się więcej', 'Learn more'],
+				['Trustindex sprawdza, czy pierwotnym źródłem recenzji jest Google.',
+					'Trustindex checks whether Google is the original source of the review.'],
+				['Trustindex zweryfikował, że te opinie zostały opublikowane w Profilu Firmy w Google należącym do FIBERLAN SC.',
+					'Trustindex verified that these reviews were published on the FIBERLAN SC Google Business Profile.']
+			]);
+			const localise = () => {
+				const walker = document.createTreeWalker(reviewWidget, NodeFilter.SHOW_TEXT);
+				let node;
+				while ((node = walker.nextNode())) {
+					if (node.parentElement?.closest('.ti-review-content,.ti-review-text,.ti-review-body,blockquote')) continue;
+					const old = node.nodeValue;
+					const phrase = old.trim();
+					let translated = translations.get(phrase);
+					if (!translated) {
+						const count = phrase.match(/^(\d+)\s+opinii$/);
+						if (count) translated = count[1] + ' reviews';
+					}
+					if (translated) node.nodeValue = old.replace(phrase, translated);
+				}
+			};
+			localise();
+			const observer = new MutationObserver(localise);
+			observer.observe(reviewWidget, { childList: true, subtree: true });
+		}
+	}
+
 	const motion = matchMedia('(prefers-reduced-motion: no-preference)');
 	const link = document.querySelector('.fl-floating-top');
 	const top = document.getElementById('fl-page-top');
