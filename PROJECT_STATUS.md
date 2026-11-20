@@ -1,5 +1,9 @@
 # FIBERLAN SC · Status projektu
 
+## Opinie z Google i wygląd strony głównej · 4.5.0
+
+Sekcja opinii PL i EN zawiera odnośnik do Map Google i grupę Gutenberga na blok lub shortcode wybranej wtyczki. Aktualizacja zastępuje domyślną wersję wcześniejszego banera. Karty i odnośniki mają dopasowane stany najechania i fokusu, a PL/EN ma osobne wyróżnienie aktywnego języka. Animacja pojedynczego wejścia fotografii działa z zachowaniem maski i respektuje ustawienie ograniczonego ruchu.
+
 ## Korekta strony głównej · 4.4.1
 
 W wersjach PL i EN wyśrodkowano samą spawarkę w głównym kadrze. Zdjęcie ma opis ALT i pusty podpis. W tle pozostała delikatna siatka o większych oczkach. Usunięto trzy ozdobne kreski zaznaczone na zrzucie klienta. W Chromium sprawdzono oba języki przy 320, 390, 768, 1024 i 1440 px.

@@ -52,7 +52,7 @@
 	});
 	const items = document.querySelectorAll([
 		'main .fl-section > .fl-shell:not(.fl-split,.fl-contact-layout):not(:has(.fl-sector-grid,.fl-equipment-item,.fl-case-grid))',
-		'main .fl-section-head', 'main .fl-project-intro', 'main .fl-contact-row',
+		'main .fl-section-head', 'main .fl-project-intro', 'main .fl-contact-row', 'main .fl-reviews-layout',
 		'main :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-sector-grid) > *',
 		'main .fl-split > :is(.fl-split-copy,.fl-section-image)', 'main .fl-equipment-item > *',
 		'main :is(.fl-milestone,.fl-ribbon-copy,.fl-contact-sidebar,.fl-service-index)',

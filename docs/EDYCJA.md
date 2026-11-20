@@ -8,7 +8,7 @@ W panelu WordPress wybierz **Strony → Strona główna → Edytuj**. Otwórz wi
 - **Doświadczenie**. Każda pozycja paska to grupa z osobnymi polami tekstowymi. Wyróżnienie dotyczące 20 lat odnosi się do roku 2026.
 - **Usługi**. Każda karta to grupa zawierająca obraz, nagłówek z odnośnikiem i opis. W menu grupy wybierz **Powiel** lub **Usuń**. W motywie potomnym możesz też wstawić wzorzec **Karta usługi · Service card** wewnątrz grupy z kartami. Uzupełnij obraz, tytuł i opis. Zaznacz tytuł i użyj ikony odnośnika, aby podać adres usługi.
 - **Realizacje**. Zaktualizuj nazwy obszarów i lokalizacje w poszczególnych kartach. Zastępuj ilustracje wyłącznie zdjęciami z danej realizacji.
-- **Kontakt**. Zmień treść końcowego nagłówka i przycisku. Domyślny odnośnik prowadzi do podstrony kontaktowej.
+- **Opinie z Google**. W widoku listy otwórz grupę **Widżet opinii z Google** lub **Google reviews widget**. Wstaw blok z zainstalowanej wtyczki opinii. Jeśli wtyczka udostępnia shortcode, wstaw go do bloku **Krótki kod** w tej grupie. Powtórz dla strony angielskiej. Do czasu podłączenia widżetu sekcja zawiera odnośnik do wyszukania firmy w Mapach Google.
 
 Aby wstawić kolejną sekcję, otwórz wstawiacz bloków i wybierz **Wzorce → FIBERLAN**. Nowa sekcja jest niezależną kopią. Jeżeli powielasz sekcję z kotwicą, nadaj jej unikalną kotwicę w ustawieniach zaawansowanych.
 

@@ -70,6 +70,12 @@ def check_home_photograph(page, base):
         figure = page.locator(".fl-hero-figure")
         photo = figure.locator("picture.fl-splicer-scene img")
         photo.evaluate("img => img.decode()")
+        animation = photo.evaluate("""img => {
+          const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          return [reduced, getComputedStyle(img).animationName];
+        }""")
+        assert animation[1] == ("none" if animation[0] else "fl-splicer-arrive"), animation
+        photo.evaluate("img => Promise.all(img.getAnimations().map(animation => animation.finished))")
         mask = photo.evaluate("img => getComputedStyle(img).maskImage")
         url = re.fullmatch(r'url\("(.+)"\)', mask).group(1)
         response = page.request.get(url)
@@ -91,6 +97,17 @@ def check_home_photograph(page, base):
         expect(photo).to_have_attribute("alt", re.compile("open and display lit" if path == "/en/" else "włączonym ekranem"))
         figure.evaluate("node => node.classList.add('is-style-fiberlan-full')")
         assert photo.evaluate("img => getComputedStyle(img).maskImage") == "none"
+        assert photo.evaluate("img => getComputedStyle(img).animationName") == "none"
+        reviews = page.locator(".fl-reviews")
+        expect(reviews.get_by_role("heading")).to_have_text("Opinie z Google" if path == "/" else "Google reviews")
+        expect(reviews.locator(".fl-reviews-widget")).to_have_count(1)
+        expect(reviews.get_by_role("link").first).to_have_attribute("href", re.compile(r"^https://www\.google\.com/maps/search/"))
+        expect(page.locator(".fl-contact-row")).to_have_count(0)
+        expect(page.locator(".fl-languages [aria-current]")).to_have_text("PL" if path == "/" else "EN")
+        service = page.locator(".fl-service-card h3 a").first
+        service.focus()
+        assert service.evaluate("link => getComputedStyle(link).textDecorationLine") == "none"
+        assert service.evaluate("link => getComputedStyle(link.closest('.fl-service-card')).outlineStyle") == "solid"
         projects = page.locator(".fl-project-card h3 a")
         expect(projects).to_have_count(3)
         for index, pair in enumerate(PAIRS[-3:]):

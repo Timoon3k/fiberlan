@@ -252,10 +252,21 @@ function fl_legal_content( $lang, $title, $key ) {
 	return $body . fl_section( $paragraphs );
 }
 
+function fl_home_reviews_content( $lang ) {
+	$pattern = WP_Block_Patterns_Registry::get_instance()->get_registered( 'fiberlan/home-reviews' );
+	$content = $pattern['content'] ?? '';
+	return 'en' === $lang ? strtr( $content, array(
+		'Opinie z Google' => 'Google reviews',
+		'Sprawdź opinie o FIBERLAN SC w Mapach Google.' => 'Read reviews of FIBERLAN SC on Google Maps.',
+		'Znajdź FIBERLAN w Mapach Google' => 'Find FIBERLAN on Google Maps',
+		'Widżet opinii z Google' => 'Google reviews widget',
+	) ) : $content;
+}
+
 function fl_home_content( $lang, $existing = '' ) {
 	$registry = WP_Block_Patterns_Registry::get_instance();
 	$patterns = array();
-	foreach ( array( 'hero', 'experience', 'services', 'projects', 'contact' ) as $section ) {
+	foreach ( array( 'hero', 'experience', 'services', 'projects' ) as $section ) {
 		$patterns[] = $registry->get_registered( 'fiberlan/home-' . $section )['content'];
 	}
 	$links = array(
@@ -289,7 +300,10 @@ function fl_home_content( $lang, $existing = '' ) {
 		if ( false !== strpos( $html, 'fl-ribbon' ) ) {
 			return $html;
 		}
-		$position = strpos( $html, '<!-- wp:group {"tagName":"section","className":"fl-contact"' );
+		$position = strpos( $html, '<!-- wp:group {"tagName":"section","className":"fl-reviews"' );
+		if ( false === $position ) {
+			$position = strpos( $html, '<!-- wp:group {"tagName":"section","className":"fl-contact"' );
+		}
 		$ribbon = "\n" . fl_ribbon( $lang ) . "\n";
 		return false === $position ? $html . $ribbon : substr_replace( $html, $ribbon, $position, 0 );
 	}
@@ -328,12 +342,11 @@ function fl_home_content( $lang, $existing = '' ) {
 			'Okolice Bordeaux, Francja' => 'Near Bordeaux, France',
 			'Statki wycieczkowe' => 'Cruise ships',
 			'Stocznie międzynarodowe' => 'International shipyards',
-			'Szukasz sprawdzonego partnera do realizacji instalacji światłowodowej?' => 'Looking for a partner for your fibre optic installation?',
-			'Porozmawiajmy o projekcie' => 'Discuss your project',
 			'Zapytaj o wycenę' => 'Request a quote',
 			'Poznaj nasze usługi' => 'Explore our services',
 		);
 	}
-	array_splice( $patterns, 4, 0, fl_ribbon( $lang ) );
+	$patterns[] = fl_ribbon( $lang );
+	$patterns[] = fl_home_reviews_content( $lang );
 	return strtr( implode( "\n", $patterns ), $replace );
 }

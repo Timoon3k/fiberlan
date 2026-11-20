@@ -232,3 +232,53 @@ add_filter( 'wp_sitemaps_posts_query_args', static function ( $args, $post_type 
 	}
 	return $args;
 }, 10, 2 );
+
+// Replace the original homepage invitation on existing sites without overwriting edited blocks.
+function fl_update_home_reviews() {
+	if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) || ! get_option( 'fl_stage_two_ready' ) || get_option( 'fl_home_reviews_updated' ) ) {
+		return;
+	}
+	$registry = WP_Block_Patterns_Registry::get_instance();
+	$legacy = $registry->get_registered( 'fiberlan/home-contact' )['content'] ?? '';
+	if ( ! $legacy || ! fl_home_reviews_content( 'pl' ) ) {
+		return;
+	}
+
+	$stock = preg_replace( '~>\s+<~', '><', trim( $legacy ) );
+	$mailto = 'mailto:info@fiberlan.pl?subject=Projekt%20instalacji%20%C5%9Bwiat%C5%82owodowej';
+	$complete = true;
+	foreach ( array( 'pl', 'en' ) as $lang ) {
+		$post = get_post( fl_page_id( 'home', $lang ) ?: -1 );
+		if ( ! $post ) {
+			continue;
+		}
+		$reference = 'en' === $lang ? strtr( $stock, array(
+			'Szukasz sprawdzonego partnera do realizacji instalacji światłowodowej?' => 'Looking for a partner for your fibre optic installation?',
+			'Porozmawiajmy o projekcie' => 'Discuss your project',
+		) ) : $stock;
+		$references = array( $reference, str_replace( $mailto, esc_url( fl_url( 'contact', $lang ) ), $reference ) );
+		foreach ( parse_blocks( $post->post_content ) as $block ) {
+			if ( 'fl-contact' !== ( $block['attrs']['className'] ?? '' ) ) {
+				continue;
+			}
+			$html = serialize_block( $block );
+			if ( ! in_array( preg_replace( '~>\s+<~', '><', $html ), $references, true ) ) {
+				continue;
+			}
+			// Leave the current editing session alone and retry on a later admin request.
+			if ( wp_check_post_lock( $post->ID ) || get_post_field( 'post_content', $post->ID ) !== $post->post_content ) {
+				$complete = false;
+				break;
+			}
+			$content = str_replace( $html, trim( fl_home_reviews_content( $lang ) ), $post->post_content, $count );
+			if ( $count && is_wp_error( wp_update_post( wp_slash( array( 'ID' => $post->ID, 'post_content' => $content ) ), true ) ) ) {
+				$complete = false;
+			}
+			break;
+		}
+	}
+	if ( $complete ) {
+		update_option( 'fl_home_reviews_updated', true, false );
+	}
+}
+add_action( 'admin_init', 'fl_update_home_reviews' );

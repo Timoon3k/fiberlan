@@ -26,7 +26,7 @@ function fiberlan_install_starter() {
 	}
 
 	$registry = WP_Block_Patterns_Registry::get_instance();
-	$sections = array( 'home-hero', 'home-experience', 'home-services', 'home-projects', 'home-contact' );
+	$sections = array( 'home-hero', 'home-experience', 'home-services', 'home-projects', 'home-reviews' );
 	$content  = array();
 
 	foreach ( $sections as $section ) {
