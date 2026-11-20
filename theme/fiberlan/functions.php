@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 require_once __DIR__ . '/inc/contact-content.php';
 require_once __DIR__ . '/inc/footer.php';
 require_once __DIR__ . '/inc/media.php';
+require_once __DIR__ . '/inc/photography.php';
 require_once __DIR__ . '/inc/starter.php';
 require_once __DIR__ . '/inc/responsive-media.php';
 require_once __DIR__ . '/inc/customize-hero.php';

@@ -82,7 +82,10 @@ def check_campaign(browser, base, send_mail):
     page.goto(base + '/' + campaign)
     picture = page.locator('.fl-hero-figure picture img')
     picture.evaluate('img => img.decode()')
-    assert picture.evaluate('img => img.currentSrc.endsWith(".webp")')
+    assert picture.evaluate('img => img.currentSrc === img.src && img.src.endsWith(".jpg")')
+    equipment = page.locator('.fl-card-image picture img').first
+    equipment.evaluate('img => img.decode()')
+    assert equipment.evaluate('img => img.currentSrc.endsWith(".webp")')
     assert page.evaluate("document.fonts.check('700 30px FIBERLAN Britannic')")
     page.locator('.fl-hero .wp-block-button__link').first.click()
     expect(page).to_have_url(base + '/kontakt/' + campaign)

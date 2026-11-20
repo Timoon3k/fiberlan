@@ -82,14 +82,19 @@ def check_home_photograph(page, base):
         assert response.ok and "image/svg+xml" in response.headers["content-type"], url
         assert "1600 1200" in response.text()
         assert photo.evaluate("img => img.naturalWidth > 0 && img.getBoundingClientRect().height > 100")
-        # The retained silhouette spans x=156..810 and y=262..1111 on the original.
+        # The splicer and the cleaver span x=156..1487 and y=262..1111 on the original.
         rect = photo.bounding_box()
         frame = figure.locator("picture").bounding_box()
-        for axis, size, fraction in (("x", "width", 483 / 1600), ("y", "height", 686.5 / 1200)):
+        for axis, size, fraction in (("x", "width", 821.5 / 1600), ("y", "height", 686.5 / 1200)):
             object_centre = rect[axis] + rect[size] * fraction
             frame_centre = frame[axis] + frame[size] / 2
             assert abs(object_centre - frame_centre) < 2, (path, axis)
-        assert response.text().count("<path ") == 1
+        assert response.text().count("<path ") == 3
+        assert photo.evaluate("img => img.currentSrc === img.src")
+        assert abs(rect["width"] / rect["height"] - 4 / 3) < .005
+        for x, y in ((156, 262), (1487, 1111)):
+            assert frame["x"] <= rect["x"] + rect["width"] * x / 1600 <= frame["x"] + frame["width"]
+            assert frame["y"] <= rect["y"] + rect["height"] * y / 1200 <= frame["y"] + frame["height"]
         for selector in (".fl-hero .fl-eyebrow", ".fl-services .fl-section-head h2", ".fl-projects .fl-eyebrow"):
             marker = page.locator(selector).evaluate("n => getComputedStyle(n, '::before').content")
             assert marker in ("none", "normal"), (selector, marker)
@@ -118,14 +123,14 @@ def check_device_details(page, base):
     for lang, path in enumerate(("/", "/en/")):
         page.goto(base + path)
         trigger = page.get_by_role("button", name=re.compile("Fujikura FSM-62S"))
-        dialog = page.get_by_role("dialog", name="Fujikura FSM-62S")
-        expect(dialog).to_be_hidden()
+        tooltip = trigger.get_by_role("tooltip")
         trigger.press("Enter")
-        expect(dialog).to_be_visible()
-        expect(dialog.get_by_role("button", name=("Zamknij", "Close")[lang])).to_be_focused()
+        expect(trigger).to_have_attribute("aria-expanded", "true")
+        expect(tooltip).to_be_visible()
+        expect(tooltip).to_contain_text("Fujikura FSM-62S")
         page.keyboard.press("Escape")
-        expect(dialog).to_be_hidden()
-        expect(trigger).to_be_focused()
+        expect(trigger).to_have_attribute("aria-expanded", "false")
+        expect(tooltip).to_be_hidden()
         expect(page.locator('header a[href="tel:+48662211200"]')).to_have_text("+48 66 22 11 200")
         expect(page.locator('main img[alt*="VIAVI SmartClass Fiber MPOLx"]')).to_have_count(1)
         page.goto(base + PAIRS[3][lang])

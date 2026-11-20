@@ -101,7 +101,7 @@ add_filter( 'render_block_core/image', static function ( $content, $block ) {
 		);
 	}
 	$scene = $cutout ? 'fl-splicer-scene' : '';
-	if ( 'fl-section-image' === $class && 'fluke-networks-versiv-2-client-photo.jpg' === $filename ) {
+	if ( in_array( $class, array( 'fl-section-image', 'fl-card-image' ), true ) && 'fluke-networks-versiv-2-client-photo.jpg' === $filename ) {
 		$scene = 'fl-fluke-cutout';
 	}
 	if ( $cutout && 'none' === ( $block['attrs']['linkDestination'] ?? 'none' ) && false === strpos( $updated, 'wp-lightbox-container' ) ) {
@@ -110,8 +110,13 @@ add_filter( 'render_block_core/image', static function ( $content, $block ) {
 			$updated = substr_replace( $updated, fiberlan_splicer_details(), $end, 0 );
 		}
 	}
-	$source = sprintf( '<picture%s><source type="image/webp" sizes="%s" srcset="%s">',
-		$scene ? ' class="' . esc_attr( $scene ) . '"' : '', esc_attr( $sizes ), esc_attr( $webp ) );
+	// Serve the original camera file in the hero so the controls and display retain their detail.
+	$source = sprintf( '<picture%s><source type="%s" srcset="%s"%s>',
+		$scene ? ' class="' . esc_attr( $scene ) . '"' : '',
+		$cutout ? 'image/jpeg' : 'image/webp',
+		$cutout ? esc_url( $src ) : esc_attr( $webp ),
+		$cutout ? '' : ' sizes="' . esc_attr( $sizes ) . '"'
+	);
 	return preg_replace_callback(
 		'~<img\s[^>]+>~i',
 		static function ( $m ) use ( $source ) { return $source . $m[0] . '</picture>'; },

@@ -1,5 +1,13 @@
 # FIBERLAN SC · Status projektu
 
+## Wariant podglądowy z fotografiami · 4.6.0
+
+Gałąź `preview/szata-fotograficzna` bazuje na `c6e5194`. Motyw korzysta z bieżących bloków PL/EN i ustawień widżetu opinii w danej instalacji WordPressa. W hero wyświetla oryginalny plik Fujikury FSM-62S. Kadruje go maską z kompozycji `269699c`, z zachowaniem proporcji urządzenia i ekranu. Fotografie obiektów w kartach są ilustracyjne. Źródła znajdują się w [wykazie materiałów](theme/fiberlan/assets/MATERIALY.md).
+
+[Zrzuty strony głównej, usług, realizacji i kontaktu](docs/podglad-4.6.webp) pochodzą z lokalnego WordPressa.
+
+Wersję można ocenić na kopii WordPressa z aktualnymi treściami klienta. Motyw rozpoznaje stare adresy pięciu ilustracji wzorcowych i wyświetla ich fotograficzne odpowiedniki. Własne zdjęcia z biblioteki mediów zachowują pierwszeństwo.
+
 ## Edycja strony głównej z panelu bocznego · 4.5.2
 
 W **Wygląd → Dostosuj** sekcje **Strona główna · PL** i **Strona główna · EN** udostępniają pola nadtytułu, nagłówka, opisu, przycisków, zdjęcia i ALT. Podgląd pokazuje wybrany język. Publikacja zapisuje zmiany w dotychczasowych blokach strony.
