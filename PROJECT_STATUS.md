@@ -1,8 +1,8 @@
 # FIBERLAN SC · Status projektu
 
-## Wariant podglądowy z fotografiami · 4.6.0
+## Wariant podglądowy z fotografiami · 4.6.1
 
-Gałąź `preview/szata-fotograficzna` bazuje na `c6e5194`. Motyw korzysta z bieżących bloków PL/EN i ustawień widżetu opinii w danej instalacji WordPressa. W hero wyświetla oryginalny plik Fujikury FSM-62S. Kadruje go maską z kompozycji `269699c`, z zachowaniem proporcji urządzenia i ekranu. Fotografie obiektów w kartach są ilustracyjne. Źródła znajdują się w [wykazie materiałów](theme/fiberlan/assets/MATERIALY.md).
+Gałąź `preview/szata-fotograficzna` bazuje na `c6e5194`. Motyw korzysta z bieżących bloków PL/EN i ustawień widżetu opinii w danej instalacji WordPressa. W hero wyświetla oryginalny plik Fujikury FSM-62S. Na blacie widać spawarkę, obcinarkę, uchwyt i butelkę. Ich położenie, proporcje i cienie pochodzą z tego samego zdjęcia. Fotografie obiektów w kartach są ilustracyjne. Źródła znajdują się w [wykazie materiałów](theme/fiberlan/assets/MATERIALY.md).
 
 [Zrzuty strony głównej, usług, realizacji i kontaktu](docs/podglad-4.6.webp) pochodzą z lokalnego WordPressa.
 

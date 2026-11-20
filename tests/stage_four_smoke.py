@@ -70,12 +70,13 @@ def check_home_photograph(page, base):
         figure = page.locator(".fl-hero-figure")
         photo = figure.locator("picture.fl-splicer-scene img")
         photo.evaluate("img => img.decode()")
-        animation = photo.evaluate("""img => {
-          const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-          return [reduced, getComputedStyle(img).animationName];
+        lighting = photo.evaluate("""img => {
+          const layer = getComputedStyle(img.parentElement, '::before');
+          return [matchMedia('(prefers-reduced-motion: reduce)').matches,
+                  layer.animationName, layer.backgroundImage.includes(img.currentSrc),
+                  getComputedStyle(img).filter, getComputedStyle(img).animationName];
         }""")
-        assert animation[1] == ("none" if animation[0] else "fl-splicer-arrive"), animation
-        photo.evaluate("img => Promise.all(img.getAnimations().map(animation => animation.finished))")
+        assert lighting[1:] == ["none" if lighting[0] else "fl-table-light", True, "none", "none"], lighting
         mask = photo.evaluate("img => getComputedStyle(img).maskImage")
         url = re.fullmatch(r'url\("(.+)"\)', mask).group(1)
         response = page.request.get(url)
@@ -89,7 +90,7 @@ def check_home_photograph(page, base):
             object_centre = rect[axis] + rect[size] * fraction
             frame_centre = frame[axis] + frame[size] / 2
             assert abs(object_centre - frame_centre) < 2, (path, axis)
-        assert response.text().count("<path ") == 3
+        assert 'filter="url(#defocused-edge)"' in response.text()
         assert photo.evaluate("img => img.currentSrc === img.src")
         assert abs(rect["width"] / rect["height"] - 4 / 3) < .005
         for x, y in ((156, 262), (1487, 1111)):
@@ -102,7 +103,7 @@ def check_home_photograph(page, base):
         expect(photo).to_have_attribute("alt", re.compile("open and display lit" if path == "/en/" else "włączonym ekranem"))
         figure.evaluate("node => node.classList.add('is-style-fiberlan-full')")
         assert photo.evaluate("img => getComputedStyle(img).maskImage") == "none"
-        assert photo.evaluate("img => getComputedStyle(img).animationName") == "none"
+        assert photo.evaluate("img => getComputedStyle(img.parentElement, '::before').content") in ("none", "normal")
         reviews = page.locator(".fl-reviews")
         expect(reviews.get_by_role("heading")).to_have_text("Opinie z Google" if path == "/" else "Google reviews")
         expect(reviews.locator(".fl-reviews-widget")).to_have_count(1)

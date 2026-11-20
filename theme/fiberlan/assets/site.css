@@ -582,6 +582,7 @@ html[lang^='en'] .fl-nav .is-menu-open .wp-block-navigation__responsive-containe
     padding-block: clamp(1.5rem, 2.6vw, 2.8rem);
   }
 }
+.fl-hero-copy { position: relative; z-index: 1; }
 .fl-hero-copy .fl-eyebrow { letter-spacing: .19em; color: #dbe8f1; }
 .fl-hero-copy h1 { font-size: clamp(3.1rem, 5.7vw, 6.15rem); margin-block: .65rem 1.2rem; }
 .fl-hero-copy .fl-lead { max-width: 40ch; color: #f2f6fa; }
@@ -597,38 +598,66 @@ html[lang^='en'] .fl-nav .is-menu-open .wp-block-navigation__responsive-containe
   aspect-ratio: 1.53;
 }
 @supports (mask-image: url('diagrams/splicer-photo-mask.svg')) {
-  .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene::before {
+  .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide):has(.fl-splicer-scene) {
+    align-self: end;
+  }
+  /* Extend the work surface behind the photograph, in the perspective of the camera. */
+  .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide):has(.fl-splicer-scene)::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 27% 6% at 25% 94%, #08121cdd 18%, transparent 90%),
-      radial-gradient(ellipse 18% 5% at 82% 82%, #081a26d9 9%, transparent 90%),
-      radial-gradient(ellipse 8% 3% at 57% 88%, #0d2433b3, transparent 90%);
+    inset: 40% -50vw -6rem -55%;
+    transform: skewY(-2deg);
+    transform-origin: left top;
     pointer-events: none;
+    background: linear-gradient(to bottom, #70818c, #617480 5rem, #405564 clamp(13rem,22vw,24rem), #243b4c 37rem);
+    mask-image: linear-gradient(to right, transparent, black min(48vw,46rem)),
+      linear-gradient(to bottom, transparent, black .9rem);
+    mask-composite: intersect;
   }
+  .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene {
+    overflow: visible;
+  }
+  .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene::before,
   .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene img {
+    /* The contact shadows and the equipment share the photograph's coordinate system. */
     position: absolute;
     top: 50%;
     left: 50%;
-    /* Centre the complete working set in the original 1600 × 1200 frame. */
     translate: -51.35% -57.2%;
     width: 116%;
-    max-width: none;
     height: auto;
+    max-width: none;
     aspect-ratio: 4 / 3;
+  }
+  .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene::before {
+    content: '';
+    pointer-events: none;
+    /* Compensate for the brighter right side of the photographed table.
+       Multiply transfers its texture and actual shadows to the slate surface. */
+    background-image: linear-gradient(to right, white 15%, #c5c5c5 94%), var(--fl-table-photo);
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-blend-mode: multiply;
+    filter: grayscale(1) brightness(.9) contrast(3.4);
+    mix-blend-mode: multiply;
+    mask-image: linear-gradient(90deg, transparent, black 10% 92%, transparent),
+      linear-gradient(178deg, transparent 39%, black 55% 94%, transparent);
+    mask-composite: intersect;
+  }
+  .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene img {
     object-fit: contain;
     mask: url('diagrams/splicer-photo-mask.svg') center / contain no-repeat;
   }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene img {
-    animation: fl-splicer-arrive 850ms ease-out both;
+  .fl-hero-figure:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-splicer-scene::before {
+    animation: fl-table-light 850ms ease-out both;
   }
 }
-@keyframes fl-splicer-arrive {
-  from { opacity: .78; transform: translateY(.4rem); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes fl-table-light {
+  from { opacity: .8; }
+  to { opacity: 1; }
 }
 @media (max-width: 52rem) {
   .fl-hero::after {

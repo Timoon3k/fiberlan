@@ -111,8 +111,9 @@ add_filter( 'render_block_core/image', static function ( $content, $block ) {
 		}
 	}
 	// Serve the original camera file in the hero so the controls and display retain their detail.
-	$source = sprintf( '<picture%s><source type="%s" srcset="%s"%s>',
+	$source = sprintf( '<picture%s%s><source type="%s" srcset="%s"%s>',
 		$scene ? ' class="' . esc_attr( $scene ) . '"' : '',
+		$cutout ? ' style="' . esc_attr( '--fl-table-photo:url(' . wp_json_encode( esc_url_raw( $src ), JSON_UNESCAPED_SLASHES ) . ')' ) . '"' : '',
 		$cutout ? 'image/jpeg' : 'image/webp',
 		$cutout ? esc_url( $src ) : esc_attr( $webp ),
 		$cutout ? '' : ' sizes="' . esc_attr( $sizes ) . '"'

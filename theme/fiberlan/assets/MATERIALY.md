@@ -19,7 +19,7 @@ W katalogu sprzętu maska `diagrams/fluke-versiv-mask.svg` pokazuje na przezrocz
 
 ## Wariant fotograficzny 4.6
 
-Na stronie głównej przeglądarka wyświetla oryginalny JPEG Fujikury FSM-62S w proporcjach 4:3. Maska `diagrams/splicer-photo-mask.svg` pochodzi z wcześniejszej kompozycji FIBERLAN i odsłania także obcinarkę oraz niebieskie akcesorium. Tło serwerowni tworzy oddzielną warstwę. Styl bloku **Pełny kadr** pokazuje całe zdjęcie z oryginalnym tłem.
+Na stronie głównej przeglądarka wyświetla oryginalny JPEG Fujikury FSM-62S w proporcjach 4:3. Maska `diagrams/splicer-photo-mask.svg` odsłania spawarkę, obcinarkę, niebieski uchwyt i butelkę w ich oryginalnym położeniu. Osobna warstwa pobiera światłocień blatu z tego samego pliku JPEG. Obie warstwy skalują się wspólnie. Styl bloku **Pełny kadr** pokazuje całe zdjęcie z oryginalnym tłem.
 
 Pliki WebP w `scenes` to lokalne, pomniejszone fotografie ilustracyjne. Przedstawiają branże i infrastrukturę. Zdjęcia sprzętu klienta i logo zachowują swoje odrębne pochodzenie.
 
