@@ -18,6 +18,27 @@
 		syncHeader();
 	}
 
+
+	// Keep language switching available while the native WP mobile overlay is open.
+	// Build it from the same translated links used in the desktop header.
+	const languageNav = row?.querySelector('.fl-languages');
+	const mobileContent = row?.querySelector('.fl-nav .wp-block-navigation__responsive-container-content');
+	if (languageNav && mobileContent && !mobileContent.querySelector('.fl-mobile-locales')) {
+		const switcher = document.createElement('div');
+		switcher.className = 'fl-mobile-locales';
+		const label = document.createElement('span');
+		label.textContent = (document.documentElement.lang || '').toLowerCase().startsWith('en') ? 'Language' : 'Język';
+		switcher.append(label);
+		for (const original of languageNav.querySelectorAll('a[data-language]:not(.fl-language-hint)')) {
+			const link = original.cloneNode(true);
+			link.addEventListener('click', () => {
+				try { localStorage.setItem('fiberlan-language', link.dataset.language); } catch {}
+			});
+			switcher.append(link);
+		}
+		mobileContent.append(switcher);
+	}
+
 	// A focusable, icon-free tooltip: hover or keyboard focus on desktop,
 	// touch/click toggles the same description on mobile.
 	const deviceTriggers = [...document.querySelectorAll('.fl-device-trigger')];

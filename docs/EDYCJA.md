@@ -34,6 +34,14 @@ Wybierz blok **Obraz → Zastąp**. Wskaż plik z biblioteki albo prześlij nowy
 
 W **Wygląd → Edytor → Wzorce → Części szablonu → Nagłówek** wybierz blok **Logo witryny** z widoku listy. Instalator wybiera oryginalne logo z pełnym napisem SC. W tym bloku możesz zastąpić je późniejszą wersją. Motyw zachowuje proporcje grafiki. Przed dodaniem pliku nagłówek pokazuje tytuł witryny. Ustaw go na „FIBERLAN SC” w ustawieniach ogólnych WordPressa.
 
+## Nawigacja premium na komputerach i telefonach
+
+Menu zachowuje natywne bloki WordPressa i istniejące pozycje PL/EN. Od wydania 4.5.5 linki na komputerze są typograficzne, bez tła i kształtu przycisków; bieżąca strona ma cienkie podkreślenie. Przełącznik języka PL/EN jest tekstowy, bez kapsułek.
+
+W telefonie otwierasz menu przyciskiem z dwiema liniami w nagłówku. Po otwarciu widać pełnoekranowe, jednolite ciemnogranatowe tło, numerowane pozycje rozdzielone cienkimi liniami i osobny przełącznik języka na dole panelu. Zamknięcie działa natywnym przyciskiem WordPressa i klawiszem Escape. Animacja respektuje ograniczony ruch. Nie usunięto żadnego odnośnika ani bloku nawigacji.
+
+Na istniejącej witrynie, która ma zapisane własne części nagłówka, wystarczy zaktualizować motyw — nowe reguły styli obejmują również wcześniej zapisane menu, o ile zachowano klasy `fl-nav` i `fl-nav-row`. Po aktualizacji motywu wyczyść cache LiteSpeed i sprawdź menu w 320, 390, 768 i 1440 px.
+
 ## Dane kontaktowe i nawigacja
 
 W nagłówku, stopce lub na stronie kontaktowej zaznacz dane firmy. W pasku narzędzi wzorca **FIBERLAN – dane kontaktowe** wybierz **Edytuj oryginał**. Kliknij akapit z adresem, telefonem lub e-mailem i zapisz zmianę. Wszystkie wystąpienia tego wzorca w obu językach pobierają te same dane firmy. Przy zmianie telefonu lub poczty popraw zarówno widoczną treść, jak i odnośnik (tel lub mailto). Adresy docelowe przycisków sprzedażowych w treści strony edytuje się osobno. Przed publikacją potwierdź z klientem adres i oba numery.
