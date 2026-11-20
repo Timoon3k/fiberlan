@@ -17,6 +17,22 @@ function fl_seo_defaults( $id ) {
 	);
 }
 
+// Native Gutenberg sidebar reads and writes existing SEO meta via WordPress REST.
+add_action( 'init', static function () {
+	foreach ( array( 'rank_math_title', 'rank_math_description' ) as $key ) {
+		register_post_meta( 'page', $key, array(
+			'single' => true,
+			'type' => 'string',
+			'default' => '',
+			'show_in_rest' => true,
+			'sanitize_callback' => 'sanitize_text_field',
+			'auth_callback' => static function ( $allowed, $meta_key, $post_id ) {
+				return current_user_can( 'edit_post', (int) $post_id );
+			},
+		) );
+	}
+} );
+
 /** One set of editable titles and descriptions shared with Rank Math. */
 function fl_seo_meta( $id, $key ) {
 	$saved = get_post_meta( $id, 'rank_math_' . $key, true );
@@ -35,7 +51,11 @@ function fl_rank_math_ready() {
 	return function_exists( 'rank_math' ) && isset( rank_math()->head );
 }
 
-add_action( 'add_meta_boxes_page', static function () {
+add_action( 'add_meta_boxes_page', static function ( $post ) {
+	// Avoid the huge bottom SEO metabox in Gutenberg; the sidebar edits these fields.
+	if ( $post instanceof WP_Post && use_block_editor_for_post( $post ) ) {
+		return;
+	}
 	if ( class_exists( '\RankMath\Helper' ) && ! \RankMath\Helper::is_invalid_registration() ) {
 		return;
 	}

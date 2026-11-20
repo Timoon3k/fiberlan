@@ -25,22 +25,24 @@ add_action(
 	}
 );
 
-// Show the editable home introduction inside Gutenberg, not only in Customizer.
+// FIBERLAN page editor for every Gutenberg page in both languages.
 add_action( 'enqueue_block_editor_assets', static function () {
-	$post = get_post();
-	if ( ! $post || 'page' !== $post->post_type ) {
+	$screen = get_current_screen();
+	if ( ! $screen || 'post' !== $screen->base || 'page' !== $screen->post_type ) {
 		return;
 	}
-	$home_pages = array( (int) get_option( 'page_on_front' ), (int) get_option( 'fiberlan_starter_home_id' ) );
-	if ( function_exists( 'fl_page_id' ) ) {
-		$home_pages[] = (int) fl_page_id( 'home', 'en' );
-	}
-	if ( ! in_array( (int) $post->ID, array_filter( $home_pages ), true ) ) {
+	$post = get_post();
+	if ( ! $post || ! current_user_can( 'edit_post', $post->ID ) ) {
 		return;
 	}
 	$version = wp_get_theme( get_template() )->get( 'Version' );
 	wp_enqueue_script( 'fiberlan-home-editor', get_theme_file_uri( 'assets/home-editor.js' ), array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-data' ), $version, true );
 	wp_enqueue_style( 'fiberlan-home-editor', get_theme_file_uri( 'assets/home-editor.css' ), array(), $version );
+	$seo = function_exists( 'fl_seo_defaults' ) && ! ( function_exists( 'fl_rank_math_ready' ) && fl_rank_math_ready() );
+	wp_add_inline_script( 'fiberlan-home-editor', 'window.fiberlanEditorPanel = ' . wp_json_encode( array(
+		'seo' => $seo,
+		'seoDefaults' => $seo ? fl_seo_defaults( $post->ID ) : array(),
+	), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ';', 'before' );
 } );
 
 add_action(

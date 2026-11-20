@@ -1,149 +1,116 @@
-/* Native Gutenberg sidebar for the two FIBERLAN home pages. */
+/* Editable FIBERLAN content panel for every Gutenberg page in PL and EN. */
 (function () {
-  'use strict';
-  if (!window.wp || !wp.plugins || !wp.editPost || !wp.blockEditor) return;
-
-  const el = wp.element.createElement;
-  const Fragment = wp.element.Fragment;
-  const { useEffect, useRef } = wp.element;
-  const { useSelect, useDispatch } = wp.data;
-  const { TextControl, TextareaControl, Button, Notice } = wp.components;
-  const { MediaUpload, MediaUploadCheck } = wp.blockEditor;
-  const { PluginSidebar } = wp.editPost;
-
-  function hasClass(block, className) {
-    return String(block?.attributes?.className || '').split(/\s+/).includes(className);
+'use strict';
+if (!window.wp || !wp.plugins || !wp.editPost?.PluginSidebar || !wp.blockEditor) return;
+const h=wp.element.createElement;
+const {useEffect}=wp.element;
+const {useSelect,useDispatch}=wp.data;
+const {PanelBody,TextControl,TextareaControl,Button,Notice}=wp.components;
+const {MediaUpload,MediaUploadCheck}=wp.blockEditor;
+const {PluginSidebar}=wp.editPost;
+function plain(value) {
+  const div=document.createElement('div');div.innerHTML=String(value||'');return div.textContent||'';
+}
+function hasMarkup(value) {return /<\/?[a-z][^>]*>/i.test(String(value||''));}
+function leaves(root) {
+  const result=[];
+  function walk(block) {
+    if (['core/heading','core/paragraph','core/button','core/image','core/details','core/shortcode','core/spacer','core/list-item'].includes(block.name) || block.name.startsWith('fiberlan/')) result.push(block);
+    for(const child of block.innerBlocks||[])walk(child);
   }
-
-  function findHero(blocks) {
-    for (const block of blocks || []) {
-      if (block.name === 'core/group' && hasClass(block, 'fl-hero')) return block;
-      const nested = findHero(block.innerBlocks);
-      if (nested) return nested;
-    }
-    return null;
+  walk(root);return result;
+}
+function sectionTitle(root,n) {
+  if(root.attributes?.metadata?.name)return plain(root.attributes.metadata.name);
+  function find(block) {
+    if(block.name==='core/heading')return plain(block.attributes.content);
+    for(const child of block.innerBlocks||[]) {const txt=find(child);if(txt)return txt;}
+    return '';
   }
-
-  function heroTargets(hero) {
-    const found = {};
-    function walk(block) {
-      if (block.name === 'core/paragraph' && hasClass(block, 'fl-eyebrow')) found.eyebrow = block;
-      if (block.name === 'core/paragraph' && hasClass(block, 'fl-lead')) found.lead = block;
-      if (block.name === 'core/heading' && Number(block.attributes.level || 2) === 1) found.heading = block;
-      if (block.name === 'core/image' && hasClass(block, 'fl-hero-figure')) found.image = block;
-      if (block.name === 'core/buttons' && hasClass(block, 'fl-actions')) {
-        const buttons = (block.innerBlocks || []).filter(item => item.name === 'core/button');
-        found.primary = buttons[0];
-        found.secondary = buttons[1];
-      }
-      (block.innerBlocks || []).forEach(walk);
-    }
-    walk(hero);
-    return found;
+  return (find(root)||'Sekcja '+(n+1)).slice(0,60);
+}
+function Panel() {
+  const blocks=useSelect(select=>select('core/block-editor')?.getBlocks()||[],[]);
+  const meta=useSelect(select=>select('core/editor')?.getEditedPostAttribute('meta')||{},[]);
+  const postType=useSelect(select=>select('core/editor')?.getCurrentPostType(),[]);
+  const {updateBlockAttributes,selectBlock}=useDispatch('core/block-editor');
+  const {editPost}=useDispatch('core/editor');
+  const options=window.fiberlanEditorPanel||{};
+  useEffect(()=>{
+    const editor=wp.data.dispatch('core/edit-post');
+    if(editor?.openGeneralSidebar)editor.openGeneralSidebar('fiberlan-content-editor/content');
+  },[]);
+  if(postType!=='page')return null;
+  const jump=(block,label)=>h(Button,{variant:'tertiary',onClick:()=>selectBlock(block.clientId)},label||'Edytuj na podglądzie');
+  function field(block,attribute,label,multiline) {
+    const raw=block.attributes[attribute]||'';
+    if(hasMarkup(raw))return h('div',{key:attribute,className:'fl-home-editor-field'},
+      h('p',{className:'fl-home-editor-field-title'},label),
+      h('p',{className:'fl-home-editor-help'},plain(raw).slice(0,95)),
+      jump(block,'Edytuj z zachowaniem formatowania'));
+    const Control=multiline?TextareaControl:TextControl;
+    return h(Control,{key:attribute,label,value:String(raw),rows:multiline?4:undefined,
+      onChange:value=>updateBlockAttributes(block.clientId,{[attribute]:value})});
   }
-
-  function plainText(value) {
-    if (value == null) return '';
-    const box = document.createElement('div');
-    box.innerHTML = String(value);
-    return box.textContent || '';
+  function image(block) {
+    const src=block.attributes.url||'';
+    return h('div',{className:'fl-home-editor-field fl-home-editor-image',key:block.clientId},
+      h('p',{className:'fl-home-editor-field-title'},'Zdjęcie'),
+      src?h('img',{src,alt:'',className:'fl-home-editor-thumb'}):null,
+      h(MediaUploadCheck,null,h(MediaUpload,{
+        value:Number(block.attributes.id)||0,allowedTypes:['image'],
+        onSelect:media=>{
+          if(!media?.id)return;
+          updateBlockAttributes(block.clientId,{
+            id:media.id,url:media.url||media.source_url,
+            alt:media.alt||media.alt_text||block.attributes.alt||'',sizeSlug:'full'
+          });
+        },
+        render:({open})=>h(Button,{variant:'secondary',onClick:open},src?'Zastąp zdjęcie':'Dodaj zdjęcie')
+      })),
+      field(block,'alt','Tekst alternatywny ALT',false),
+      jump(block,'Kadr / podpis w podglądzie'));
   }
-
-  function HomeSidebar() {
-    const targets = useSelect(select => {
-      const blocks = select('core/block-editor')?.getBlocks() || [];
-      const hero = findHero(blocks);
-      return hero ? heroTargets(hero) : null;
-    }, []);
-    const { updateBlockAttributes, selectBlock } = useDispatch('core/block-editor');
-    const initialized = useRef(false);
-
-    useEffect(() => {
-      if (initialized.current) return;
-      initialized.current = true;
-      const editor = wp.data.dispatch('core/edit-post');
-      if (editor && typeof editor.openGeneralSidebar === 'function') {
-        editor.openGeneralSidebar('fiberlan-home/hero');
-      }
-    }, []);
-
-    function field(block, label, attribute, multiline) {
-      if (!block) return null;
-      return el(multiline ? TextareaControl : TextControl, {
-        key: label,
-        label,
-        value: plainText(block.attributes[attribute]),
-        rows: multiline ? 4 : undefined,
-        onChange: value => updateBlockAttributes(block.clientId, { [attribute]: value })
-      });
+  function entry(block,n) {
+    const key=block.clientId;
+    switch(block.name) {
+      case 'core/heading':return h('div',{key},field(block,'content','Nagłówek '+(n+1),false));
+      case 'core/paragraph':return h('div',{key},field(block,'content','Opis / tekst '+(n+1),true));
+      case 'core/list-item':return h('div',{key},field(block,'content','Element listy '+(n+1),true));
+      case 'core/button':return h('div',{key,className:'fl-home-editor-field'},
+        field(block,'text','Przycisk',false),field(block,'url','Adres przycisku',false));
+      case 'core/details':return h('div',{key},field(block,'summary','Tytuł rozwijanej sekcji',false),
+        jump(block,'Treść panelu'));
+      case 'core/shortcode':return h('div',{key},field(block,'text','Shortcode widżetu',true));
+      case 'core/spacer':return h('div',{key},field(block,'height','Wysokość odstępu',false));
+      case 'core/image':return image(block);
+      default:
+        if(block.name.startsWith('fiberlan/'))return h('div',{key,className:'fl-home-editor-field'},
+          h('p',{className:'fl-home-editor-field-title'},'Blok '+block.name.split('/')[1]),
+          jump(block,'Otwórz ustawienia bloku'));
+        return null;
     }
-
-    function buttonFields(block, prefix) {
-      if (!block) return null;
-      return el(Fragment, { key: prefix },
-        el('h3', { className: 'fl-home-editor-heading' }, prefix),
-        field(block, 'Tekst przycisku', 'text'),
-        field(block, 'Adres linku (URL lub #kotwica)', 'url')
-      );
-    }
-
-    function imageFields(block) {
-      if (!block) return null;
-      const attachmentId = Number(block.attributes.id) || 0;
-      const photo = block.attributes.url;
-      return el('div', { className: 'fl-home-editor-image' },
-        el('h3', { className: 'fl-home-editor-heading' }, 'Zdjęcie urządzenia'),
-        photo ? el('img', { src: photo, alt: '', className: 'fl-home-editor-thumb' }) : null,
-        el(MediaUploadCheck, null,
-          el(MediaUpload, {
-            value: attachmentId,
-            allowedTypes: ['image'],
-            onSelect: media => {
-              if (!media || !media.id) return;
-              updateBlockAttributes(block.clientId, {
-                id: Number(media.id),
-                url: media.url || media.source_url,
-                alt: media.alt || media.alt_text || '',
-                sizeSlug: 'full'
-              });
-            },
-            render: ({ open }) => el(Button, { variant: 'secondary', onClick: open },
-              photo ? 'Zmień zdjęcie' : 'Wybierz zdjęcie')
-          })
-        ),
-        field(block, 'Tekst alternatywny (ALT)', 'alt'),
-        el(Button, {
-          variant: 'tertiary',
-          onClick: () => selectBlock(block.clientId)
-        }, 'Zaznacz blok zdjęcia w podglądzie')
-      );
-    }
-
-    return el(PluginSidebar, {
-      name: 'hero',
-      title: 'FIBERLAN · Strona główna',
-      icon: 'edit',
-      className: 'fl-home-editor-sidebar'
-    },
-      el('div', { className: 'fl-home-editor-panel' },
-        el('h2', null, 'Edycja strony głównej'),
-        el('p', { className: 'fl-home-editor-help' },
-          'Zmieniaj pola tutaj. Zmiany pojawiają się w blokach strony. Kliknij Zapisz w górnym pasku Gutenberga, aby je opublikować.'),
-        !targets ? el(Notice, { status: 'warning', isDismissible: false },
-          'Nie znaleziono sekcji Wprowadzenie na tej stronie. Otwórz widok listy bloków i sprawdź strukturę strony.') : null,
-        targets ? el(Fragment, null,
-          field(targets.eyebrow, 'Nadtytuł', 'content'),
-          field(targets.heading, 'Nagłówek H1', 'content'),
-          field(targets.lead, 'Opis', 'content', true),
-          imageFields(targets.image),
-          buttonFields(targets.primary, 'Pierwszy przycisk'),
-          buttonFields(targets.secondary, 'Drugi przycisk'),
-          el('p', { className: 'fl-home-editor-help' },
-            'Pozostałe sekcje, zdjęcia i układ edytujesz natywnymi blokami. Otwórz Widok listy w lewym górnym rogu.')
-        ) : null
-      )
-    );
   }
-
-  wp.plugins.registerPlugin('fiberlan-home', { render: HomeSidebar, icon: 'edit' });
+  const groups=blocks.map((root,index)=>({id:root.clientId,title:sectionTitle(root,index),
+    items:leaves(root)})).filter(group=>group.items.length);
+  const seo=options.seo?h(PanelBody,{title:'SEO strony',initialOpen:false},
+    h('p',{className:'fl-home-editor-help'},'Puste pola korzystają z domyślnych danych SEO.'),
+    ...[['rank_math_title','Tytuł SEO','title'],['rank_math_description','Opis meta','description']].map(([key,label,defaultKey])=>
+      h(TextareaControl,{key,label,rows:defaultKey==='description'?4:2,
+        value:meta[key]||'',placeholder:options.seoDefaults?.[defaultKey]||'',
+        onChange:value=>editPost({meta:{...meta,[key]:value}})}))):null;
+  return h(PluginSidebar,{name:'content',title:'FIBERLAN · Edycja strony',icon:'edit',
+    className:'fl-home-editor-sidebar'},
+    h('div',{className:'fl-home-editor-panel'},
+      h('h2',null,'Edytuj sekcje strony'),
+      h('p',{className:'fl-home-editor-help'},
+        'Wybierz sekcję, zmień tekst, zdjęcia lub linki, a następnie kliknij Zapisz w górnym pasku.'),
+      groups.length?groups.map((group,index)=>h(PanelBody,{
+        key:group.id,title:(index+1)+'. '+group.title,initialOpen:index===0},
+        group.items.map(entry))):h(Notice,{status:'info',isDismissible:false},'Brak bloków do edycji.'),
+      seo,
+      h('p',{className:'fl-home-editor-help'},'Linki wewnątrz sformatowanych tekstów oraz szczegółowe ustawienia formularza edytuj bezpośrednio w blokach, aby nie usunąć formatowania.')
+    ));
+}
+wp.plugins.registerPlugin('fiberlan-content-editor',{render:Panel,icon:'edit'});
 })();

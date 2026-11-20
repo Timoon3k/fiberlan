@@ -65,3 +65,12 @@
     overflow: hidden;
   }
 }
+
+/* All-page block inspector, responsive and keyboard accessible. */
+.fl-home-editor-panel .components-panel__body{margin:0 -.5rem}
+.fl-home-editor-panel .components-panel__body-toggle{font-weight:650}
+.fl-home-editor-panel .components-panel__body .components-base-control{margin-bottom:1rem}
+.fl-home-editor-field{margin-bottom:1.1rem}
+.fl-home-editor-field-title{font-weight:600;margin:0 0 .35rem}
+.fl-home-editor-field .components-button{height:auto;min-height:2.2rem;white-space:normal;text-align:left}
+.fl-home-editor-panel .components-panel__body-toggle:focus-visible{outline:2px solid #2775ff}
