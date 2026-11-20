@@ -1,5 +1,9 @@
 # FIBERLAN SC · Status projektu
 
+## Edycja strony głównej z panelu bocznego · 4.5.2
+
+W **Wygląd → Dostosuj** sekcje **Strona główna · PL** i **Strona główna · EN** udostępniają pola nadtytułu, nagłówka, opisu, przycisków, zdjęcia i ALT. Podgląd pokazuje wybrany język. Publikacja zapisuje zmiany w dotychczasowych blokach strony.
+
 ## Sprzęt i nawigacja mobilna · 4.5.1
 
 Porównano ponownie przesłany `www1.docx` z plikiem użytym w etapie 4H. Treści dokumentu są widoczne na stronach O nas, Usługi, Sprzęt i Realizacje w PL i EN. Format numeru w części wspólnej to **+48 66 22 11 200**. W katalogu uzupełniono nazwy Fujikura FSM-62S, VIAVI SmartClass Fiber MPOLx i Fluke Networks DSX-5000. Fotografia Fluke pokazuje platformę Versiv 2 z widocznym ekranem FiberInspector Pro.

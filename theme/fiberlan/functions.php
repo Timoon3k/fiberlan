@@ -12,6 +12,7 @@ require_once __DIR__ . '/inc/footer.php';
 require_once __DIR__ . '/inc/media.php';
 require_once __DIR__ . '/inc/starter.php';
 require_once __DIR__ . '/inc/responsive-media.php';
+require_once __DIR__ . '/inc/customize-hero.php';
 
 add_action(
 	'after_setup_theme',

@@ -1,4 +1,10 @@
-# Edycja witryny FIBERLAN w Gutenbergu
+# Edycja witryny FIBERLAN
+
+## Wprowadzenie w panelu po lewej
+
+W WordPress wybierz **Wygląd → Dostosuj**, a następnie **Strona główna · PL** lub **Strona główna · EN**. Po lewej znajdziesz nadtytuł, nagłówek, opis, zdjęcie, tekst ALT oraz teksty i adresy obu przycisków. Wybierz **Zmień obraz**, aby przesłać plik albo wybrać go z biblioteki. Po zmianie zdjęcia sprawdź ALT.
+
+Podgląd po prawej przechodzi do wybranego języka. Dopiero kliknięcie **Opublikuj** zapisuje zmiany w blokach danej strony. WordPress przechowuje zmiany w historii wersji strony.
 
 ## Strona i jej sekcje
 
