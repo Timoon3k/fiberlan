@@ -88,3 +88,13 @@ Dostarczony plik BRITANIC.ttf nie zawiera m.in. znaków ą, ć, ę, ł, ń, ś, 
 W **Wygląd → Edytor → Szablony** wybierz szablon PL lub EN. W szablonie 404 kliknij nagłówek, opis albo przycisk. Po zaznaczeniu przycisku możesz też zmienić adres powrotu. Aby zmienić wspólny układ nowych realizacji, otwórz część **Realizacja · tytuł i treść**. Tytuł, zajawkę i zdjęcia konkretnego projektu wpisuj na jego stronie.
 
 Na stronie głównej układ wydania 4.4 prowadzi od wprowadzenia i paska doświadczenia do usług, realizacji, sekcji Ribbon i kontaktu. Na stronie aktualizowanej możesz odtworzyć tę kolejność przez przeciągnięcie grupy Ribbon przed końcową sekcję kontaktową. W tytułach trzech kart realizacji ustaw odnośniki do odpowiednich opisów w tym samym języku. W pierwszej sekcji styl obrazu **Pełny kadr** pokazuje również tło oryginalnej fotografii.
+
+## Motyw fotograficzny 4.7.1 — edycje PL/EN i treści ze zrzutów
+
+Ta aktualizacja jest przeznaczona **wyłącznie dla gałęzi `preview/szata-fotograficzna`**. Zachowuje jej zdjęcia, menu mobilne, animacje, nagłówek i stylistykę 4.7.x. Nie zastępuj motywu paczką 4.6 z gałęzi main.
+
+W **O nas / About** korygujemy dwukolumnowy układ, dodajemy edytowalne miejsce na zdjęcie zespołu i pokazujemy pełną treść dotychczasowych rozwijanych bloków jako zwykłe nagłówki i akapity. Na stronie Usługi / Services domyślne fotografie zastępcze przechodzą na neutralne obrazy `photo-placeholder.svg`. Później użyj w Gutenbergu **Obraz → Zastąp**, aby dodać zdjęcia klienta. Na podstronie Sprzęt / Equipment wprowadzamy naprzemienne, poziome sekcje sprzętu, nowy placeholder w nagłówku i skrócony lead; oryginalny rozbudowany opis jest zachowany w osobnej sekcji poniżej. W Realizacje / Projects zostają dotychczasowe filtrowane realizacje; dodane są cztery obszary wdrożeń PL/EN z nowym opisem użytkownika oraz galeria czterech edytowalnych zdjęć. Sekcja „Zakresy wdrożeń / Types of installation” zostaje usunięta.
+
+**Istniejące strony:** po aktualizacji motywu **i** FIBERLAN Core do 4.7.1 oraz wejściu do administracji, jednokrotna aktualizacja dopasowuje zapisane w bazie bloki PL/EN. WordPress zachowuje historię rewizji. Jeśli edytor strony jest zablokowany, aktualizacja tej strony nastąpi przy następnej wizycie administratora. Operacja nie nadpisuje szablonów nagłówka, stopki, opinii Google, formularzy ani obrazów w innych podstronach.
+
+**Ważne:** zrób kopię bazy WordPress przed aktualizacją. Przed publikacją sprawdź dopasowanie własnych treści i zdjęć do nowych układów na witrynie staging.
