@@ -23,7 +23,7 @@ function fl_layout_add_class( &$block, $new_class ) {
 	}
 	$block['attrs']['className'] = trim( $old_class . ' ' . $new_class );
 	foreach ( $block['innerContent'] as &$fragment ) {
-		if ( ! is_string( $fragment ) || ! false !== strpos( $fragment, 'class=' ) ) {
+		if ( ! is_string( $fragment ) || false === strpos( $fragment, 'class=' ) ) {
 			continue;
 		}
 		$from = 'class="wp-block-group ' . esc_attr( $old_class ) . '"';
@@ -209,7 +209,7 @@ function fl_layout_equipment( $blocks, $lang, &$changed ) {
 	unset( $section );
 	if ( $intro ) {
 		// Preserve the longer original user-written text below the concise hero.
-		$sentences = preg_split( '/(?<=[.!?])\\s+(?=\\p{Lu})/u', $intro, -1, PREG_SPLIT_NO_EMPTY );
+		$sentences = preg_split( '/(?<=[.!?])\s+(?=\p{Lu})/u', $intro, -1, PREG_SPLIT_NO_EMPTY );
 		$paragraphs = '';
 		if ( is_array( $sentences ) && count( $sentences ) >= 3 ) {
 			$mid = (int) ceil( count( $sentences ) / 2 );
