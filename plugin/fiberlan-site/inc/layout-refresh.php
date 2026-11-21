@@ -294,7 +294,7 @@ function fl_layout_equipment( $blocks, $lang, &$changed ) {
 
 function fl_layout_section_has_heading( $block, $labels ) {
 	if ( 'core/heading' === ( $block['blockName'] ?? '' )
-		&& in_array( trim( wp_strip_all_tags( $block['innerHTML'] ?? '' ) ), $labels, true ) ) {
+		&& in_array( trim( html_entity_decode( wp_strip_all_tags( $block['innerHTML'] ?? '' ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) ), $labels, true ) ) {
 		return true;
 	}
 	foreach ( $block['innerBlocks'] ?? array() as $child ) {
@@ -456,10 +456,12 @@ function fl_group_story_copy( &$parent ) {
 
 /** Target the two named service visuals, including images selected in an earlier WordPress installation. */
 function fl_refresh_service_slots( &$block, $lang, $home ) {
-	$labels = $home
-		? array( 'Spawanie światłowodów', 'Fibre optic splicing', 'Sieci komputerowe i miedziane', 'Copper cabling and computer networks', 'Computer and copper networks' )
-		: array();
-	$labels = array_merge( $labels, array( 'Zastosowania światłowodów', 'Fibre optic applications', 'Fibre applications', 'Applications of fibre optics' ) );
+	$labels = array(
+		'Spawanie światłowodów', 'Fibre optic splicing',
+		'Zastosowania światłowodów', 'Zastosowanie światłowodów', 'Fibre optic applications', 'Fibre applications', 'Applications of fibre optics',
+		'Sieci komputerowe i miedziane', 'Sieci komputerowe oraz miedziane', 'Sieci komputerowe i okablowanie miedziane',
+		'Copper cabling and computer networks', 'Computer and copper networks',
+	);
 	$class = $home ? 'fl-service-card' : 'fl-section';
 	if ( fl_layout_has_class( $block, $class ) && fl_layout_section_has_heading( $block, $labels ) ) {
 		fl_replace_service_slot( $block, $lang, $home ? 'fl-card-image' : 'fl-section-image' );
