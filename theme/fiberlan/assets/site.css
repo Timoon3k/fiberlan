@@ -1390,8 +1390,10 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
 .fl-open-info p { max-width: 66ch; }
 .fl-ribbon-copy > p + p { margin-block-start: 1rem; }
 .fl-ribbon-copy details { background: transparent; border: none; padding: 0; }
-.fl-ribbon-copy details summary { display: none; }
-.fl-ribbon-copy details > p { display: block; margin: 0; }
+/* Keep any existing Ribbon details on the homepage fully operable.
+   About-page details are converted into ordinary editable blocks. */
+.fl-ribbon-copy details summary { display: list-item; cursor: pointer; }
+.fl-ribbon-copy details[open] > p { margin-top: .75rem; }
 
 /* Equipment hero: short overview and a neutral visual slot, not a giant wall
    of text over the server background. */

@@ -209,8 +209,17 @@ function fl_layout_equipment( $blocks, $lang, &$changed ) {
 	unset( $section );
 	if ( $intro ) {
 		// Preserve the longer original user-written text below the concise hero.
+		$sentences = preg_split( '/(?<=[.!?])\\s+(?=\\p{Lu})/u', $intro, -1, PREG_SPLIT_NO_EMPTY );
+		$paragraphs = '';
+		if ( is_array( $sentences ) && count( $sentences ) >= 3 ) {
+			$mid = (int) ceil( count( $sentences ) / 2 );
+			$paragraphs .= fl_paragraph( implode( ' ', array_slice( $sentences, 0, $mid ) ) );
+			$paragraphs .= fl_paragraph( implode( ' ', array_slice( $sentences, $mid ) ) );
+		} else {
+			$paragraphs = fl_paragraph( $intro );
+		}
 		$details = fl_section( fl_heading( fl_text( $lang, 'Nasze zaplecze techniczne', 'Our technical approach' ) )
-			. fl_paragraph( $intro ), 'fl-reading', 'fl-equipment-intro' );
+			. $paragraphs, 'fl-reading', 'fl-equipment-intro' );
 		$inserted = parse_blocks( $details );
 		array_splice( $blocks, 1, 0, $inserted );
 		$changed = true;
