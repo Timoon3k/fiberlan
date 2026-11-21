@@ -1230,9 +1230,7 @@
   .fl-subhero > .fl-reading .fl-eyebrow { grid-column: 1 / -1; }
   .fl-subhero > .fl-reading h1 { margin: 0; }
   .fl-subhero > .fl-reading .fl-lead { margin: 0; border-inline-start: 1px solid var(--fl-border-dark); padding-inline-start: clamp(1.5rem,3vw,3rem); }
-  .fl-section:has(+ .fl-ribbon) > .fl-reading { max-width: var(--fl-width); display: grid; grid-template-columns: minmax(0,1fr) minmax(0,.95fr); column-gap: clamp(2rem,6vw,6rem); }
-  .fl-section:has(+ .fl-ribbon) > .fl-reading h2 { grid-column: 1; grid-row: 1 / span 2; max-width: 15ch; }
-  .fl-section:has(+ .fl-ribbon) > .fl-reading p { grid-column: 2; margin-block-end: .5rem; }
+  /* Let Gutenberg About story and normal text flow choose their own columns. */
 }
 .fl-service-card:has(.fl-card-body a:focus-visible), .fl-case-grid article:focus-within {
   outline: 2px solid #4f79c9;
@@ -1583,4 +1581,376 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
   .fl-main .fl-subhero:first-child + .fl-section:last-child > .fl-contact-layout { display: contents; }
   .fl-main .fl-subhero:first-child + .fl-section:last-child .fl-contact-sidebar { grid-area: 2 / 1; align-self: start; }
   .fl-main .fl-subhero:first-child + .fl-section:last-child .fl-form-panel { grid-area: 1 / 2 / span 2; }
+}
+
+
+/* FIBERLAN 4.6: client-controlled photos have understated native placeholders. */
+.fl-photo-placeholder {
+  position: relative;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  background: #edf1f5;
+  border: 1px solid #d2dae4;
+  overflow: hidden;
+}
+.fl-photo-placeholder img,
+.fl-section-image.fl-photo-placeholder img,
+.fl-subhero-visual.fl-photo-placeholder img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
+  object-position: center;
+  background: #edf1f5;
+}
+.fl-team-photo.fl-photo-placeholder img { aspect-ratio: 5 / 4; }
+.fl-photo-placeholder figcaption { padding: .6rem .85rem; color: #546479; background: #edf1f5; }
+
+/* About: an actual photo slot on the left; existing prose retains its own width.
+   Blocks in Gutenberg remain individually editable. */
+.fl-section > .fl-shell.fl-about-story {
+  display: grid;
+  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5.5rem);
+  max-width: var(--fl-width);
+  min-width: 0;
+}
+.fl-about-story > .fl-team-photo {
+  grid-column: 1;
+  grid-row: 1 / span 12;
+  align-self: start;
+}
+.fl-about-story > :not(.fl-team-photo) {
+  grid-column: 2;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+}
+.fl-about-story > :not(.fl-team-photo) + :not(.fl-team-photo) {
+  margin-top: .9rem;
+}
+.fl-about-story .fl-about-story-copy > * { margin: 0; }
+.fl-about-story .fl-about-story-copy > * + * { margin-block-start: .9rem; }
+.fl-about-story :is(h2,h3) { max-width: 20ch; }
+.fl-open-info {
+  border-top: 1px solid #bcc9d8;
+  padding-block: 1.15rem;
+}
+.fl-open-info h3 { margin-block-end: .5rem; }
+.fl-open-info p { max-width: 66ch; }
+.fl-ribbon-copy > p + p { margin-block-start: 1rem; }
+.fl-ribbon-copy details { background: transparent; border: none; padding: 0; }
+/* Keep any existing Ribbon details on the homepage fully operable.
+   About-page details are converted into ordinary editable blocks. */
+.fl-ribbon-copy details summary { display: list-item; cursor: pointer; }
+.fl-ribbon-copy details[open] > p { margin-top: .75rem; }
+
+/* Equipment hero: short overview and a neutral visual slot, not a giant wall
+   of text over the server background. */
+.fl-subhero.fl-equipment-hero {
+  background: #0b192b;
+  background-image: none;
+}
+.fl-subhero.fl-equipment-hero > .fl-reading,
+.fl-subhero.fl-equipment-hero > .fl-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+  align-items: center;
+  gap: .7rem clamp(2rem, 5.5vw, 5rem);
+}
+.fl-subhero.fl-equipment-hero > .fl-reading > :not(.fl-subhero-visual) { grid-column: 1; margin-inline: 0; }
+.fl-subhero.fl-equipment-hero > .fl-reading > .fl-subhero-visual {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+}
+.fl-subhero.fl-equipment-hero > .fl-reading > .fl-eyebrow { grid-row: 1; }
+.fl-subhero.fl-equipment-hero > .fl-reading > h1 { grid-row: 2; }
+.fl-subhero.fl-equipment-hero > .fl-reading > .fl-lead { grid-row: 3; }
+.fl-subhero.fl-equipment-hero .fl-lead {
+  max-width: 49ch;
+  font-size: clamp(1.05rem, 1.2vw, 1.25rem);
+  line-height: 1.55;
+  border: 0;
+  padding-inline-start: 0;
+}
+.fl-equipment-intro { background: #f4f6f9; }
+.fl-equipment-intro .fl-reading { max-width: 66rem; }
+.fl-equipment-intro .fl-reading p { max-width: 74ch; }
+
+/* Equipment is one sequence of balanced editorial rows; photo/copy alternate.
+   This overrides the previous "featured first item plus two-column cards". */
+.fl-section > .fl-shell.fl-equipment {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  max-width: var(--fl-width);
+}
+.fl-section .fl-equipment > .fl-equipment-item,
+.fl-section .fl-equipment > .fl-equipment-item:first-child {
+  display: grid;
+  grid-column: auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 5.5vw, 6rem);
+  margin: 0;
+  padding-block: clamp(2.25rem, 4.8vw, 5rem);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #b6c4d4;
+  border-radius: 0;
+}
+.fl-section .fl-equipment > .fl-equipment-item:first-child .fl-equipment-copy { padding: 0; }
+.fl-section .fl-equipment > .fl-equipment-item > .fl-section-image {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  width: 100%;
+}
+.fl-section .fl-equipment > .fl-equipment-item > .fl-equipment-copy {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+.fl-section .fl-equipment > .fl-equipment-item:nth-child(even) > .fl-section-image { grid-column: 2; }
+.fl-section .fl-equipment > .fl-equipment-item:nth-child(even) > .fl-equipment-copy { grid-column: 1; }
+.fl-equipment-item .fl-section-image img { max-height: 26rem; object-fit: contain; }
+.fl-equipment-item .fl-equipment-copy h2 { font-size: clamp(1.7rem, 2.5vw, 3rem); line-height: 1.1; }
+.fl-equipment-item .fl-equipment-copy p { max-width: 63ch; }
+
+/* Projects: four scoped cases and a replaceable grid of real Gutenberg images. */
+.fl-project-showcase { background: #e9f0f7; }
+.fl-project-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 2.7vw, 3.5rem);
+  margin-block-start: 1.6rem;
+}
+.fl-project-feature {
+  border-top: 1px solid #9babbe;
+  padding-top: 1.2rem;
+}
+.fl-project-feature h3 {
+  max-width: 23ch;
+  font-size: clamp(1.3rem, 1.7vw, 1.8rem);
+}
+.fl-project-feature > p:not(.fl-project-feature-label) {
+  max-width: 67ch;
+  margin-block-start: .5rem;
+  color: #33445b;
+}
+.fl-project-feature .fl-project-feature-label {
+  margin-top: .85rem;
+  color: #28519f;
+  font-size: .76rem;
+  font-weight: 750;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.fl-project-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(.9rem, 2vw, 2rem);
+  margin-block-start: 1.5rem;
+}
+.fl-project-gallery > .wp-block-image { margin: 0; }
+.fl-project-gallery img { width: 100%; aspect-ratio: 8 / 5; }
+@media (max-width: 60rem) {
+  .fl-section > .fl-shell.fl-about-story { gap: 1.7rem; }
+}
+@media (max-width: 48rem) {
+  .fl-section > .fl-shell.fl-about-story,
+  .fl-subhero.fl-equipment-hero > .fl-reading,
+  .fl-subhero.fl-equipment-hero > .fl-split,
+  .fl-section .fl-equipment > .fl-equipment-item,
+  .fl-section .fl-equipment > .fl-equipment-item:first-child {
+    grid-template-columns: minmax(0,1fr);
+    gap: 1.35rem;
+  }
+  .fl-about-story > .fl-team-photo,
+  .fl-about-story > :not(.fl-team-photo),
+  .fl-subhero.fl-equipment-hero > .fl-reading > :not(.fl-subhero-visual),
+  .fl-subhero.fl-equipment-hero > .fl-reading > .fl-subhero-visual,
+  .fl-section .fl-equipment > .fl-equipment-item > .fl-section-image,
+  .fl-section .fl-equipment > .fl-equipment-item > .fl-equipment-copy,
+  .fl-section .fl-equipment > .fl-equipment-item:nth-child(even) > .fl-section-image,
+  .fl-section .fl-equipment > .fl-equipment-item:nth-child(even) > .fl-equipment-copy {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .fl-project-feature-grid { grid-template-columns: minmax(0,1fr); }
+  .fl-subhero.fl-equipment-hero .fl-lead { max-width: 66ch; }
+}
+@media (max-width: 37.5rem) {
+  .fl-project-gallery { grid-template-columns: minmax(0,1fr); }
+}
+
+
+/* FIBERLAN 4.7.1 — visual bridge for the existing photographic design.
+   Page photographs and the 4.7 menu, animations and contact layout are intact. */
+:where(.wp-site-blocks, .editor-styles-wrapper) .fl-photo-placeholder {
+  background: #f1f5f8;
+  border-color: #c5d4df;
+  border-radius: .25rem;
+}
+:where(.wp-site-blocks, .editor-styles-wrapper) .fl-photo-placeholder > img {
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
+  height: auto;
+  max-height: none;
+  background: #f1f5f8;
+}
+.fl-about-story {
+  gap: clamp(1.7rem, 5.5vw, 6rem);
+}
+.fl-about-story > .fl-team-photo {
+  align-self: center;
+}
+.fl-about-story .fl-team-photo img {
+  aspect-ratio: 5 / 4;
+}
+.fl-about-story > .fl-about-story-copy h2,
+.fl-project-showcase h2,
+.fl-project-photos h2 {
+  color: #092437;
+}
+.fl-about-story .fl-about-story-copy p,
+.fl-project-feature > p {
+  color: #273f50;
+}
+.fl-open-info {
+  border-top-color: #b1c5d3;
+  padding-block: clamp(1rem, 1.5vw, 1.5rem);
+}
+
+/* The equipment overview now has a real image block, not the stock photograph
+   rendered as an absolute background under the typography. */
+.fl-subhero.fl-equipment-hero,
+.fl-subhero.fl-equipment-hero:has(.fl-subhero-visual) {
+  background: linear-gradient(112deg, #031928 0%, #0b2b42 100%);
+  isolation: isolate;
+}
+.fl-subhero.fl-equipment-hero > .fl-split,
+.fl-subhero.fl-equipment-hero > .fl-reading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  align-items: center;
+  gap: clamp(1rem, 4vw, 4rem);
+  padding-block: clamp(2.5rem, 4.8vw, 5rem);
+}
+.fl-subhero.fl-equipment-hero > .fl-split > .fl-split-copy {
+  grid-column: 1;
+  min-width: 0;
+}
+.fl-subhero.fl-equipment-hero .fl-split-copy h1 { margin-block: .5rem .8rem; }
+.fl-subhero.fl-equipment-hero .fl-split-copy .fl-lead {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  max-width: 49ch;
+  font-size: clamp(1rem, 1.35vw, 1.32rem);
+  line-height: 1.55;
+}
+.fl-subhero.fl-equipment-hero:has(.fl-subhero-visual) .fl-subhero-visual {
+  position: relative;
+  z-index: auto;
+  inset: auto;
+  display: block;
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #7891a3;
+  border-radius: .15rem;
+  overflow: hidden;
+  opacity: 1;
+}
+.fl-subhero.fl-equipment-hero:has(.fl-subhero-visual) .fl-subhero-visual::after {
+  content: none;
+  display: none;
+}
+.fl-subhero.fl-equipment-hero:has(.fl-subhero-visual) .fl-subhero-visual > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
+}
+.fl-subhero.fl-equipment-hero > .fl-reading > .fl-eyebrow,
+.fl-subhero.fl-equipment-hero > .fl-reading > h1,
+.fl-subhero.fl-equipment-hero > .fl-reading > .fl-lead {
+  grid-column: 1;
+}
+.fl-subhero.fl-equipment-hero > .fl-reading > .fl-eyebrow { grid-row: 1; }
+.fl-subhero.fl-equipment-hero > .fl-reading > h1 { grid-row: 2; }
+.fl-subhero.fl-equipment-hero > .fl-reading > .fl-lead { grid-row: 3; }
+.fl-equipment-intro { background: #eef4f8; }
+.fl-equipment-intro > .fl-reading { padding-block: clamp(2.25rem, 4.5vw, 4.5rem); }
+.fl-equipment-intro > .fl-reading > p {
+  max-width: 72ch;
+  line-height: 1.7;
+}
+.fl-section .fl-equipment > .fl-equipment-item,
+.fl-section .fl-equipment > .fl-equipment-item:first-child {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid #b0c5d3;
+  border-radius: 0;
+}
+.fl-section .fl-equipment > .fl-equipment-item:last-child {
+  border-bottom: 1px solid #b0c5d3;
+}
+.fl-section .fl-equipment > .fl-equipment-item > .fl-section-image {
+  border: 1px solid #cfdae2;
+  border-radius: .25rem;
+  overflow: hidden;
+}
+.fl-section .fl-equipment > .fl-equipment-item > .fl-equipment-copy > h2 {
+  font-size: clamp(1.7rem, 2.8vw, 3.1rem);
+  line-height: 1.12;
+}
+.fl-section .fl-equipment > .fl-equipment-item > .fl-equipment-copy > p {
+  line-height: 1.65;
+}
+.fl-project-showcase { background: #eaf1f6; }
+.fl-project-feature {
+  border-top-color: #a7bccd;
+}
+.fl-project-feature .fl-project-feature-label {
+  color: #075b9a;
+}
+.fl-project-feature > p:not(.fl-project-feature-label) {
+  color: #354b5d;
+  line-height: 1.65;
+}
+.fl-project-photos {
+  background: #f7f9fc;
+}
+.fl-project-gallery .fl-photo-placeholder {
+  border: 1px solid #c7d6e2;
+  margin: 0;
+}
+@media (max-width: 48rem) {
+  .fl-subhero.fl-equipment-hero > .fl-split,
+  .fl-subhero.fl-equipment-hero > .fl-reading {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    padding-block: 2.3rem;
+  }
+  .fl-subhero.fl-equipment-hero > .fl-split > .fl-split-copy,
+  .fl-subhero.fl-equipment-hero > .fl-reading > :is(.fl-eyebrow,h1,.fl-lead),
+  .fl-subhero.fl-equipment-hero:has(.fl-subhero-visual) .fl-subhero-visual {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .fl-subhero.fl-equipment-hero .fl-split-copy .fl-lead { max-width: 62ch; }
+  .fl-section .fl-equipment > .fl-equipment-item,
+  .fl-section .fl-equipment > .fl-equipment-item:first-child {
+    padding-block: clamp(1.7rem, 5vw, 3rem);
+  }
 }
