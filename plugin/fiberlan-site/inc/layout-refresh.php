@@ -23,7 +23,7 @@ function fl_layout_add_class( &$block, $new_class ) {
 	}
 	$block['attrs']['className'] = trim( $old_class . ' ' . $new_class );
 	foreach ( $block['innerContent'] as &$fragment ) {
-		if ( ! is_string( $fragment ) || ! str_contains( $fragment, 'class=' ) ) {
+		if ( ! is_string( $fragment ) || ! false !== strpos( $fragment, 'class=' ) ) {
 			continue;
 		}
 		$from = 'class="wp-block-group ' . esc_attr( $old_class ) . '"';
@@ -70,7 +70,12 @@ function fl_layout_open_details( $blocks, $lang, &$changed ) {
 	foreach ( $blocks as $index => $block ) {
 		if ( 'core/details' === ( $block['blockName'] ?? '' ) ) {
 			$summary = fl_layout_summary( $block, $lang );
-			$content = fl_heading( $summary, 3 ) . serialize_blocks( $block['innerBlocks'] ?? array() );
+			$details = serialize_blocks( $block['innerBlocks'] ?? array() );
+			if ( '' === trim( $details ) && preg_match( '~</summary>(.*?)</details>~isu', $block['innerHTML'] ?? '', $copy ) ) {
+				$plain = trim( wp_strip_all_tags( $copy[1] ) );
+				$details = $plain ? fl_paragraph( $plain ) : '';
+			}
+			$content = fl_heading( $summary, 3 ) . $details;
 			$replacement = parse_blocks( fl_group( 'fl-open-info', $content ) );
 			$blocks[ $index ] = $replacement[0];
 			$changed = true;
@@ -133,7 +138,12 @@ function fl_layout_services( $blocks, $lang, &$changed ) {
 }
 
 function fl_layout_replace_images( &$block, $lang, &$changed ) {
-	foreach ( $block['innerBlocks'] ?? array() as &$child ) {
+	if ( empty( $block['innerBlocks'] ) ) {
+		return;
+	}
+	// Iterate the actual nested array by reference: ?? would create a copy and
+	// silently discard replaced image blocks.
+	foreach ( $block['innerBlocks'] as &$child ) {
 		if ( 'core/image' === ( $child['blockName'] ?? '' )
 			&& ! fl_layout_has_class( $child, 'fl-photo-placeholder' ) ) {
 			$alt = wp_strip_all_tags( $child['attrs']['alt'] ?? '' );
