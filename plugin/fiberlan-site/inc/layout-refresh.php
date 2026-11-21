@@ -224,6 +224,26 @@ function fl_layout_lead( &$blocks, $lang, &$changed, &$original ) {
 	unset( $block );
 }
 
+
+/**
+ * EXFO currently uses a stock illustration in the fourth equipment row.
+ * Replace only this particular image; keep the client-supplied Fujikura,
+ * Fluke and VIAVI photographs.
+ */
+function fl_layout_equipment_exfo_photo( &$blocks, $lang, &$changed ) {
+	foreach ( $blocks as &$block ) {
+		if ( fl_layout_has_class( $block, 'fl-equipment-item' )
+			&& false !== stripos( serialize_block( $block ), 'EXFO' ) ) {
+			fl_layout_replace_images( $block, $lang, $changed );
+			continue;
+		}
+		if ( ! empty( $block['innerBlocks'] ) ) {
+			fl_layout_equipment_exfo_photo( $block['innerBlocks'], $lang, $changed );
+		}
+	}
+	unset( $block );
+}
+
 function fl_layout_equipment( $blocks, $lang, &$changed ) {
 	$intro = '';
 	foreach ( $blocks as &$section ) {
@@ -267,6 +287,7 @@ function fl_layout_equipment( $blocks, $lang, &$changed ) {
 		array_splice( $blocks, 1, 0, $inserted );
 		$changed = true;
 	}
+	fl_layout_equipment_exfo_photo( $blocks, $lang, $changed );
 	return $blocks;
 }
 

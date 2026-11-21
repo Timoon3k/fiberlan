@@ -217,7 +217,9 @@ function fl_equipment_content( $lang, $title ) {
 	$catalogue = '';
 	foreach ( $items as list( $image, $pl, $en, $copy_pl, $copy_en, $anchor ) ) {
 		$name = fl_text( $lang, $pl, $en );
-		$visual = fl_equipment_visual( $image, $lang );
+		$visual = 'service-splice' === $image
+			? fl_photo_placeholder( $lang, 'fl-section-image', $name )
+			: fl_equipment_visual( $image, $lang );
 		$copy = fl_heading( $name ) . fl_paragraph( fl_text( $lang, $copy_pl, $copy_en ) )
 			. fl_button( fl_text( $lang, 'Zobacz powiązaną usługę', 'View related service' ), fl_url( 'services', $lang ) . '#' . $anchor );
 		$catalogue .= fl_group( 'fl-equipment-item', $visual . fl_group( 'fl-equipment-copy', $copy ), 'article' );
