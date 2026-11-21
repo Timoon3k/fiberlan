@@ -3,7 +3,7 @@
  * Plugin Name: FIBERLAN Core
  * Text Domain: fiberlan-core
  * Description: Powiązania językowe, katalog realizacji i zapytania ofertowe FIBERLAN.
- * Version: 4.5.2
+ * Version: 4.6.0
  * Author: Tomasz Majewski
  * Author URI: https://majewskitomasz.pl
  * Requires at least: 6.6
@@ -11,12 +11,13 @@
  */
 defined( 'ABSPATH' ) || exit;
 define( 'FL_SITE_DIR', __DIR__ );
-define( 'FL_SITE_VERSION', '4.5.2' );
+define( 'FL_SITE_VERSION', '4.6.0' );
 require_once __DIR__ . '/inc/languages.php';
 require_once __DIR__ . '/inc/projects.php';
 require_once __DIR__ . '/inc/contact.php';
 require_once __DIR__ . '/inc/content.php';
 require_once __DIR__ . '/inc/install.php';
+require_once __DIR__ . '/inc/layout-refresh.php';
 require_once __DIR__ . '/inc/navigation.php';
 require_once __DIR__ . '/inc/seo.php';
 require_once __DIR__ . '/inc/schema.php';

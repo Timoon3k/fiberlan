@@ -1,6 +1,6 @@
 # FIBERLAN SC · Motyw blokowy WordPress
 
-FIBERLAN SC 4.5.1 to dwujęzyczna witryna WordPress. Motyw blokowy w `theme/fiberlan` odpowiada za wygląd strony i edytora, a `theme/fiberlan-child` dziedziczy jego szablony i paletę, dodaje wzorzec karty usługi oraz własny układ fotorelacji. Wtyczka **FIBERLAN Core** w `plugin/fiberlan-site` obsługuje powiązania językowe, katalog realizacji, formularz, SEO i integrację zgód. Instalacja korzysta z gotowych plików PHP, CSS i JavaScript.
+FIBERLAN SC 4.6.0 to dwujęzyczna witryna WordPress. Motyw blokowy w `theme/fiberlan` odpowiada za wygląd strony i edytora, a `theme/fiberlan-child` dziedziczy jego szablony i paletę, dodaje wzorzec karty usługi oraz własny układ fotorelacji. Wtyczka **FIBERLAN Core** w `plugin/fiberlan-site` obsługuje powiązania językowe, katalog realizacji, formularz, SEO i integrację zgód. Instalacja korzysta z gotowych plików PHP, CSS i JavaScript.
 
 [Odbiór wydania 4.4.0](docs/ODBIOR-4H.md)
 
@@ -39,3 +39,9 @@ Treść strony znajduje się w edytorze stron. Elementy wspólne są w Edytorze 
 [Konfiguracja SMTP, CookieYes i publikacja](docs/HOSTING.md)
 
 [SEO, Google Ads i wydajność](docs/SEO-KAMPANIE-WYDAJNOSC.md)
+
+## Aktualizacja 4.6.0 — istniejące strony
+
+Po wgraniu **obu** paczek (motyw bazowy 4.6.0 i wtyczka FIBERLAN Core 4.6.0) odwiedź WordPress jako administrator. Jednorazowa, wersjonowana migracja zaktualizuje bloki O nas, Usługi, Sprzęt i Realizacje w PL i EN, zachowując inne treści i rewizje WordPressa. Strony aktualnie edytowane pozostają nietknięte do kolejnej wizyty administratora. W razie potrzeby przywróć poprzednią wersję przez historię rewizji strony.
+
+Wstawione fotografie zastępcze to standardowe bloki **Obraz**, więc później podmienisz je przez Gutenberg → **Zastąp**. Są to neutralne grafiki pomocnicze, a nie zdjęcia sztucznie wygenerowanych ekip czy instalacji. Warto zweryfikować nowe layouty na kopii testowej witryny przed publikacją.

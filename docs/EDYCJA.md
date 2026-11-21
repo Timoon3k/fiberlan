@@ -88,3 +88,9 @@ Dostarczony plik BRITANIC.ttf nie zawiera m.in. znaków ą, ć, ę, ł, ń, ś, 
 W **Wygląd → Edytor → Szablony** wybierz szablon PL lub EN. W szablonie 404 kliknij nagłówek, opis albo przycisk. Po zaznaczeniu przycisku możesz też zmienić adres powrotu. Aby zmienić wspólny układ nowych realizacji, otwórz część **Realizacja · tytuł i treść**. Tytuł, zajawkę i zdjęcia konkretnego projektu wpisuj na jego stronie.
 
 Na stronie głównej układ wydania 4.4 prowadzi od wprowadzenia i paska doświadczenia do usług, realizacji, sekcji Ribbon i kontaktu. Na stronie aktualizowanej możesz odtworzyć tę kolejność przez przeciągnięcie grupy Ribbon przed końcową sekcję kontaktową. W tytułach trzech kart realizacji ustaw odnośniki do odpowiednich opisów w tym samym języku. W pierwszej sekcji styl obrazu **Pełny kadr** pokazuje również tło oryginalnej fotografii.
+
+## Zmiany 4.6.0: O nas, Usługi, Sprzęt, Realizacje
+
+W obu językach widoczne są edytowalne placeholdery obrazów, które można zastąpić w Gutenberg. **O nas** otrzymuje miejsce na fotografię zespołu, a rozwijane bloki są zastępowane zwykłymi nagłówkami i akapitami. **Usługi** używają neutralnych pustych obrazów zamiast zdjęć demonstracyjnych. **Sprzęt** zachowuje dostarczone rzeczywiste zdjęcia urządzeń w naprzemiennym układzie; główny baner ma osobne miejsce na zdjęcie. Długie wprowadzenie jest przenoszone pod baner, żeby nie tracić treści. **Realizacje** zawierają cztery obszary prac, opisy PL/EN i galerię czterech edytowalnych obrazów; poprzedni katalog realizacji i filtry pozostają, a stary zakres wdrożeń zostaje zastąpiony.
+
+Instalacja motywu nie nadpisuje automatycznie treści zapisanych w bazie. Wtyczka 4.6.0 dokonuje jednorazowej aktualizacji wyłącznie na zarządzanych stronach, po pierwszej wizycie administratora. Każda strona może być cofnięta z historii rewizji. Formularz, widget Google, stopki, prywatność i menu pozostają bez zmian.

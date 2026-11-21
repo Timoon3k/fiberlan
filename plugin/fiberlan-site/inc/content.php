@@ -60,10 +60,10 @@ function fl_text( $lang, $pl, $en ) {
 	return 'en' === $lang ? $en : $pl;
 }
 
-function fl_hero( $lang, $eyebrow, $title, $lead, $visual = '' ) {
+function fl_hero( $lang, $eyebrow, $title, $lead, $visual = '', $extra_class = '' ) {
 	$copy = fl_paragraph( $eyebrow, 'fl-eyebrow' ) . fl_heading( $title, 1 ) . fl_paragraph( $lead, 'fl-lead' );
 	$inner = $visual ? fl_group( 'fl-split-copy', $copy ) . $visual : $copy;
-	return fl_group( 'fl-subhero', fl_group( 'fl-shell ' . ( $visual ? 'fl-split' : 'fl-reading' ), $inner ), 'section' );
+	return fl_group( trim( 'fl-subhero ' . $extra_class ), fl_group( 'fl-shell ' . ( $visual ? 'fl-split' : 'fl-reading' ), $inner ), 'section' );
 }
 
 function fl_section( $content, $layout = 'fl-reading', $variant = '', $anchor = '' ) {
@@ -212,7 +212,7 @@ function fl_equipment_content( $lang, $title ) {
 	$body = fl_hero( $lang, 'FIBERLAN SC', $title, fl_text( $lang,
 		'Korzystamy z precyzyjnych spawarek i mierników Fujikura, Fluke Networks, EXFO oraz VIAVI. Sprzęt dobieramy do wymagań instalacji, a pomiary dokumentujemy zgodnie z zakresem odbioru.',
 		'We use precision splicers and test instruments from Fujikura, Fluke Networks, EXFO and VIAVI. We choose equipment for each installation and document testing against the handover requirements.'
-	), fl_photo_placeholder( $lang, 'fl-subhero-visual', fl_text( $lang, 'fotografia zaplecza technicznego', 'technical equipment' ) ) );
+	), fl_photo_placeholder( $lang, 'fl-subhero-visual', fl_text( $lang, 'fotografia zaplecza technicznego', 'technical equipment' ) ), 'fl-equipment-hero' );
 
 	$catalogue = '';
 	foreach ( $items as list( $image, $pl, $en, $copy_pl, $copy_en, $anchor ) ) {
