@@ -123,7 +123,50 @@ function fl_layout_about( $blocks, $lang, &$changed ) {
 	}
 	// All native expandable details on the About page become normal visible
 	// headings and paragraphs, including client-added 24/7 / quality panels.
-	return fl_layout_open_details( $blocks, $lang, $changed );
+	$blocks = fl_layout_open_details( $blocks, $lang, $changed );
+	if ( 'en' === $lang ) {
+		$blocks = fl_layout_about_en( $blocks, $changed );
+	}
+	return $blocks;
+}
+
+/** Bring the existing English About copy in line with the supplied PL copy. */
+function fl_layout_about_en( $blocks, &$changed ) {
+	$translations = array(
+		'From installation to acceptance testing' => 'Our team and expertise',
+		'Our work covers fibre splicing, cable route installation and optical testing. We agree the scope with the client and document acceptance tests against the project requirements.'
+			=> 'FIBERLAN is a specialised team of engineers and technicians. For two decades, we have built, tested and maintained critical telecommunications infrastructure. Since 2006, we have supported businesses, developers, network operators and data centres with reliable fibre optic and structured Ethernet networks.',
+		'We work on new networks and in operational facilities. For upgrades, we plan around access to cable routes and agreed maintenance windows.'
+			=> 'We work on both new installations and operational facilities. During upgrades, we plan around cable route access and agreed maintenance windows.',
+	);
+	foreach ( $blocks as &$section ) {
+		if ( ! fl_layout_has_class( $section, 'fl-section' ) || fl_layout_has_class( $section, 'fl-ribbon' ) ) {
+			continue;
+		}
+		foreach ( $section['innerBlocks'] as &$shell ) {
+			if ( ! fl_layout_has_class( $shell, 'fl-about-story' ) ) {
+				continue;
+			}
+			foreach ( $shell['innerBlocks'] as &$block ) {
+				if ( ! in_array( $block['blockName'] ?? '', array( 'core/paragraph', 'core/heading' ), true ) ) {
+					continue;
+				}
+				$plain = trim( wp_strip_all_tags( $block['innerHTML'] ?? '' ) );
+				if ( isset( $translations[ $plain ] ) ) {
+					$markup = 'core/heading' === $block['blockName']
+						? fl_heading( $translations[ $plain ], (int) ( $block['attrs']['level'] ?? 2 ) )
+						: fl_paragraph( $translations[ $plain ] );
+					$block = parse_blocks( $markup )[0];
+					$changed = true;
+				}
+			}
+			unset( $block );
+			break 2;
+		}
+		unset( $shell );
+	}
+	unset( $section );
+	return $blocks;
 }
 
 function fl_layout_services( $blocks, $lang, &$changed ) {
@@ -316,7 +359,8 @@ function fl_layout_update_existing( $post, $lang, $page_key ) {
 function fl_layout_refresh_existing_pages() {
 	if ( wp_doing_ajax() || ! current_user_can( 'manage_options' )
 		|| ! get_option( 'fl_stage_two_ready' ) || get_option( 'fl_layout_refresh_460_complete' )
-		|| ! function_exists( 'fl_photo_placeholder' ) ) {
+		|| ! function_exists( 'fl_photo_placeholder' )
+		|| version_compare( wp_get_theme( get_template() )->get( 'Version' ), '4.6.0', '<' ) ) {
 		return;
 	}
 	$pending = false;
