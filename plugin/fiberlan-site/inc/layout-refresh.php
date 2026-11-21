@@ -188,7 +188,8 @@ function fl_layout_replace_images( &$block, $lang, &$changed ) {
 	// silently discard replaced image blocks.
 	foreach ( $block['innerBlocks'] as &$child ) {
 		if ( 'core/image' === ( $child['blockName'] ?? '' )
-			&& ! fl_layout_has_class( $child, 'fl-photo-placeholder' ) ) {
+			&& empty( $child['attrs']['id'] )
+			&& preg_match( '~/assets/(?:diagrams/service-(?:splice|lan)\.svg|scenes/(?:optical-fibres|patch-panel)\.webp)"~', $child['innerHTML'] ) ) {
 			$alt = wp_strip_all_tags( $child['attrs']['alt'] ?? '' );
 			$child = fl_layout_placeholder_block( $lang, 'fl-section-image',
 				$alt ?: fl_text( $lang, 'fotografia usługi', 'service photograph' ) );
@@ -423,3 +424,213 @@ function fl_layout_refresh_existing_pages() {
 	}
 }
 add_action( 'admin_init', 'fl_layout_refresh_existing_pages', 30 );
+
+/** Group legacy loose text blocks so the photograph and all copy share one grid row. */
+function fl_group_story_copy( &$parent ) {
+	if ( fl_layout_has_class( $parent, 'fl-about-story' ) && ! fl_layout_find_photo( $parent['innerBlocks'], 'fl-about-story-copy' ) ) {
+		$photo = null;
+		$copy = array();
+		foreach ( $parent['innerBlocks'] as $child ) {
+			if ( ! $photo && fl_layout_has_class( $child, 'fl-team-photo' ) ) {
+				$photo = $child;
+			} else {
+				$copy[] = $child;
+			}
+		}
+		if ( $photo && $copy ) {
+			$fragments = $parent['innerContent'];
+			$first = array_search( null, $fragments, true );
+			$last = array_search( null, array_reverse( $fragments, true ), true );
+			// Preserve wrappers and any freeform markup between the nested blocks.
+			if ( false !== $first && false !== $last && '' === trim( implode( '', array_slice( $fragments, $first, $last - $first + 1 ) ) ) ) {
+				$parent['innerBlocks'] = array( $photo, parse_blocks( fl_group( 'fl-about-story-copy', serialize_blocks( $copy ) ) )[0] );
+				array_splice( $fragments, $first, $last - $first + 1, array( null, "\n", null ) );
+				$parent['innerContent'] = $fragments;
+			}
+		}
+	}
+	foreach ( $parent['innerBlocks'] as &$child ) {
+		fl_group_story_copy( $child );
+	}
+}
+
+/** Target the two named service visuals, including images selected in an earlier WordPress installation. */
+function fl_refresh_service_slots( &$block, $lang, $home ) {
+	$labels = $home
+		? array( 'Spawanie światłowodów', 'Fibre optic splicing', 'Sieci komputerowe i miedziane', 'Copper cabling and computer networks', 'Computer and copper networks' )
+		: array();
+	$labels = array_merge( $labels, array( 'Zastosowania światłowodów', 'Fibre optic applications', 'Fibre applications', 'Applications of fibre optics' ) );
+	$class = $home ? 'fl-service-card' : 'fl-section';
+	if ( fl_layout_has_class( $block, $class ) && fl_layout_section_has_heading( $block, $labels ) ) {
+		fl_replace_service_slot( $block, $lang, $home ? 'fl-card-image' : 'fl-section-image' );
+		return;
+	}
+	foreach ( $block['innerBlocks'] as &$child ) {
+		fl_refresh_service_slots( $child, $lang, $home );
+	}
+}
+
+function fl_replace_service_slot( &$block, $lang, $class ) {
+	if ( 'core/image' === $block['blockName'] ) {
+		if ( false === strpos( $block['innerHTML'], '/assets/diagrams/photo-placeholder.svg' ) ) {
+			$block = fl_layout_placeholder_block( $lang, $class, fl_text( $lang, 'fotografia usługi', 'service photograph' ) );
+		}
+		return true;
+	}
+	foreach ( $block['innerBlocks'] as &$child ) {
+		if ( fl_replace_service_slot( $child, $lang, $class ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function fl_expand_project_gallery( &$block, $lang ) {
+	if ( fl_layout_has_class( $block, 'fl-project-gallery' ) ) {
+		$extra = fl_gallery_extra_slots( $lang );
+		foreach ( $extra as $slot ) {
+			// An existing customised gallery may have fewer slots than the startup layout.
+			if ( count( $block['innerBlocks'] ) >= 6 ) {
+				break;
+			}
+			if ( false === strpos( serialize_block( $block ), trim( $slot ) ) ) {
+				fl_layout_insert_last( $block, parse_blocks( $slot )[0] );
+			}
+		}
+		return;
+	}
+	foreach ( $block['innerBlocks'] as &$child ) {
+		fl_expand_project_gallery( $child, $lang );
+	}
+}
+
+/** Update named sections, including installations that have already run the 4.7 migration. */
+function fl_refresh_portfolio_content( $post, $lang, $key ) {
+	$content = $post->post_content;
+	$blocks = parse_blocks( $content );
+	if ( in_array( $key, array( 'home', 'services' ), true ) ) {
+		foreach ( $blocks as &$block ) {
+			fl_refresh_service_slots( $block, $lang, 'home' === $key );
+		}
+		unset( $block );
+		$content = serialize_blocks( $blocks );
+	}
+	if ( 'about' === $key ) {
+		if ( ! fl_layout_find_photo( $blocks, 'fl-about-story' ) ) {
+			array_splice( $blocks, 1, 0, parse_blocks( fl_about_story( $lang ) ) );
+		} else {
+			foreach ( $blocks as &$block ) {
+				fl_group_story_copy( $block );
+			}
+			unset( $block );
+		}
+		// Update only the two verbatim starter paragraphs. Preserve client-authored copy.
+		$paragraphs = array_map( 'fl_paragraph', fl_about_paragraphs( $lang ) );
+		$old_intro = fl_text( $lang,
+			'Od 2006 roku projektujemy, instalujemy i mierzymy infrastrukturę światłowodową w Polsce i za granicą. Nasz zespół pracuje przy wdrożeniach operatorskich, przemysłowych i centrach danych.',
+			'Since 2006 our team has installed and tested fibre optic infrastructure in Poland and abroad, supporting telecom operators, industrial facilities and data centres.' );
+		$old_work = fl_text( $lang,
+			'Realizujemy również modernizacje działających sieci, planując prace tak, aby ograniczyć przestoje.',
+			'We also upgrade live networks, planning our work to minimise downtime.' );
+		return str_replace( array( trim( fl_paragraph( $old_intro ) ), trim( fl_paragraph( $old_work ) ) ),
+			array_map( 'trim', $paragraphs ), serialize_blocks( $blocks ) );
+	}
+	if ( 'report' === $key && ! fl_layout_find_photo( $blocks, 'fl-report-gallery' ) ) {
+		return $content . fl_report_gallery( $lang );
+	}
+	if ( 'projects' === $key ) {
+		if ( ! fl_layout_find_photo( $blocks, 'fl-project-operators' ) ) {
+			foreach ( $blocks as $index => $block ) {
+				if ( has_block( 'fiberlan/projects', serialize_block( $block ) ) ) {
+					array_splice( $blocks, $index + 1, 0, parse_blocks( fl_operator_section( $lang ) ) );
+					break;
+				}
+			}
+			if ( ! fl_layout_find_photo( $blocks, 'fl-project-operators' ) ) {
+				$blocks[] = parse_blocks( fl_operator_section( $lang ) )[0];
+			}
+		}
+		foreach ( $blocks as &$block ) {
+			fl_expand_project_gallery( $block, $lang );
+		}
+		unset( $block );
+		$content = serialize_blocks( $blocks );
+		$editor_note = fl_text( $lang, 'Miejsce na fotografie z kolejnych projektów. Zdjęcia można zastąpić w edytorze Gutenberg.', 'Space for photographs from upcoming projects. Replace these images in the Gutenberg editor.' );
+		return str_replace( trim( fl_paragraph( $editor_note ) ), '', $content );
+	}
+	if ( 'services' === $key ) {
+		$labels = array( 'Testery okablowania Fluke Networks', 'Fluke Networks cable testers', 'Fluke Networks cabling testers' );
+		foreach ( $blocks as $index => $section ) {
+			if ( ! fl_layout_section_has_heading( $section, $labels ) ) {
+				continue;
+			}
+			$photo = fl_equipment_visual( 'fluke-networks-versiv-2-client-photo.jpg', $lang );
+			fl_restore_fluke_image( $blocks[ $index ], $photo );
+			return serialize_blocks( $blocks );
+		}
+		return $content . fl_fluke_service( $lang );
+	}
+	return $content;
+}
+
+function fl_restore_fluke_image( &$block, $photo ) {
+	if ( 'core/image' === $block['blockName'] && false !== strpos( $block['innerHTML'], '/assets/diagrams/photo-placeholder.svg' ) ) {
+		$block = parse_blocks( $photo )[0];
+		return true;
+	}
+	foreach ( $block['innerBlocks'] as &$child ) {
+		if ( fl_restore_fluke_image( $child, $photo ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function fl_refresh_portfolio_pages() {
+	if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) || ! get_option( 'fl_layout_refresh_471_complete' )
+		|| get_option( 'fl_portfolio_490_complete' ) || ! function_exists( 'fiberlan_image_block' )
+		|| version_compare( wp_get_theme( get_template() )->get( 'Version' ), '4.9.0', '<' ) ) {
+		return;
+	}
+	$pending = false;
+	foreach ( array( 'pl', 'en' ) as $lang ) {
+		$pages = array();
+		foreach ( array( 'home', 'about', 'services', 'projects' ) as $key ) {
+			$id = fl_page_id( $key, $lang );
+			if ( $id ) {
+				$pages[ $id ] = $key;
+			}
+		}
+		$archive = fl_page_id( 'projects', $lang );
+		if ( $archive ) {
+			$reports = get_posts( array( 'post_type' => 'page', 'post_parent' => $archive, 'post_status' => array( 'publish', 'draft', 'private', 'pending', 'future' ), 'fields' => 'ids', 'numberposts' => -1 ) );
+			foreach ( $reports as $id ) {
+				$pages[ $id ] = 'report';
+			}
+		}
+		foreach ( $pages as $id => $key ) {
+			if ( get_post_meta( $id, '_fl_portfolio_490', true ) ) {
+				continue;
+			}
+			$post = get_post( $id );
+			if ( ! $post ) {
+				continue;
+			}
+			if ( wp_check_post_lock( $id ) ) {
+				$pending = true;
+				continue;
+			}
+			$content = fl_refresh_portfolio_content( $post, $lang, $key );
+			if ( $content !== $post->post_content && ( get_post_field( 'post_content', $id ) !== $post->post_content
+				|| is_wp_error( wp_update_post( wp_slash( array( 'ID' => $id, 'post_content' => $content ) ), true ) ) ) ) {
+				$pending = true;
+				continue;
+			}
+			update_post_meta( $id, '_fl_portfolio_490', '1' );
+		}
+	}
+	if ( ! $pending ) {
+		update_option( 'fl_portfolio_490_complete', true, false );
+	}
+}
+add_action( 'admin_init', 'fl_refresh_portfolio_pages', 35 );

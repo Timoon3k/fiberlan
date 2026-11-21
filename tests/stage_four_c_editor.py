@@ -102,7 +102,8 @@ def new_projects(page, base, suffix):
             body = canvas(edit)
             body.locator('.editor-post-title__input, .wp-block-post-title[contenteditable=true]').first.fill(title)
             body.locator('[data-type="core/paragraph"][contenteditable=true]').fill("Próba edycji treści " + suffix)
-            image = body.locator('[data-type="core/image"]')
+            expect(body.locator('.fl-report-gallery [data-type="core/image"]')).to_have_count(3)
+            image = body.locator('[data-type="core/image"]').first
             image.click()
             image.get_by_role("button", name=re.compile("Media Library|Biblioteka mediów", re.I)).click()
             media = rest(page, "/wp/v2/media?search=Fluke")[0]
@@ -118,7 +119,7 @@ def new_projects(page, base, suffix):
             alt.press("Tab")
             save(edit)
             open_entity(edit, base, "pages", project_id)
-            expect(canvas(edit).locator('[data-type="core/image"] img')).to_have_attribute("alt", title)
+            expect(canvas(edit).locator('[data-type="core/image"] img').first).to_have_attribute("alt", title)
             check_blocks(edit, rest(page, endpoint + "?context=edit")["content"]["raw"], "new project " + lang)
             published = rest(page, endpoint, "POST", {"status": "publish"})
             public = page.context.new_page()

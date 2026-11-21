@@ -102,22 +102,32 @@ function fl_scope_cards( $lang, $heading, $items ) {
 	return fl_section( fl_heading( $heading ) . fl_group( 'fl-scope-grid', $cards ), 'fl-wide' );
 }
 
+function fl_about_paragraphs( $lang ) {
+	return array(
+		fl_text( $lang,
+			'FIBERLAN to zespół inżynierów i techników, który od dwóch dekad buduje, mierzy i utrzymuje infrastrukturę telekomunikacyjną. Od 2006 roku wspieramy firmy, deweloperów, operatorów i centra danych w budowie sieci światłowodowych oraz strukturalnych sieci Ethernet.',
+			'FIBERLAN is a team of engineers and technicians. For two decades we have built, tested and maintained telecommunications infrastructure. Since 2006 we have supported businesses, developers, network operators and data centres in building fibre optic and structured Ethernet networks.' ),
+		fl_text( $lang,
+			'Realizujemy prace na nowych instalacjach i w czynnych obiektach. Przy modernizacji uwzględniamy dostęp do tras i uzgodnione okna prac.',
+			'We work on both new installations and operational facilities. During upgrades, we plan around cable route access and agreed maintenance windows.' ),
+	);
+}
+
+function fl_about_story( $lang ) {
+	return fl_section(
+		fl_photo_placeholder( $lang, 'fl-team-photo', fl_text( $lang, 'zespół FIBERLAN', 'FIBERLAN team' ) )
+		. fl_group( 'fl-about-story-copy',
+			fl_heading( fl_text( $lang, 'FIBERLAN od 2006 roku', 'FIBERLAN since 2006' ) )
+			. implode( '', array_map( 'fl_paragraph', fl_about_paragraphs( $lang ) ) ) ),
+		'fl-about-story'
+	);
+}
+
 function fl_about_content( $lang, $title ) {
 	$body = fl_hero( $lang, 'FIBERLAN SC', $title, fl_text( $lang,
 		'Jesteśmy kilkuosobowym zespołem inżynierów i techników. Od 2006 roku budujemy, mierzymy i utrzymujemy sieci światłowodowe i Ethernet dla firm, deweloperów, operatorów oraz centrów danych.',
 		'We are a small team of engineers and technicians. Since 2006 we have built, tested and maintained fibre and Ethernet networks for businesses, property developers, telecoms operators and data centres.' ) );
-	$body .= fl_section(
-		fl_photo_placeholder( $lang, 'fl-team-photo', fl_text( $lang, 'zespół FIBERLAN', 'FIBERLAN team' ) )
-		. fl_group( 'fl-about-story-copy',
-			fl_heading( fl_text( $lang, 'FIBERLAN od 2006 roku', 'FIBERLAN since 2006' ) )
-			. fl_paragraph( fl_text( $lang,
-				'Od 2006 roku projektujemy, instalujemy i mierzymy infrastrukturę światłowodową w Polsce i za granicą. Nasz zespół pracuje przy wdrożeniach operatorskich, przemysłowych i centrach danych.',
-				'Since 2006 our team has installed and tested fibre optic infrastructure in Poland and abroad, supporting telecom operators, industrial facilities and data centres.' ) )
-			. fl_paragraph( fl_text( $lang,
-				'Realizujemy również modernizacje działających sieci, planując prace tak, aby ograniczyć przestoje.',
-				'We also upgrade live networks, planning our work to minimise downtime.' ) ) ),
-		'fl-about-story'
-	);
+	$body .= fl_about_story( $lang );
 	$body .= fl_scope_cards( $lang, fl_text( $lang, 'Jak pracujemy', 'How we work' ), array(
 		array( 'Dwie dekady w terenie', 'Two decades in the field',
 			'Zrealizowaliśmy setki projektów, od sieci biurowych po magistrale światłowodowe, serwerownie i centra danych klientów hiperskalowych.',
@@ -153,6 +163,14 @@ function fl_equipment_visual( $file, $lang ) {
 		return fiberlan_image_block( $file, fl_text( $lang, ...$photos[ $file ] ), 'fl-section-image' );
 	}
 	return fl_diagram( $file, 'fl-section-image' );
+}
+
+function fl_fluke_service( $lang ) {
+	$title = fl_text( $lang, 'Testery okablowania Fluke Networks', 'Fluke Networks cable testers' );
+	$copy = fl_heading( $title ) . fl_paragraph( fl_text( $lang,
+		'Analizatorem DSX-5000 sprawdzamy okablowanie miedziane. Na zdjęciu widać jednostkę główną i zdalną platformy Versiv 2 oraz ekran inspekcji złączy FiberInspector Pro.',
+		'We use the DSX-5000 to certify copper cabling. The photograph shows the Versiv 2 main and remote units with the FiberInspector Pro connector inspection screen.' ) );
+	return fl_section( fl_group( 'fl-split-copy', $copy ) . fl_equipment_visual( 'fluke-networks-versiv-2-client-photo.jpg', $lang ), 'fl-split', 'fl-fluke-service' );
 }
 
 function fl_services_content( $lang, $title ) {
@@ -191,7 +209,7 @@ function fl_services_content( $lang, $title ) {
 		$copy = fl_heading( $name ) . fl_paragraph( fl_text( $lang, $desc_pl, $desc_en ) ) . fl_contact_cta( $lang );
 		$body .= fl_section( fl_group( 'fl-split-copy', $copy ) . $visual, 'fl-split', $index % 2 ? 'fl-alternate' : '', $anchor );
 	}
-	return $body;
+	return $body . fl_fluke_service( $lang );
 }
 
 function fl_equipment_content( $lang, $title ) {
@@ -233,6 +251,30 @@ function fl_project_examples() {
 		'bordeaux'  => array( 'project-factory', array( 'industry', 'international' ), 'Fabryka szkła w okolicach Bordeaux', 'Glass factory near Bordeaux', 'Okolice Bordeaux, Francja', 'Near Bordeaux, France', 'Instalacje sieci komputerowych w obiekcie przemysłowym.', 'Computer network installation at an industrial facility.' ),
 		'marine'    => array( 'project-ship', array( 'marine', 'international' ), 'Statki wycieczkowe i stocznie', 'Cruise ships and shipyards', 'Stocznie międzynarodowe', 'International shipyards', 'Prace instalacyjne na jednostkach zadokowanych w stoczniach m.in. w Niemczech, Hiszpanii, Anglii, Irlandii, Japonii, na Bahamach, Karaibach, we Włoszech i na Malcie.', 'Installation work on vessels docked in shipyards in Germany, Spain, England, Ireland, Japan, the Bahamas, the Caribbean, Italy and Malta.' ),
 	);
+}
+
+function fl_operator_section( $lang ) {
+	$names = fl_paragraph( 'T-Mobile' ) . fl_paragraph( 'Orange' ) . fl_paragraph( 'Plus' );
+	return fl_section( fl_heading( fl_text( $lang, 'Prace podwykonawcze dla operatorów', 'Subcontracted work for network operators' ) )
+		. fl_group( 'fl-operator-badges', $names ), 'fl-wide', 'fl-project-operators' );
+}
+
+function fl_gallery_extra_slots( $lang ) {
+	return array(
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'montaż okablowania', 'cabling installation' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'pomiary odbiorowe', 'acceptance testing' ) ),
+	);
+}
+
+function fl_report_gallery( $lang ) {
+	$slots = '';
+	foreach ( array( fl_text( $lang, 'miejsce prac', 'project site' ),
+		fl_text( $lang, 'prace instalacyjne', 'installation work' ),
+		fl_text( $lang, 'gotowa instalacja', 'completed installation' ) ) as $subject ) {
+		$slots .= fl_photo_placeholder( $lang, 'fl-gallery-placeholder', $subject );
+	}
+	return fl_section( fl_heading( fl_text( $lang, 'Galeria realizacji', 'Project gallery' ) )
+		. fl_group( 'fl-project-gallery', $slots ), 'fl-wide', 'fl-report-gallery' );
 }
 
 /**
@@ -293,11 +335,8 @@ function fl_projects_content( $lang, $title ) {
 		. fl_group( 'fl-project-feature-grid', $cards ), 'fl-wide', 'fl-project-showcase' );
 	$photos = fl_section(
 		fl_heading( fl_text( $lang, 'Galeria realizacji', 'Project gallery' ) )
-		. fl_paragraph( fl_text( $lang,
-			'Miejsce na fotografie z kolejnych projektów. Zdjęcia można zastąpić w edytorze Gutenberg.',
-			'Space for photographs from upcoming projects. Replace these images in the Gutenberg editor.' ) )
-		. fl_group( 'fl-project-gallery', $gallery ), 'fl-wide', 'fl-project-photos' );
-	return fl_hero( $lang, 'FIBERLAN SC', $title, $lead ) . $catalogue . $showcase . $photos;
+		. fl_group( 'fl-project-gallery', $gallery . implode( '', fl_gallery_extra_slots( $lang ) ) ), 'fl-wide', 'fl-project-photos' );
+	return fl_hero( $lang, 'FIBERLAN SC', $title, $lead ) . $catalogue . fl_operator_section( $lang ) . $showcase . $photos;
 }
 
 

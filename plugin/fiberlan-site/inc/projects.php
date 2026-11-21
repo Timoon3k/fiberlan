@@ -32,7 +32,8 @@ function fl_projects_render( $attrs ) {
 	foreach ( $projects as $project ) {
 		$image = get_the_post_thumbnail( $project, 'medium_large' );
 		if ( ! $image ) {
-			$image = fl_project_image( parse_blocks( $project->post_content ) );
+			$fallback = '';
+			$image = fl_project_image( parse_blocks( $project->post_content ), $fallback ) ?: $fallback;
 		}
 		$html .= '<article><a href="' . esc_url( get_permalink( $project ) ) . '">' . $image . '<h3>' . esc_html( get_the_title( $project ) ) . '</h3></a><p>' . esc_html( $project->post_excerpt ) . '</p></article>';
 	}
@@ -43,7 +44,7 @@ function fl_projects_render( $attrs ) {
 }
 
 // Read the first real image even when the editor moves it into a Group or Gallery.
-function fl_project_image( $blocks ) {
+function fl_project_image( $blocks, &$fallback = '' ) {
 	foreach ( $blocks as $block ) {
 		if ( 'core/image' === $block['blockName'] ) {
 			$tag = new WP_HTML_Tag_Processor( $block['innerHTML'] );
@@ -51,11 +52,19 @@ function fl_project_image( $blocks ) {
 				$alt = (string) $tag->get_attribute( 'alt' );
 				$id = absint( $block['attrs']['id'] ?? 0 );
 				$image = $id ? wp_get_attachment_image( $id, 'medium_large', false, array( 'alt' => $alt ) ) : '';
-				return $image ?: sprintf( '<img src="%s" alt="%s" loading="lazy">', esc_url( $tag->get_attribute( 'src' ) ), esc_attr( $alt ) );
+				$image = $image ?: sprintf( '<img src="%s" alt="%s" loading="lazy">', esc_url( $tag->get_attribute( 'src' ) ), esc_attr( $alt ) );
+				$src = $tag->get_attribute( 'src' );
+				if ( function_exists( 'fiberlan_scene_url' ) ) {
+					$src = fiberlan_scene_url( $src );
+				}
+				if ( $src !== get_theme_file_uri( 'assets/diagrams/photo-placeholder.svg' ) ) {
+					return $image;
+				}
+				$fallback = $image;
 			}
 		}
 		if ( $block['innerBlocks'] ) {
-			$image = fl_project_image( $block['innerBlocks'] );
+			$image = fl_project_image( $block['innerBlocks'], $fallback );
 			if ( $image ) {
 				return $image;
 			}
@@ -82,7 +91,7 @@ add_action( 'admin_post_fl_create_project', static function () {
 		. '<!-- wp:paragraph ' . serialize_block_attributes( array( 'placeholder' => fl_text( $lang, 'Opisz zakres prac…', 'Describe the scope of work…' ) ) ) . ' --><p></p><!-- /wp:paragraph -->';
 	$id = wp_insert_post( wp_slash( array(
 		'post_type' => 'page', 'post_status' => 'draft', 'post_parent' => $parent,
-		'post_content' => $inline_title ? fl_section( $body ) : $body,
+		'post_content' => ( $inline_title ? fl_section( $body ) : $body ) . fl_report_gallery( $lang ),
 		'page_template' => isset( $templates[ $report ] ) ? $report : ( $inline_title ? $template : 'default' ),
 	) ), true );
 	if ( is_wp_error( $id ) ) {

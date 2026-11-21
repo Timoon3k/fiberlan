@@ -1021,24 +1021,26 @@
 .fl-equipment-item .fl-section-image { margin: 0; border: 0; }
 .fl-equipment-item .fl-section-image:where(:not(.is-style-fiberlan-full)) img { aspect-ratio: 4 / 3; object-position: 50% 62%; }
 @supports (mask-image: url('diagrams/fluke-versiv-mask.svg')) {
-  .fl-equipment-item .fl-section-image:not(.is-style-fiberlan-full,.is-style-fiberlan-wide):has(.fl-fluke-cutout) {
+  .fl-section-image:not(.is-style-fiberlan-full,.is-style-fiberlan-wide):has(.fl-fluke-cutout) {
     display: grid;
     place-items: center;
     aspect-ratio: 4 / 3;
     background: transparent;
   }
-  .fl-equipment-item .fl-section-image:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-fluke-cutout {
+  .fl-section-image:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-fluke-cutout {
     position: relative;
     display: block;
     width: 88%;
     aspect-ratio: 1200 / 950;
     overflow: hidden;
   }
-  .fl-equipment-item .fl-section-image:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-fluke-cutout img {
+  .fl-section-image:not(.is-style-fiberlan-full,.is-style-fiberlan-wide) .fl-fluke-cutout img {
     position: absolute;
     inset: -45.5% 0 auto;
     width: 100%;
     height: auto;
+    max-height: none;
+    object-fit: contain;
     aspect-ratio: 3 / 4;
     mask: url('diagrams/fluke-versiv-mask.svg') center / 100% 100% no-repeat;
   }
@@ -1564,7 +1566,7 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
 }
 .fl-about-story > .fl-team-photo {
   grid-column: 1;
-  grid-row: 1 / span 12;
+  grid-row: 1;
   align-self: start;
 }
 .fl-about-story > :not(.fl-team-photo) {
@@ -1750,7 +1752,7 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
   gap: clamp(1.7rem, 5.5vw, 6rem);
 }
 .fl-about-story > .fl-team-photo {
-  align-self: center;
+  align-self: start;
 }
 .fl-about-story .fl-team-photo img {
   aspect-ratio: 5 / 4;
@@ -1897,3 +1899,44 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
     padding-block: clamp(1.7rem, 5vw, 3rem);
   }
 }
+
+
+/* Reserve the same image frame for editorial placeholders and replacement photos. */
+.fl-project-grid:has(img[src$="/photo-placeholder.svg"]) { gap: .65rem; }
+.fl-project-card:has(img[src$="/photo-placeholder.svg"]) {
+  justify-content: start;
+  min-height: 0;
+  background: #0e2b3e;
+  padding: 0 0 1rem;
+}
+.fl-project-card:has(img[src$="/photo-placeholder.svg"])::before { content: none; }
+.fl-project-card > .fl-project-image:has(img[src$="/photo-placeholder.svg"]) {
+  position: static;
+  z-index: auto;
+  clip-path: none;
+  margin: 0 0 .8rem;
+  background: #edf1f5;
+}
+.fl-project-card .fl-project-image img[src$="/photo-placeholder.svg"] {
+  aspect-ratio: 8 / 5;
+  height: auto;
+  object-fit: contain;
+}
+.fl-project-card:has(img[src$="/photo-placeholder.svg"]) > :is(h3,p) { margin-inline: 1rem; }
+.wp-block-post-content:has(#portfolio, > .fl-case-illustration, > .fl-report-gallery) .fl-subhero {
+  background: linear-gradient(110deg, #041a2b, #14394d);
+}
+.fl-operator-badges { display: flex; flex-wrap: wrap; gap: .8rem; margin-block-start: 1.5rem; }
+.fl-operator-badges > p {
+  flex: 1 1 9rem;
+  margin: 0;
+  padding: 1.25rem;
+  text-align: center;
+  font-size: clamp(1.1rem, 2vw, 1.65rem);
+  font-weight: 700;
+  color: #0b2b40;
+  background: #fff;
+  border: 1px solid #bccbd5;
+  border-block-start: 3px solid #486d85;
+}
+.fl-projects .fl-project-layout:has(img[src$="/photo-placeholder.svg"]) { align-items: center; }

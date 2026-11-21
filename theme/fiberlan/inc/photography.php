@@ -1,46 +1,52 @@
 <?php
-/** Photographic artwork for the original, editable starter image blocks. */
+/** Replace only FIBERLAN starter artwork. User uploads keep their captions, links and URLs. */
 defined( 'ABSPATH' ) || exit;
 
-function fiberlan_scene_files() {
+function fiberlan_sample_images() {
 	return array(
-		'service-lan'        => 'patch-panel',
-		'project-datacenter' => 'server-racks',
-		'project-factory'    => 'production-line',
-		'project-ship'       => 'shipyard',
+		'assets/diagrams/service-splice.svg', 'assets/diagrams/service-lan.svg',
+		'assets/diagrams/project-datacenter.svg', 'assets/diagrams/project-factory.svg', 'assets/diagrams/project-ship.svg',
+		'assets/scenes/optical-fibres.webp', 'assets/scenes/patch-panel.webp',
+		'assets/scenes/server-racks.webp', 'assets/scenes/production-line.webp', 'assets/scenes/shipyard.webp',
 	);
 }
 
-// New patterns use the photographs directly. Respect artwork supplied by a child theme.
 add_filter( 'theme_file_uri', static function ( $url, $file ) {
-	if ( 0 !== strpos( $file, 'assets/diagrams/' ) || $url !== get_template_directory_uri() . '/' . $file ) {
-		return $url;
+	if ( in_array( $file, fiberlan_sample_images(), true ) && $url === get_template_directory_uri() . '/' . $file ) {
+		return get_theme_file_uri( 'assets/diagrams/photo-placeholder.svg' );
 	}
-	$files = fiberlan_scene_files();
-	$key = basename( $file, '.svg' );
-	return isset( $files[ $key ] ) && 'assets/diagrams/' . $key . '.svg' === $file
-		? get_theme_file_uri( 'assets/scenes/' . $files[ $key ] . '.webp' ) : $url;
+	return $url;
 }, 10, 2 );
 
-// Previously saved pages contain absolute URLs. Resolve only the bundled images,
-// keeping author-selected uploads, captions, alternative text and links intact.
-function fiberlan_resolve_scene_images( $html ) {
-	// Some saved blocks already point directly to the retired stock photograph.
-	$retired = '/assets/scenes/optical-fibres.webp';
-	if ( false !== strpos( $html, $retired ) ) {
-		$html = str_replace( get_template_directory_uri() . $retired, get_theme_file_uri( 'assets/diagrams/service-splice.svg' ), $html );
+function fiberlan_scene_url( $src ) {
+	$base = trailingslashit( (string) wp_parse_url( get_template_directory_uri(), PHP_URL_PATH ) );
+	$path = (string) wp_parse_url( $src, PHP_URL_PATH );
+	if ( 0 !== strpos( $path, $base . 'assets/' ) ) {
+		return $src;
 	}
-	if ( false === strpos( $html, '/assets/diagrams/' ) ) {
+	$host = wp_parse_url( $src, PHP_URL_HOST );
+	if ( $host && ! in_array( $host, array( wp_parse_url( get_template_directory_uri(), PHP_URL_HOST ), 'fiberlan.pl', 'www.fiberlan.pl' ), true ) ) {
+		return $src;
+	}
+	$file = substr( $path, strlen( $base ) );
+	return in_array( $file, fiberlan_sample_images(), true ) ? get_theme_file_uri( $file ) : $src;
+}
+
+function fiberlan_resolve_scene_images( $html ) {
+	if ( false === strpos( $html, '/assets/' ) ) {
 		return $html;
 	}
-	$base = get_template_directory_uri() . '/assets/diagrams/';
-	$files = fiberlan_scene_files();
 	$tags = new WP_HTML_Tag_Processor( $html );
 	while ( $tags->next_tag( 'img' ) ) {
 		$src = (string) $tags->get_attribute( 'src' );
-		$key = basename( $src, '.svg' );
-		if ( isset( $files[ $key ] ) && $src === $base . $key . '.svg' ) {
-			$tags->set_attribute( 'src', get_theme_file_uri( 'assets/diagrams/' . $key . '.svg' ) );
+		$new = fiberlan_scene_url( $src );
+		if ( $new !== $src ) {
+			$tags->set_attribute( 'src', $new );
+			if ( $new === get_theme_file_uri( 'assets/diagrams/photo-placeholder.svg' ) ) {
+				$tags->set_attribute( 'alt', '' );
+			}
+			$tags->remove_attribute( 'srcset' );
+			$tags->remove_attribute( 'sizes' );
 		}
 	}
 	return $tags->get_updated_html();
@@ -54,23 +60,3 @@ add_filter( 'rest_prepare_page', static function ( $response, $post, $request ) 
 	}
 	return $response;
 }, 10, 3 );
-
-// Stock photographs illustrate the sectors; customer-uploaded project photos need no note.
-function fiberlan_project_photo_note( $html ) {
-	foreach ( array( 'server-racks', 'production-line', 'shipyard' ) as $scene ) {
-		if ( false !== strpos( $html, '/assets/scenes/' . $scene . '.webp' ) ) {
-			$english = function_exists( 'fl_request_language' ) && 'en' === fl_request_language();
-			return $html . '<p class="fl-photo-note">' . ( $english ? 'Illustrative industry photographs.' : 'Fotografie branżowe mają charakter ilustracyjny.' ) . '</p>';
-		}
-	}
-	return $html;
-}
-add_filter( 'render_block_fiberlan/projects', 'fiberlan_project_photo_note', 15 );
-add_filter( 'render_block_core/group', static function ( $html, $block ) {
-	return in_array( 'fl-project-grid', explode( ' ', $block['attrs']['className'] ?? '' ), true )
-		? fiberlan_project_photo_note( $html ) : $html;
-}, 15, 2 );
-add_filter( 'render_block_core/image', static function ( $html, $block ) {
-	return in_array( 'fl-case-illustration', explode( ' ', $block['attrs']['className'] ?? '' ), true )
-		? fiberlan_project_photo_note( $html ) : $html;
-}, 15, 2 );

@@ -98,3 +98,10 @@ W **O nas / About** korygujemy dwukolumnowy układ, dodajemy edytowalne miejsce 
 **Istniejące strony:** po aktualizacji motywu **i** FIBERLAN Core do 4.7.1 oraz wejściu do administracji, jednokrotna aktualizacja dopasowuje zapisane w bazie bloki PL/EN. WordPress zachowuje historię rewizji. Jeśli edytor strony jest zablokowany, aktualizacja tej strony nastąpi przy następnej wizycie administratora. Operacja nie nadpisuje szablonów nagłówka, stopki, opinii Google, formularzy ani obrazów w innych podstronach.
 
 **Ważne:** zrób kopię bazy WordPress przed aktualizacją. Przed publikacją sprawdź dopasowanie własnych treści i zdjęć do nowych układów na witrynie staging.
+
+
+## Galerie realizacji i pola zdjęć w wersji 4.9
+
+W sekcji **Realizacje → Galeria realizacji** można wymienić sześć zdjęć. Każdy wpis opisujący realizację ma również własną galerię z trzema polami. Otwórz stronę lub realizację w odpowiednim języku, zaznacz obraz i wybierz **Zastąp → Biblioteka mediów**. Aby dodać kolejne miejsce, zduplikuj blok obrazu w tej samej grupie. W ustawieniach obrazu wpisz opis ALT.
+
+W **Realizacjach** nazwy operatorów są osobnymi blokami edytowanymi w obu językach. Aktualizacja istniejących stron uruchamia się po pierwszym wejściu administratora do kokpitu z aktywnym motywem bazowym 4.9 lub jego motywem potomnym oraz wtyczką FIBERLAN Core 4.9. WordPress pomija stronę otwartą przez redaktora i ponawia aktualizację po zwolnieniu blokady.

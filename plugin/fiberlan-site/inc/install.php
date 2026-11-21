@@ -138,6 +138,7 @@ function fl_seed_website() {
 					$save['post_excerpt'] = $place;
 					$save['post_content'] = fl_diagram( $image, 'fl-case-illustration' )
 						. fl_hero( $lang, $place, $post->post_title, $desc )
+						. fl_report_gallery( $lang )
 						. fl_section( fl_button( fl_text( $lang, 'Wszystkie realizacje', 'All projects' ), fl_url( 'projects', $lang ) ) );
 					foreach ( $sectors as $sector ) {
 						wp_set_object_terms( $id, $lang . '-' . $sector, 'fl_sector', true );
