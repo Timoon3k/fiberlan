@@ -35,6 +35,27 @@ function fl_diagram( $file, $class ) {
 	return '<!-- wp:image ' . serialize_block_attributes( array( 'sizeSlug' => 'full', 'linkDestination' => 'none', 'className' => $class ) ) . ' --><figure class="wp-block-image size-full ' . esc_attr( $class ) . '"><img src="' . esc_url( get_theme_file_uri( 'assets/diagrams/' . $file . '.svg' ) ) . '" alt=""/></figure><!-- /wp:image -->';
 }
 
+
+/**
+ * Plain, editable Gutenberg image placeholder used until the client sends a
+ * real photograph. Do not fabricate photographs of the team or installations.
+ * A standard core/image block lets editors replace the image in one click.
+ */
+function fl_photo_placeholder( $lang, $class = 'fl-section-image', $subject = '' ) {
+	$class = trim( $class . ' fl-photo-placeholder' );
+	$attrs = array(
+		'sizeSlug' => 'full',
+		'linkDestination' => 'none',
+		'className' => $class,
+	);
+	$src = get_theme_file_uri( 'assets/diagrams/photo-placeholder.svg' );
+	$alt = fl_text( $lang, 'Miejsce na fotografię: ', 'Photo placeholder: ' ) . $subject;
+	return '<!-- wp:image ' . serialize_block_attributes( $attrs ) . ' -->'
+		. '<figure class="wp-block-image size-full ' . esc_attr( $class ) . '">'
+		. '<img src="' . esc_url( $src ) . '" alt="' . esc_attr( $alt ) . '"/>'
+		. '</figure><!-- /wp:image -->';
+}
+
 function fl_text( $lang, $pl, $en ) {
 	return 'en' === $lang ? $en : $pl;
 }
@@ -54,18 +75,21 @@ function fl_contact_cta( $lang ) {
 }
 
 function fl_ribbon( $lang ) {
-	$details = fl_text( $lang, 'Poznaj technologię Ribbon', 'Explore Ribbon splicing' );
 	$body = fl_text(
 		$lang,
 		'W kablach wstęgowych włókna są ułożone obok siebie w jednej taśmie. Spawanie wielowłóknowe łączy kilka przygotowanych włókien w jednym cyklu. Po wykonaniu prac sprawdzamy tory optyczne zgodnie z zakresem odbioru.',
 		'In ribbon cables, fibres are arranged side by side in a flat strip. Mass fusion splicing joins several prepared fibres in one cycle. After installation, we test the optical links against the agreed acceptance requirements.'
 	);
-	$panel = '<!-- wp:details --><details class="wp-block-details"><summary>' . esc_html( $details ) . '</summary>' . fl_paragraph( $body ) . '</details><!-- /wp:details -->';
 	return fl_section(
-		fl_group( 'fl-milestone', fl_paragraph( '20', 'fl-milestone-number' ) . fl_paragraph( fl_text( $lang, 'Lat doświadczenia w 2026 roku', 'Years of experience in 2026' ), 'fl-milestone-caption' ) . fl_paragraph( '2006–2026', 'fl-timeline' ) )
-		. fl_group( 'fl-ribbon-copy', fl_heading( fl_text( $lang, 'Technologia Ribbon', 'Ribbon technology' ) ) . fl_paragraph( fl_text( $lang, 'Specjalistyczne spawanie światłowodów w technologii Ribbon.', 'Specialist ribbon fibre splicing for multi-fibre installations.' ) ) . $panel ),
-		'fl-split',
-		'fl-ribbon'
+		fl_group( 'fl-milestone', fl_paragraph( '20', 'fl-milestone-number' )
+			. fl_paragraph( fl_text( $lang, 'Lat doświadczenia w 2026 roku', 'Years of experience in 2026' ), 'fl-milestone-caption' )
+			. fl_paragraph( '2006–2026', 'fl-timeline' ) )
+		. fl_group( 'fl-ribbon-copy', fl_heading( fl_text( $lang, 'Technologia Ribbon', 'Ribbon technology' ) )
+			. fl_paragraph( fl_text( $lang,
+				'Specjalistyczne spawanie światłowodów w technologii Ribbon.',
+				'Specialist ribbon fibre splicing for multi-fibre installations.' ) )
+			. fl_paragraph( $body ) ),
+		'fl-split', 'fl-ribbon'
 	);
 }
 
@@ -82,6 +106,18 @@ function fl_about_content( $lang, $title ) {
 	$body = fl_hero( $lang, 'FIBERLAN SC', $title, fl_text( $lang,
 		'Jesteśmy kilkuosobowym zespołem inżynierów i techników. Od 2006 roku budujemy, mierzymy i utrzymujemy sieci światłowodowe i Ethernet dla firm, deweloperów, operatorów oraz centrów danych.',
 		'We are a small team of engineers and technicians. Since 2006 we have built, tested and maintained fibre and Ethernet networks for businesses, property developers, telecoms operators and data centres.' ) );
+	$body .= fl_section(
+		fl_photo_placeholder( $lang, 'fl-team-photo', fl_text( $lang, 'zespół FIBERLAN', 'FIBERLAN team' ) )
+		. fl_group( 'fl-about-story-copy',
+			fl_heading( fl_text( $lang, 'FIBERLAN od 2006 roku', 'FIBERLAN since 2006' ) )
+			. fl_paragraph( fl_text( $lang,
+				'Od 2006 roku projektujemy, instalujemy i mierzymy infrastrukturę światłowodową w Polsce i za granicą. Nasz zespół pracuje przy wdrożeniach operatorskich, przemysłowych i centrach danych.',
+				'Since 2006 our team has installed and tested fibre optic infrastructure in Poland and abroad, supporting telecom operators, industrial facilities and data centres.' ) )
+			. fl_paragraph( fl_text( $lang,
+				'Realizujemy również modernizacje działających sieci, planując prace tak, aby ograniczyć przestoje.',
+				'We also upgrade live networks, planning our work to minimise downtime.' ) ) ),
+		'fl-about-story'
+	);
 	$body .= fl_scope_cards( $lang, fl_text( $lang, 'Jak pracujemy', 'How we work' ), array(
 		array( 'Dwie dekady w terenie', 'Two decades in the field',
 			'Zrealizowaliśmy setki projektów, od sieci biurowych po magistrale światłowodowe, serwerownie i centra danych klientów hiperskalowych.',
@@ -151,7 +187,7 @@ function fl_services_content( $lang, $title ) {
 				'fl-repair-row', 'fl-repair', $anchor );
 			continue;
 		}
-		$visual = fl_equipment_visual( $image, $lang );
+		$visual = fl_photo_placeholder( $lang, 'fl-section-image', $name );
 		$copy = fl_heading( $name ) . fl_paragraph( fl_text( $lang, $desc_pl, $desc_en ) ) . fl_contact_cta( $lang );
 		$body .= fl_section( fl_group( 'fl-split-copy', $copy ) . $visual, 'fl-split', $index % 2 ? 'fl-alternate' : '', $anchor );
 	}
@@ -174,8 +210,10 @@ function fl_equipment_content( $lang, $title ) {
 			'We have three EXFO OTDRs for measurements at 1310, 1550 and 1625 nm. Tier 2 testing lets us assess individual splices and connectors and pinpoint faults on long carrier routes.', 'pomiary' ),
 	);
 	$body = fl_hero( $lang, 'FIBERLAN SC', $title, fl_text( $lang,
-		'Stabilność transmisji zależy od jakości połączeń i dokładności pomiarów. W FIBERLAN używamy certyfikowanych, regularnie kalibrowanych urządzeń Fujikura, Fluke Networks, EXFO i VIAVI.',
-		'Reliable transmission depends on sound connections and accurate testing. At FIBERLAN we use certified, regularly calibrated equipment from Fujikura, Fluke Networks, EXFO and VIAVI.' ) );
+		'Korzystamy z precyzyjnych spawarek i mierników Fujikura, Fluke Networks, EXFO oraz VIAVI. Sprzęt dobieramy do wymagań instalacji, a pomiary dokumentujemy zgodnie z zakresem odbioru.',
+		'We use precision splicers and test instruments from Fujikura, Fluke Networks, EXFO and VIAVI. We choose equipment for each installation and document testing against the handover requirements.'
+	), fl_photo_placeholder( $lang, 'fl-subhero-visual', fl_text( $lang, 'fotografia zaplecza technicznego', 'technical equipment' ) ) );
+
 	$catalogue = '';
 	foreach ( $items as list( $image, $pl, $en, $copy_pl, $copy_en, $anchor ) ) {
 		$name = fl_text( $lang, $pl, $en );
@@ -195,32 +233,71 @@ function fl_project_examples() {
 	);
 }
 
+/**
+ * Bilingual project story, 4 service-sector case descriptions and an
+ * editable native image gallery. The editorial implementation note supplied
+ * by the client is deliberately not displayed on the public website.
+ */
 function fl_projects_content( $lang, $title ) {
 	$lead = fl_text( $lang,
-		'Od 2006 roku zrealizowaliśmy setki projektów w Polsce i innych krajach Europy. Jako podwykonawca wspieramy generalnych wykonawców, operatorów telekomunikacyjnych, deweloperów oraz małe i średnie firmy.',
-		'Since 2006 we have completed hundreds of projects in Poland and elsewhere in Europe. As a subcontractor we support general contractors, telecoms operators, property developers and small and medium-sized businesses.' );
-	$scopes = array(
-		array( 'Centra danych', 'Data centres',
-			'Łączymy wiele włókien za pomocą spawów Ribbon i systemów MPO/MTP. Miernikami VIAVI certyfikujemy tory optyczne przeznaczone do transmisji 100G i 400G.',
-			'We join multiple fibres using ribbon splicing and MPO/MTP systems. We use VIAVI instruments to certify optical links intended for 100G and 400G transmission.' ),
-		array( 'Hale przemysłowe i magazyny', 'Industrial halls and warehouses',
-			'Budujemy magistrale światłowodowe między halami produkcyjnymi i biurami. Spawamy włókna w przełącznicach szaf RACK i wykonujemy pomiary OTDR.',
-			'We build fibre backbones between production halls and offices, splice fibres at rack-mounted panels and test the routes with an OTDR.' ),
-		array( 'Inwestycje deweloperskie i biurowce', 'Property developments and offices',
-			'Wykonujemy piony światłowodowe i wyposażamy pomieszczenia teletechniczne. Do odbioru przekazujemy inwestorowi dokumentację powykonawczą.',
-			'We install fibre risers and fit out telecommunications rooms. At handover we supply the developer with the as-built records.' ),
-		array( 'Magistrale operatorskie', 'Carrier backbones',
-			'Spawamy włókna w mufach liniowych w studniach kablowych, lokalizujemy awarie na długich trasach i przywracamy łączność w trybie całodobowym.',
-			'We splice fibres in closures in cable chambers, locate faults on long routes and restore connectivity through our 24-hour repair service.' ),
+		'Od 2006 roku zrealizowaliśmy setki projektów na terenie Polski i całej Europy. Jako podwykonawcy wspieramy zarówno generalnych wykonawców, dużych operatorów telekomunikacyjnych takich jak T-Mobile, Orange czy PLUS, jak i sektor MŚP oraz deweloperów. Poniżej prezentujemy wybrane obszary naszych wdrożeń.',
+		'Since 2006, we have delivered hundreds of projects across Poland and Europe. As a subcontractor, we support general contractors, major telecom operators such as T-Mobile, Orange and PLUS, as well as SMEs and property developers. Explore selected areas of our work below.'
 	);
-	return fl_hero( $lang, 'FIBERLAN SC', $title, $lead, fl_diagram( 'project-datacenter', 'fl-subhero-visual' ) )
-		. fl_section( fl_heading( fl_text( $lang, 'Wybrane realizacje', 'Selected projects' ) ) . fl_custom_block( 'projects', array(
+	$cases = array(
+		array(
+			'Centra Danych (Data Center) – wdrożenia MPO/MTP i Ribbon',
+			'Data centres — MPO/MTP and Ribbon installations',
+			'Wykonanie wysoko wydajnych połączeń wielowłóknowych w technologii taśmowej (Ribbon) oraz systemach MPO/MTP. Certyfikacja torów optycznych miernikami Viavi pod kątem transmisji 100G/400G.',
+			'High-performance multi-fibre connections using ribbon fusion splicing and MPO/MTP systems. Certification of optical links with VIAVI instruments for 100G/400G transmission.'
+		),
+		array(
+			'Infrastruktura magazynowa i przemysłowa – sieci szkieletowe',
+			'Warehousing and industrial infrastructure — backbone networks',
+			'Budowa światłowodowych sieci szkieletowych łączących hale produkcyjne i biurowce. Spawanie przełącznic w szafach RACK oraz kompletne pomiary reflektometryczne OTDR.',
+			'Fibre optic backbone networks connecting production halls and offices. Splicing at rack-mounted distribution panels and complete OTDR reflectometry testing.'
+		),
+		array(
+			'Inwestycje deweloperskie i biurowce – okablowanie strukturalne',
+			'Property developments and office buildings — structured cabling',
+			'Kompleksowe wykonanie pionów światłowodowych oraz wyposażenie pomieszczeń teletechnicznych. Przygotowanie dokumentacji powykonawczej do odbiorów inwestorskich.',
+			'Complete fibre riser installations and telecommunications room fit-outs, including as-built documentation for investor handover.'
+		),
+		array(
+			'Magistrale operatorskie i serwis awaryjny',
+			'Carrier backbone networks and emergency maintenance',
+			'Spawanie muf liniowych w studniach kablowych, precyzyjna lokalizacja uszkodzeń na rozległych odcinkach traktów oraz szybkie przywracanie łączności w trybie 24/7.',
+			'Splicing of inline closures in cable chambers, precise fault location across extensive routes and rapid restoration of connectivity with 24/7 response.'
+		),
+	);
+	$cards = '';
+	$gallery = '';
+	foreach ( $cases as $case ) {
+		$cards .= fl_group( 'fl-project-feature',
+			fl_heading( fl_text( $lang, $case[0], $case[1] ), 3 )
+			. fl_paragraph( fl_text( $lang, 'Zakres prac', 'Scope of work' ), 'fl-project-feature-label' )
+			. fl_paragraph( fl_text( $lang, $case[2], $case[3] ) ), 'article' );
+		$gallery .= fl_photo_placeholder( $lang, 'fl-gallery-placeholder',
+			fl_text( $lang, $case[0], $case[1] ) );
+	}
+	$catalogue = fl_section(
+		fl_heading( fl_text( $lang, 'Wybrane realizacje', 'Selected projects' ) )
+		. fl_custom_block( 'projects', array(
 			'label' => fl_text( $lang, 'Kategorie realizacji', 'Project categories' ),
-			'all'   => fl_text( $lang, 'Wszystkie', 'All projects' ),
-			'empty' => fl_text( $lang, 'Brak realizacji w tej kategorii.', 'There are no projects in this category.' ),
-		) ), 'fl-wide' )
-		. fl_scope_cards( $lang, fl_text( $lang, 'Zakresy wdrożeń', 'Types of installation' ), $scopes );
+			'all' => fl_text( $lang, 'Wszystkie', 'All projects' ),
+			'empty' => fl_text( $lang, 'Brak realizacji w tej kategorii.', 'No projects in this category.' ),
+		) ), 'fl-wide', 'fl-project-catalogue' );
+	$showcase = fl_section(
+		fl_heading( fl_text( $lang, 'Obszary naszych wdrożeń', 'Areas of expertise' ) )
+		. fl_group( 'fl-project-feature-grid', $cards ), 'fl-wide', 'fl-project-showcase' );
+	$photos = fl_section(
+		fl_heading( fl_text( $lang, 'Galeria realizacji', 'Project gallery' ) )
+		. fl_paragraph( fl_text( $lang,
+			'Miejsce na fotografie z kolejnych projektów. Zdjęcia można zastąpić w edytorze Gutenberg.',
+			'Space for photographs from upcoming projects. Replace these images in the Gutenberg editor.' ) )
+		. fl_group( 'fl-project-gallery', $gallery ), 'fl-wide', 'fl-project-photos' );
+	return fl_hero( $lang, 'FIBERLAN SC', $title, $lead ) . $catalogue . $showcase . $photos;
 }
+
 
 function fl_contact_content( $lang, $title ) {
 	$lead = fl_text( $lang, 'Opisz zakres instalacji, lokalizację i przewidywany termin. Wrócimy z pytaniami lub propozycją kolejnych kroków.', 'Describe the installation scope, location and expected schedule. We will follow up with any questions or proposed next steps.' );

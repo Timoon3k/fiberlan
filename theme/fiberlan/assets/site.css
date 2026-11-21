@@ -1131,9 +1131,7 @@ html[lang^='en'] .fl-nav .is-menu-open .wp-block-navigation__responsive-containe
   .fl-subhero > .fl-reading .fl-eyebrow { grid-column: 1 / -1; }
   .fl-subhero > .fl-reading h1 { margin: 0; }
   .fl-subhero > .fl-reading .fl-lead { margin: 0; border-inline-start: 1px solid var(--fl-border-dark); padding-inline-start: clamp(1.5rem,3vw,3rem); }
-  .fl-section:has(+ .fl-ribbon) > .fl-reading { max-width: var(--fl-width); display: grid; grid-template-columns: minmax(0,1fr) minmax(0,.95fr); column-gap: clamp(2rem,6vw,6rem); }
-  .fl-section:has(+ .fl-ribbon) > .fl-reading h2 { grid-column: 1; grid-row: 1 / span 2; max-width: 15ch; }
-  .fl-section:has(+ .fl-ribbon) > .fl-reading p { grid-column: 2; margin-block-end: .5rem; }
+  /* No forced two-column layout for text-only sections before Ribbon. */
 }
 .fl-service-card:has(.fl-card-body a:focus-visible), .fl-case-grid article:focus-within {
   outline: 2px solid #4f79c9;
@@ -1330,3 +1328,206 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
   max-width: 100%;
 }
 .fl-reviews .fl-reviews-widget :is(.ti-review-item,.ti-review-content,.ti-review-text) { overflow-wrap: break-word; }
+
+
+/* FIBERLAN 4.6: client-controlled photos have understated native placeholders. */
+.fl-photo-placeholder {
+  position: relative;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  background: #edf1f5;
+  border: 1px solid #d2dae4;
+  overflow: hidden;
+}
+.fl-photo-placeholder img,
+.fl-section-image.fl-photo-placeholder img,
+.fl-subhero-visual.fl-photo-placeholder img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
+  object-position: center;
+  background: #edf1f5;
+}
+.fl-team-photo.fl-photo-placeholder img { aspect-ratio: 5 / 4; }
+.fl-photo-placeholder figcaption { padding: .6rem .85rem; color: #546479; background: #edf1f5; }
+
+/* About: an actual photo slot on the left; existing prose retains its own width.
+   Blocks in Gutenberg remain individually editable. */
+.fl-section > .fl-shell.fl-about-story {
+  display: grid;
+  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5.5rem);
+  max-width: var(--fl-width);
+  min-width: 0;
+}
+.fl-about-story > .fl-team-photo {
+  grid-column: 1;
+  grid-row: 1 / span 12;
+  align-self: start;
+}
+.fl-about-story > :not(.fl-team-photo) {
+  grid-column: 2;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+}
+.fl-about-story > :not(.fl-team-photo) + :not(.fl-team-photo) {
+  margin-top: .9rem;
+}
+.fl-about-story .fl-about-story-copy > * { margin: 0; }
+.fl-about-story .fl-about-story-copy > * + * { margin-block-start: .9rem; }
+.fl-about-story :is(h2,h3) { max-width: 20ch; }
+.fl-open-info {
+  border-top: 1px solid #bcc9d8;
+  padding-block: 1.15rem;
+}
+.fl-open-info h3 { margin-block-end: .5rem; }
+.fl-open-info p { max-width: 66ch; }
+.fl-ribbon-copy > p + p { margin-block-start: 1rem; }
+.fl-ribbon-copy details { background: transparent; border: none; padding: 0; }
+.fl-ribbon-copy details summary { display: none; }
+.fl-ribbon-copy details > p { display: block; margin: 0; }
+
+/* Equipment hero: short overview and a neutral visual slot, not a giant wall
+   of text over the server background. */
+.fl-subhero.fl-equipment-hero {
+  background: #0b192b;
+  background-image: none;
+}
+.fl-subhero.fl-equipment-hero > .fl-reading,
+.fl-subhero.fl-equipment-hero > .fl-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+  align-items: center;
+  gap: .7rem clamp(2rem, 5.5vw, 5rem);
+}
+.fl-subhero.fl-equipment-hero > .fl-reading > :not(.fl-subhero-visual) { grid-column: 1; margin-inline: 0; }
+.fl-subhero.fl-equipment-hero > .fl-reading > .fl-subhero-visual {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+}
+.fl-subhero.fl-equipment-hero > .fl-reading > .fl-eyebrow { grid-row: 1; }
+.fl-subhero.fl-equipment-hero > .fl-reading > h1 { grid-row: 2; }
+.fl-subhero.fl-equipment-hero > .fl-reading > .fl-lead { grid-row: 3; }
+.fl-subhero.fl-equipment-hero .fl-lead {
+  max-width: 49ch;
+  font-size: clamp(1.05rem, 1.2vw, 1.25rem);
+  line-height: 1.55;
+  border: 0;
+  padding-inline-start: 0;
+}
+.fl-equipment-intro { background: #f4f6f9; }
+.fl-equipment-intro .fl-reading { max-width: 66rem; }
+.fl-equipment-intro .fl-reading p { max-width: 74ch; }
+
+/* Equipment is one sequence of balanced editorial rows; photo/copy alternate.
+   This overrides the previous "featured first item plus two-column cards". */
+.fl-section > .fl-shell.fl-equipment {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  max-width: var(--fl-width);
+}
+.fl-section .fl-equipment > .fl-equipment-item,
+.fl-section .fl-equipment > .fl-equipment-item:first-child {
+  display: grid;
+  grid-column: auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 5.5vw, 6rem);
+  margin: 0;
+  padding-block: clamp(2.25rem, 4.8vw, 5rem);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #b6c4d4;
+  border-radius: 0;
+}
+.fl-section .fl-equipment > .fl-equipment-item:first-child .fl-equipment-copy { padding: 0; }
+.fl-section .fl-equipment > .fl-equipment-item > .fl-section-image {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  width: 100%;
+}
+.fl-section .fl-equipment > .fl-equipment-item > .fl-equipment-copy {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+.fl-section .fl-equipment > .fl-equipment-item:nth-child(even) > .fl-section-image { grid-column: 2; }
+.fl-section .fl-equipment > .fl-equipment-item:nth-child(even) > .fl-equipment-copy { grid-column: 1; }
+.fl-equipment-item .fl-section-image img { max-height: 26rem; object-fit: contain; }
+.fl-equipment-item .fl-equipment-copy h2 { font-size: clamp(1.7rem, 2.5vw, 3rem); line-height: 1.1; }
+.fl-equipment-item .fl-equipment-copy p { max-width: 63ch; }
+
+/* Projects: four scoped cases and a replaceable grid of real Gutenberg images. */
+.fl-project-showcase { background: #e9f0f7; }
+.fl-project-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 2.7vw, 3.5rem);
+  margin-block-start: 1.6rem;
+}
+.fl-project-feature {
+  border-top: 1px solid #9babbe;
+  padding-top: 1.2rem;
+}
+.fl-project-feature h3 {
+  max-width: 23ch;
+  font-size: clamp(1.3rem, 1.7vw, 1.8rem);
+}
+.fl-project-feature > p:not(.fl-project-feature-label) {
+  max-width: 67ch;
+  margin-block-start: .5rem;
+  color: #33445b;
+}
+.fl-project-feature .fl-project-feature-label {
+  margin-top: .85rem;
+  color: #28519f;
+  font-size: .76rem;
+  font-weight: 750;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.fl-project-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(.9rem, 2vw, 2rem);
+  margin-block-start: 1.5rem;
+}
+.fl-project-gallery > .wp-block-image { margin: 0; }
+.fl-project-gallery img { width: 100%; aspect-ratio: 8 / 5; }
+@media (max-width: 60rem) {
+  .fl-section > .fl-shell.fl-about-story { gap: 1.7rem; }
+}
+@media (max-width: 48rem) {
+  .fl-section > .fl-shell.fl-about-story,
+  .fl-subhero.fl-equipment-hero > .fl-reading,
+  .fl-subhero.fl-equipment-hero > .fl-split,
+  .fl-section .fl-equipment > .fl-equipment-item,
+  .fl-section .fl-equipment > .fl-equipment-item:first-child {
+    grid-template-columns: minmax(0,1fr);
+    gap: 1.35rem;
+  }
+  .fl-about-story > .fl-team-photo,
+  .fl-about-story > :not(.fl-team-photo),
+  .fl-subhero.fl-equipment-hero > .fl-reading > :not(.fl-subhero-visual),
+  .fl-subhero.fl-equipment-hero > .fl-reading > .fl-subhero-visual,
+  .fl-section .fl-equipment > .fl-equipment-item > .fl-section-image,
+  .fl-section .fl-equipment > .fl-equipment-item > .fl-equipment-copy,
+  .fl-section .fl-equipment > .fl-equipment-item:nth-child(even) > .fl-section-image,
+  .fl-section .fl-equipment > .fl-equipment-item:nth-child(even) > .fl-equipment-copy {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .fl-project-feature-grid { grid-template-columns: minmax(0,1fr); }
+  .fl-subhero.fl-equipment-hero .fl-lead { max-width: 66ch; }
+}
+@media (max-width: 37.5rem) {
+  .fl-project-gallery { grid-template-columns: minmax(0,1fr); }
+}
