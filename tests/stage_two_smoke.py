@@ -62,7 +62,7 @@ def check_interactions(browser, send_mail):
     page.locator('.fl-languages a[data-language="en"]').first.click()
     expect(page).to_have_url(BASE + "/en/services/?utm_source=qa&gclid=sample")
     assert page.evaluate("localStorage.getItem('fiberlan-language')") == "en"
-    page.goto(BASE + "/o-nas/")
+    page.goto(BASE + "/")
     summary = page.locator(".fl-ribbon summary")
     summary.press("Enter")
     expect(page.locator(".fl-ribbon details")).to_have_attribute("open", "")

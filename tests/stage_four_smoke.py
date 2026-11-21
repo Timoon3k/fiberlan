@@ -43,19 +43,10 @@ def check_motion(browser, base, mode):
         for pair in PAIRS[:6]:
             for path in pair:
                 page.goto(base + path)
-                page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight)")
-                if mode == "reduce":
-                    expect(page.locator(".fl-in-view, .fl-reveal-pending")).to_have_count(0)
-                    continue
-                page.wait_for_function("""() => {
-                    const top = scrollY;
-                    window.scrollTo(0, top > innerHeight ? top - innerHeight / 2 : 0);
-                    return document.querySelector('main .fl-in-view');
-                }""", polling=100, timeout=6000)
-                target = page.locator("main .fl-in-view").first
-                timings = target.evaluate("""node => getComputedStyle(node).animationDuration
-                    .split(',').map(value => parseFloat(value))""")
-                assert all(.7 <= seconds <= 1.0 for seconds in timings), (path, timings)
+                target = page.locator("main h1") if path not in ("/", "/en/") else page.locator(".fl-service-card").last
+                assert page.evaluate("scrollY") == 0
+                animation = target.evaluate("n => getComputedStyle(n).animationName")
+                assert animation == ("none" if mode == "reduce" else "fl-content-arrive"), (path, animation)
         page.goto(base + "/uslugi/#pomiary")
         heading = page.locator("#pomiary h2").bounding_box()
         nav = page.locator(".fl-nav-row").bounding_box()
@@ -143,25 +134,14 @@ def check_device_details(page, base):
 def check_reveal_timing(page, base):
     page.goto(base)
     cards = page.locator(".fl-service-grid > .fl-service-card")
-    pending = cards.last
-    expect(pending).to_have_class(re.compile(r"\bfl-reveal-pending\b"))
-    assert pending.evaluate("n => getComputedStyle(n).opacity") == "1"
-    assert "38%" in pending.locator("img").evaluate("n => getComputedStyle(n).clipPath")
-    for index, delay in enumerate((0, .09, .18, .24)):
-        card = cards.nth(index)
-        card.scroll_into_view_if_needed()
-        expect(card).to_have_class(re.compile(r"\bfl-in-view\b"))
+    for card, delay in zip(cards.all(), (.045, .12, .195, .27)):
         assert card.evaluate("n => parseFloat(getComputedStyle(n).animationDelay)") == delay
-        card.evaluate("async n => await Promise.all(n.getAnimations().map(animation => animation.finished))")
-        assert card.evaluate("n => getComputedStyle(n).opacity") == "1"
-    page.goto(base + "/uslugi/")
-    photo = page.locator("#pomiary .fl-section-image")
-    photo.scroll_into_view_if_needed()
-    expect(photo).to_have_class(re.compile(r"\bfl-in-view\b"))
-    assert "clip-path" in photo.locator("img").evaluate("n => getComputedStyle(n).transitionProperty")
+        assert card.evaluate("n => getComputedStyle(n).translate") == "none"
+    page.wait_for_timeout(1150)
+    assert page.evaluate("scrollY") == 0
+    assert cards.last.evaluate("n => getComputedStyle(n).opacity") == "1"
     page.emulate_media(reduced_motion="reduce")
-    expect(page.locator(".fl-reveal-pending, .fl-in-view")).to_have_count(0)
-    assert photo.locator("img").evaluate("n => getComputedStyle(n).clipPath") == "none"
+    assert cards.last.evaluate("n => getComputedStyle(n).animationName") == "none"
     page.emulate_media(reduced_motion="no-preference")
 
 
@@ -348,5 +328,5 @@ if __name__ == "__main__":
         expect(page.locator('header .fl-nav a[href$="/en/services/"]')).to_be_visible()
         page.locator(".fl-floating-top").click()
         assert page.url.endswith("#fl-page-top")
-        print("Reduced motion, scroll animation, anchor clearance and no-JS return OK")
+        print("Reduced motion, timed entry, anchor clearance and no-JS return OK")
         browser.close()

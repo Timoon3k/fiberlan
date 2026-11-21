@@ -1274,43 +1274,46 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
 
 @media (prefers-reduced-motion: no-preference) {
   .fl-floating-top { transition: opacity .18s ease; }
-  .fl-in-view {
-    --fl-reveal-duration: 880ms;
-    --fl-reveal-delay: 0ms;
-    --fl-reveal-ease: cubic-bezier(.16,.78,.24,1);
-    animation: fl-section-arrive var(--fl-reveal-duration) var(--fl-reveal-ease) var(--fl-reveal-delay) backwards;
+  /* Start on page arrival. All copy is readable before JS and after the short sequence. */
+  .fl-timed-content :is(.fl-subhero h1, .fl-subhero .fl-lead, .fl-section-head, .fl-project-intro, .fl-about-story-copy, .fl-split-copy, .fl-equipment-copy,
+    .fl-contact-sidebar, .fl-form-panel, .fl-ribbon-copy, .fl-reviews-layout, .fl-section h2,
+    .fl-service-grid > article, .fl-project-grid > article, .fl-case-grid > article,
+    .fl-project-gallery > figure, .fl-project-feature-grid > article) {
+    animation: fl-content-arrive 820ms cubic-bezier(.2,.65,.3,1) var(--fl-entry-delay, 45ms) backwards;
   }
-  :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-sector-grid) > .fl-in-view:nth-child(4n+2) { --fl-reveal-delay: 90ms; }
-  :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-sector-grid) > .fl-in-view:nth-child(4n+3) { --fl-reveal-delay: 180ms; }
-  :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-sector-grid) > .fl-in-view:nth-child(4n) { --fl-reveal-delay: 240ms; }
-  /* Keep the project cards inside their grid above the photograph credit. */
-  .fl-case-grid > .fl-in-view { animation-name: fl-project-uncover; }
-  .fl-form .wp-element-button.fl-in-view { animation-name: fl-submit-highlight; }
-
-  /* Reveal the frame without scaling or filtering the photograph. */
-  :is(figure,.fl-service-card,.fl-project-card,.wp-block-gallery,.fl-case-grid > article).fl-reveal-pending:not(:focus-within,:target) img {
-    opacity: .5;
-    clip-path: inset(0 0 38%);
+  .fl-timed-content :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-project-gallery,.fl-project-feature-grid) > :nth-child(4n+2),
+  .fl-badges-visible > :nth-child(2) { --fl-entry-delay: 120ms; }
+  .fl-timed-content :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-project-gallery,.fl-project-feature-grid) > :nth-child(4n+3),
+  .fl-badges-visible > :nth-child(3) { --fl-entry-delay: 195ms; }
+  .fl-timed-content :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-project-gallery,.fl-project-feature-grid) > :nth-child(4n) { --fl-entry-delay: 270ms; }
+  .fl-timed-content :is(.fl-case-grid > article,.fl-project-gallery > figure) img {
+    animation: fl-frame-arrive 760ms cubic-bezier(.18,.75,.22,1) var(--fl-entry-delay, 45ms) backwards;
   }
-  :is(figure,.fl-service-card,.fl-project-card,.wp-block-gallery,.fl-case-grid > article).fl-in-view:not(:focus-within,:target) img {
-    clip-path: inset(0);
-    transition: clip-path 950ms var(--fl-reveal-ease) var(--fl-reveal-delay),
-      opacity 820ms ease-out var(--fl-reveal-delay);
-  }
-  .fl-in-view:is(:focus-within,:target), :target .fl-in-view { animation-duration: 0s; animation-delay: 0s; }
-  :target .fl-reveal-pending img { opacity: 1 !important; clip-path: none !important; }
+  .fl-timed-content .fl-badges-visible > p { animation: fl-badge-ink 840ms ease-out var(--fl-entry-delay, 0ms) backwards; }
+  .fl-timed-content :is(:focus-within,:target), .fl-timed-content :target * { animation-delay: 0s; animation-duration: 0s; }
+  #portfolio .fl-case-grid img { transition: opacity .18s ease; }
+  #portfolio[aria-busy="true"] .fl-case-grid img { opacity: .65; }
 }
-@keyframes fl-section-arrive {
-  from { translate: 0 clamp(1.8rem, 5vw, 3rem); }
-  to { translate: 0 0; }
-}
-@keyframes fl-project-uncover {
-  from { clip-path: inset(0 0 22%); }
+@keyframes fl-frame-arrive {
+  from { opacity: .5; clip-path: inset(0 12% 0 0); }
   to { clip-path: inset(0); }
 }
-@keyframes fl-submit-highlight {
-  from { box-shadow: 0 0 0 .35rem #5fa7e866; }
-  to { box-shadow: 0 0 0 0 transparent; }
+@keyframes fl-content-arrive {
+  from { clip-path: inset(0 8% 0 0); }
+  to { clip-path: inset(0); }
+}
+@keyframes fl-badge-ink {
+  from { box-shadow: inset 0 3px #418bc4; }
+  to { box-shadow: inset 0 0 transparent; }
+}
+
+/* Let the browser retain normal navigation, document scripts, forms and history. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-group(root) { animation-duration: 180ms; }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation-duration: 0s; }
 }
 
 /* Gutenberg image styles apply to library replacements as well as starter photographs. */

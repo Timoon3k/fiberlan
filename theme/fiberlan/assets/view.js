@@ -175,37 +175,71 @@
 		});
 	}
 
-	if (!window.IntersectionObserver) return;
-	const observer = new IntersectionObserver(entries => {
-		for (const { target, isIntersecting } of entries) {
-			if (!isIntersecting) continue;
-			target.classList.replace('fl-reveal-pending', 'fl-in-view');
-			observer.unobserve(target);
-		}
-	});
-	const items = document.querySelectorAll([
-		'main .fl-section > .fl-shell:not(.fl-split,.fl-contact-layout):not(:has(.fl-section-head,.fl-project-grid,.fl-service-grid,.fl-sector-grid,.fl-equipment-item,.fl-case-grid))',
-		'main .fl-section-head', 'main .fl-project-intro', 'main .fl-contact-row', 'main .fl-reviews-layout',
-		'main :is(.fl-service-grid,.fl-project-grid,.fl-case-grid,.fl-sector-grid) > *',
-		'main .fl-split > :is(.fl-split-copy,.fl-section-image)', 'main .fl-equipment-item > *',
-		'main :is(.fl-milestone,.fl-ribbon-copy,.fl-contact-sidebar,.fl-service-index)',
-		'main .fl-form-panel > h2', 'main .fl-form .wp-element-button',
-		'main .fl-project-report :is(.wp-block-image,.wp-block-gallery)'
-	].join(','));
-	function syncReveals() {
-		observer.disconnect();
-		if (!motion.matches) {
-			for (const item of items) item.classList.remove('fl-reveal-pending', 'fl-in-view');
-			return;
-		}
-		// Measure before applying styles. Content already on screen stays in place.
-		const offscreen = Array.from(items).filter(item => item.getBoundingClientRect().top >= innerHeight);
-		for (const item of offscreen) {
-			if (item.parentElement.closest('.fl-reveal-pending')) continue;
-			item.classList.add('fl-reveal-pending');
-			observer.observe(item);
+	const main = document.querySelector('main');
+	if (!main) return;
+	main.classList.add('fl-timed-content');
+
+	// Bring the operator nameplates into focus together when their section enters view.
+	const badges = main.querySelector('.fl-operator-badges');
+	if (badges && 'IntersectionObserver' in window) {
+		const observer = new IntersectionObserver(entries => {
+			if (!entries.some(entry => entry.isIntersecting)) return;
+			badges.classList.add('fl-badges-visible');
+			observer.disconnect();
+		});
+		observer.observe(badges);
+	}
+
+	const portfolio = main.querySelector('#portfolio');
+	if (!portfolio || !window.fetch || !window.AbortController) return;
+	const status = document.createElement('p');
+	status.className = 'screen-reader-text';
+	status.setAttribute('role', 'status');
+	portfolio.after(status);
+
+	let displayed = location.pathname + location.search;
+	let activeRequest;
+	async function filterProjects(url, push) {
+		activeRequest?.abort();
+		const request = new AbortController();
+		activeRequest = request;
+		portfolio.setAttribute('aria-busy', 'true');
+		try {
+			const response = await fetch(url, { signal: request.signal, credentials: 'same-origin' });
+			if (!response.ok) throw new Error('Unavailable');
+			const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+			const grid = page.querySelector('#portfolio .fl-case-grid');
+			const selected = page.querySelector('#portfolio .fl-filters [aria-current]');
+			if (!grid || !selected) throw new Error('Missing project catalogue');
+			if (request.signal.aborted) return;
+
+			portfolio.querySelector('.fl-case-grid').replaceWith(grid);
+			const sector = new URL(selected.getAttribute('href'), url).searchParams.get('sector');
+			for (const link of portfolio.querySelectorAll('.fl-filters a')) {
+				if (new URL(link.href).searchParams.get('sector') === sector) link.setAttribute('aria-current', 'true');
+				else link.removeAttribute('aria-current');
+			}
+			if (push && url.href !== location.href) history.pushState(null, '', url);
+			displayed = url.pathname + url.search;
+			const count = grid.querySelectorAll('article').length;
+			status.textContent = [selected.textContent, englishMenu ? 'Projects' : 'Realizacje', count].join(' · ');
+		} catch (error) {
+			if (!request.signal.aborted) location.assign(url);
+		} finally {
+			if (activeRequest === request) portfolio.removeAttribute('aria-busy');
 		}
 	}
-	syncReveals();
-	motion.addEventListener('change', syncReveals);
+
+	portfolio.addEventListener('click', event => {
+		const link = event.target.closest('.fl-filters a');
+		if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+		const url = new URL(link.href);
+		if (url.origin !== location.origin || url.pathname !== location.pathname) return;
+		event.preventDefault();
+		filterProjects(url, true);
+	});
+	window.addEventListener('popstate', () => {
+		activeRequest?.abort();
+		if (displayed !== location.pathname + location.search) filterProjects(new URL(location.href), false);
+	});
 })();

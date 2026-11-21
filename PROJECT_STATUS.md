@@ -1,5 +1,11 @@
 # FIBERLAN SC · Status projektu
 
+## Podgląd PL/EN · 4.9.0
+
+Strona główna używa neutralnych pól na fotografie spawania, sieci miedzianych oraz trzech realizacji międzynarodowych. W sekcji „O nas” fotografia i blok tekstowy zajmują jeden wiersz na komputerze. Sekcja testerów Fluke pokazuje oba urządzenia w proporcjach oryginału.
+
+W Realizacjach umieszczono nazwy T-Mobile, Orange i Plus zgodnie z opisem prac podwykonawczych dostarczonym przez klienta. Galeria zbiorcza ma sześć miejsc, a każda realizacja trzy dodatkowe pola. Filtry pobierają karty przez AJAX, aktualizują adres i obsługują powrót w historii. Treść pojawia się w krótkiej sekwencji od załadowania strony. Oznaczenia operatorów mają własną animację przy przewijaniu. Oba efekty respektują ustawienie ograniczonego ruchu.
+
 ## Menu mobilne · 4.8.0
 
 Na telefonie i tablecie jasny panel prezentuje wyśrodkowaną listę podstron w kroju Britannic. Aktywny odnośnik ma kolor kobaltowy i pomarańczowe podkreślenie. Panel korzysta z menu, logo oraz numeru biura ustawionych w WordPressie. Przełącznik PL/EN otwiera odpowiednik bieżącej podstrony. [Nagranie menu z WordPressa](docs/menu-mobilne-4.8.mp4)
