@@ -1,8 +1,10 @@
 # FIBERLAN SC · Status projektu
 
-## Menu dotykowe i przewijanie · 4.7.0
+## Menu mobilne · 4.8.0
 
-Menu korzysta z nawigacji WordPressa i logo ustawionego w nagłówku. Na telefonie pozycje łączy cienka linia, a bursztynowy punkt wskazuje bieżącą stronę. Na szerszych ekranach dotykowych odnośniki układają się w dwóch kolumnach. Przełącznik PL/EN prowadzi do odpowiednika otwartej podstrony.
+Na telefonie i tablecie jasny panel prezentuje wyśrodkowaną listę podstron w kroju Britannic. Aktywny odnośnik ma kolor kobaltowy i pomarańczowe podkreślenie. Panel korzysta z menu, logo oraz numeru biura ustawionych w WordPressie. Przełącznik PL/EN otwiera odpowiednik bieżącej podstrony. [Nagranie menu z WordPressa](docs/menu-mobilne-4.8.mp4)
+
+## Animacje przewijania · 4.7.0
 
 Podczas przewijania sekcje wchodzą od dołu, karty pojawiają się kolejno, a fotografie stopniowo odsłaniają kadr. Ustawienie ograniczonego ruchu pokazuje treść od razu. [Nagranie z mobilnego WordPressa](docs/menu-i-przewijanie-4.7.mp4)
 

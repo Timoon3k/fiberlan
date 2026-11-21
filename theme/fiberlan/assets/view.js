@@ -22,6 +22,7 @@
 	// Use the header's configured identity and translated links inside the native dialog.
 	const languageNav = row?.querySelector('.fl-languages');
 	const mobileContent = row?.querySelector('.fl-nav .wp-block-navigation__responsive-container-content');
+	const englishMenu = root.lang.toLowerCase().startsWith('en');
 	if (mobileContent) {
 		const brand = document.createElement('div');
 		brand.className = 'fl-menu-brand';
@@ -34,12 +35,30 @@
 			brand.textContent = row.querySelector('.fl-brand .wp-block-site-title')?.textContent || '';
 		}
 		mobileContent.before(brand);
+		const overlay = mobileContent.closest('.wp-block-navigation__responsive-container');
+		const dialog = mobileContent.closest('.wp-block-navigation__responsive-dialog');
+		const close = dialog?.querySelector('.wp-block-navigation__responsive-container-close');
+		if (overlay && close) {
+			// Touch browsers can retarget a tap on the narrow backdrop to the adjacent list.
+			let pressedBackdrop = false;
+			overlay.addEventListener('pointerdown', event => {
+				pressedBackdrop = !dialog.contains(document.elementFromPoint(event.clientX, event.clientY));
+			});
+			overlay.addEventListener('click', event => {
+				const dismiss = !dialog.contains(event.target) || (event.detail > 0 && pressedBackdrop);
+				pressedBackdrop = false;
+				if (!overlay.classList.contains('is-menu-open') || !dismiss) return;
+				event.preventDefault();
+				event.stopPropagation();
+				close.click();
+			}, true);
+		}
 	}
 	if (languageNav && mobileContent && !mobileContent.querySelector('.fl-mobile-locales')) {
 		const switcher = document.createElement('div');
 		switcher.className = 'fl-mobile-locales';
 		const label = document.createElement('span');
-		label.textContent = (document.documentElement.lang || '').toLowerCase().startsWith('en') ? 'Language' : 'Język';
+		label.textContent = englishMenu ? 'Language' : 'Język';
 		switcher.append(label);
 		for (const original of languageNav.querySelectorAll('a[data-language]:not(.fl-language-hint)')) {
 			const link = original.cloneNode(true);
@@ -49,6 +68,16 @@
 			switcher.append(link);
 		}
 		mobileContent.append(switcher);
+	}
+	const office = header?.querySelector('.fl-contactbar a[href^="tel:"]');
+	if (mobileContent && office) {
+		const phone = document.createElement('a');
+		phone.className = 'fl-menu-phone';
+		phone.href = office.href;
+		const number = document.createElement('strong');
+		number.textContent = office.textContent.trim() || office.getAttribute('href').slice(4);
+		phone.append(englishMenu ? 'Call the office' : 'Zadzwoń do biura', number);
+		mobileContent.append(phone);
 	}
 
 	// A focusable, icon-free tooltip: hover or keyboard focus on desktop,

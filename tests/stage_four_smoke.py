@@ -132,7 +132,7 @@ def check_device_details(page, base):
         page.keyboard.press("Escape")
         expect(trigger).to_have_attribute("aria-expanded", "false")
         expect(tooltip).to_be_hidden()
-        expect(page.locator('header a[href="tel:+48662211200"]')).to_have_text("+48 66 22 11 200")
+        expect(page.locator('.fl-contactbar a[href="tel:+48662211200"]')).to_have_text("+48 66 22 11 200")
         expect(page.locator('main img[alt*="VIAVI SmartClass Fiber MPOLx"]')).to_have_count(1)
         page.goto(base + PAIRS[3][lang])
         expect(page.get_by_role("heading", name="Fluke Networks DSX-5000")).to_be_visible()
@@ -267,6 +267,16 @@ def check_tablet_menu(browser, base):
     dialog = page.get_by_role("dialog")
     expect(dialog.locator(".fl-menu-brand img")).to_be_visible()
     expect(dialog.locator("li a[aria-current]")).to_have_text("Usługi")
+    phone = page.locator('.fl-contactbar a[href^="tel:"]').first
+    expect(dialog.locator(".fl-menu-phone")).to_have_attribute("href", phone.get_attribute("href"))
+    expect(dialog.locator(".fl-menu-phone")).to_contain_text(phone.text_content().strip())
+    panel = dialog.bounding_box()
+    assert abs(2 * panel["x"] + panel["width"] - page.viewport_size["width"]) < 2
+    assert dialog.locator("li a").first.evaluate("a => getComputedStyle(a).textAlign") == "center"
+    page.touchscreen.tap(12, 120)
+    expect(dialog).to_be_hidden()
+    expect(menu).to_be_focused()
+    menu.tap()
     dialog.locator('.fl-mobile-locales a[data-language="en"]').tap()
     expect(page).to_have_url(base + "/en/services/")
     page.close()
