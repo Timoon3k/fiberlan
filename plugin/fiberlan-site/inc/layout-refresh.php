@@ -588,6 +588,24 @@ function fl_restore_fluke_image( &$block, $photo ) {
 	return false;
 }
 
+/** Leave active editing sessions alone and retry unfinished updates on the next visit. */
+function fl_save_managed_page( $id, $lang, $key, $marker, $build ) {
+	$post = get_post( $id );
+	if ( ! $post || get_post_meta( $id, $marker, true ) ) {
+		return true;
+	}
+	if ( wp_check_post_lock( $id ) ) {
+		return false;
+	}
+	$content = $build( $post, $lang, $key );
+	if ( $content !== $post->post_content && ( get_post_field( 'post_content', $id ) !== $post->post_content
+		|| is_wp_error( wp_update_post( wp_slash( array( 'ID' => $id, 'post_content' => $content ) ), true ) ) ) ) {
+		return false;
+	}
+	update_post_meta( $id, $marker, '1' );
+	return true;
+}
+
 function fl_refresh_portfolio_pages() {
 	if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) || ! get_option( 'fl_layout_refresh_471_complete' )
 		|| get_option( 'fl_portfolio_490_complete' ) || ! function_exists( 'fiberlan_image_block' )
@@ -611,24 +629,9 @@ function fl_refresh_portfolio_pages() {
 			}
 		}
 		foreach ( $pages as $id => $key ) {
-			if ( get_post_meta( $id, '_fl_portfolio_490', true ) ) {
-				continue;
-			}
-			$post = get_post( $id );
-			if ( ! $post ) {
-				continue;
-			}
-			if ( wp_check_post_lock( $id ) ) {
+			if ( ! fl_save_managed_page( $id, $lang, $key, '_fl_portfolio_490', 'fl_refresh_portfolio_content' ) ) {
 				$pending = true;
-				continue;
 			}
-			$content = fl_refresh_portfolio_content( $post, $lang, $key );
-			if ( $content !== $post->post_content && ( get_post_field( 'post_content', $id ) !== $post->post_content
-				|| is_wp_error( wp_update_post( wp_slash( array( 'ID' => $id, 'post_content' => $content ) ), true ) ) ) ) {
-				$pending = true;
-				continue;
-			}
-			update_post_meta( $id, '_fl_portfolio_490', '1' );
 		}
 	}
 	if ( ! $pending ) {

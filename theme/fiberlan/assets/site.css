@@ -1943,3 +1943,32 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
   border-block-start: 3px solid #486d85;
 }
 .fl-projects .fl-project-layout:has(img[src$="/photo-placeholder.svg"]) { align-items: center; }
+
+/* Give the project photograph its own frame until the editor adds a site photograph. */
+.wp-block-post-content:has(#portfolio) > .fl-subhero .fl-shell:has(> .fl-subhero-visual img[src$="/photo-placeholder.svg"]) {
+  display: grid;
+  grid-template-columns: minmax(0,1.2fr) minmax(0,.8fr);
+  align-items: center;
+  gap: clamp(1.5rem,5vw,5rem);
+}
+.wp-block-post-content:has(#portfolio) .fl-subhero .fl-subhero-visual:has(img[src$="/photo-placeholder.svg"]) {
+  position: static;
+  z-index: auto;
+  opacity: 1;
+  overflow: hidden;
+  border: 1px solid #9cabb7;
+  border-radius: .35rem;
+  background: #edf1f5;
+}
+.fl-subhero .fl-subhero-visual:has(img[src$="/photo-placeholder.svg"])::after { content: none; }
+.wp-block-post-content:has(#portfolio) .fl-subhero-visual img[src$="/photo-placeholder.svg"] {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2.4;
+  object-fit: contain;
+}
+@media (max-width: 48rem) {
+  .wp-block-post-content:has(#portfolio) > .fl-subhero .fl-shell:has(> .fl-subhero-visual img[src$="/photo-placeholder.svg"]) {
+    grid-template-columns: minmax(0,1fr);
+  }
+}

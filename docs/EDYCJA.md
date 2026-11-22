@@ -105,3 +105,6 @@ W **O nas / About** korygujemy dwukolumnowy układ, dodajemy edytowalne miejsce 
 W sekcji **Realizacje → Galeria realizacji** można wymienić sześć zdjęć. Każdy wpis opisujący realizację ma również własną galerię z trzema polami. Otwórz stronę lub realizację w odpowiednim języku, zaznacz obraz i wybierz **Zastąp → Biblioteka mediów**. Aby dodać kolejne miejsce, zduplikuj blok obrazu w tej samej grupie. W ustawieniach obrazu wpisz opis ALT.
 
 W **Realizacjach** nazwy operatorów są osobnymi blokami edytowanymi w obu językach. Aktualizacja istniejących stron uruchamia się po pierwszym wejściu administratora do kokpitu z aktywnym motywem bazowym 4.9 lub jego motywem potomnym oraz wtyczką FIBERLAN Core 4.9. WordPress pomija stronę otwartą przez redaktora i ponawia aktualizację po zwolnieniu blokady.
+
+
+W wydaniu 4.9.1 wtyczka uzupełnia treści angielskie pasujące do starszych sekcji z kopii klienta i koryguje cele odnośników. Na stronie z tej kopii aktywny jest motyw **FIBERLAN**. Przy aktualizacji wystarczy zaktualizować aktywny motyw i wtyczkę **FIBERLAN Core**, a następnie otworzyć kokpit jako administrator. Konfiguracja recenzji pochodzi z zainstalowanej wtyczki **Widgets for Google Reviews**.

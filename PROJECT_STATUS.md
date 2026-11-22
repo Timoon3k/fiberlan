@@ -1,5 +1,11 @@
 # FIBERLAN SC · Status projektu
 
+## Porównanie z bazą klienta · 4.9.1
+
+Porównano 22 opublikowane strony polskie i angielskie z eksportu bazy z 21 listopada. W angielskiej wersji uzupełniono opis założycieli i serwisu 24/7, zakresy usług, wyposażenie oraz liczby urządzeń. Na obu stronach usług odnośniki do pomiarów, szaf RACK, instalacji Ribbon i sieci miedzianych prowadzą do właściwych sekcji. W obu wersjach strony głównej karty doświadczenia prowadzą do odpowiednich realizacji. Zachowano konfigurację bloku recenzji Google. W bazie były logo FIBERLAN i trzy zdjęcia sprzętu. Operatorów przedstawiono za pomocą edytowalnych oznaczeń tekstowych.
+
+Aktualizację sprawdzono na lokalnym WordPressie z publiczną treścią z eksportu. Testy objęły 22 adresy przy szerokościach 390 i 1440 px, walidację natywnych bloków Gutenberga, działanie filtrów oraz docelowe sekcje odnośników w PL i EN.
+
 ## Podgląd PL/EN · 4.9.0
 
 Strona główna używa neutralnych pól na fotografie spawania, sieci miedzianych oraz trzech realizacji międzynarodowych. W sekcji „O nas” fotografia i blok tekstowy zajmują jeden wiersz na komputerze. Sekcja testerów Fluke pokazuje oba urządzenia w proporcjach oryginału.
