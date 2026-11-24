@@ -61,11 +61,15 @@ function Panel() {
       src?h('img',{src,alt:'',className:'fl-home-editor-thumb'}):null,
       h(MediaUploadCheck,null,h(MediaUpload,{
         value:Number(block.attributes.id)||0,allowedTypes:['image'],
-        onSelect:media=>{
+        onSelect:async media=>{
           if(!media?.id)return;
+          let record=media;
+          try { record=await wp.data.resolveSelect('core').getMedia(media.id,{context:'edit'})||media; } catch (_) {}
+          const current=wp.data.select('core/block-editor').getBlock(block.clientId);
+          if(!current)return;
           updateBlockAttributes(block.clientId,{
             id:media.id,url:media.url||media.source_url,
-            alt:media.meta?.['_fl_alt_'+language]||media.alt||media.alt_text||'',sizeSlug:'full',
+            alt:record.meta?.['_fl_alt_'+language]||media.meta?.['_fl_alt_'+language]||media.alt||media.alt_text||'',sizeSlug:'full',
             className:String(block.attributes.className||'').split(/\s+/).filter(x=>x!=='fl-photo-placeholder'&&x!=='fl-client-cutout').join(' ')
           });
         },

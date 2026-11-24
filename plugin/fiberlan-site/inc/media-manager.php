@@ -337,3 +337,34 @@ function fl_media_apply_all( $slots ) {
 	}
 	return $report;
 }
+
+
+/* Manage translations directly on an attachment, independently of the page copy. */
+add_filter( 'attachment_fields_to_edit', static function ( $fields, $post ) {
+	if ( ! wp_attachment_is_image( $post->ID ) ) {
+		return $fields;
+	}
+	foreach ( array( 'pl' => 'ALT — Polski', 'en' => 'ALT — English' ) as $lang => $label ) {
+		$fields['fl_alt_' . $lang] = array(
+			'label' => $label,
+			'input' => 'text',
+			'value' => get_post_meta( $post->ID, '_fl_alt_' . $lang, true ),
+			'helps' => 'Opis rzeczywiście widocznego obrazu; nie powtarzaj słów kluczowych.',
+		);
+	}
+	return $fields;
+}, 10, 2 );
+
+add_filter( 'attachment_fields_to_save', static function ( $post, $attachment ) {
+	$id = absint( $post['ID'] ?? 0 );
+	if ( ! $id || ! current_user_can( 'edit_post', $id ) ) {
+		return $post;
+	}
+	foreach ( array( 'pl', 'en' ) as $lang ) {
+		$key = 'fl_alt_' . $lang;
+		if ( isset( $attachment[ $key ] ) && is_string( $attachment[ $key ] ) ) {
+			update_post_meta( $id, '_' . $key, sanitize_text_field( $attachment[ $key ] ) );
+		}
+	}
+	return $post;
+}, 10, 2 );
