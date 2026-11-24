@@ -43,10 +43,14 @@ def check_motion(browser, base, mode):
         for pair in PAIRS[:6]:
             for path in pair:
                 page.goto(base + path)
-                target = page.locator("main h1") if path not in ("/", "/en/") else page.locator(".fl-service-card").last
+                expect(page.locator("main h1")).to_have_css("opacity", "1")
                 assert page.evaluate("scrollY") == 0
-                animation = target.evaluate("n => getComputedStyle(n).animationName")
-                assert animation == ("none" if mode == "reduce" else "fl-content-arrive"), (path, animation)
+                pending = page.locator("main .fl-reveal:not(.is-revealed)")
+                if mode == "reduce":
+                    expect(pending).to_have_count(0)
+                elif path in ("/", "/en/"):
+                    assert pending.count() > 0
+                    expect(pending.last).to_have_css("opacity", "0")
         page.goto(base + "/uslugi/#pomiary")
         heading = page.locator("#pomiary h2").bounding_box()
         nav = page.locator(".fl-nav-row").bounding_box()
@@ -63,11 +67,10 @@ def check_home_photograph(page, base):
         photo.evaluate("img => img.decode()")
         lighting = photo.evaluate("""img => {
           const layer = getComputedStyle(img.parentElement, '::before');
-          return [matchMedia('(prefers-reduced-motion: reduce)').matches,
-                  layer.animationName, layer.backgroundImage.includes(img.currentSrc),
+          return [layer.animationName, layer.backgroundImage.includes(img.currentSrc),
                   getComputedStyle(img).filter, getComputedStyle(img).animationName];
         }""")
-        assert lighting[1:] == ["none" if lighting[0] else "fl-table-light", True, "none", "none"], lighting
+        assert lighting == ["none", True, "none", "none"], lighting
         mask = photo.evaluate("img => getComputedStyle(img).maskImage")
         url = re.fullmatch(r'url\("(.+)"\)', mask).group(1)
         response = page.request.get(url)
@@ -134,15 +137,40 @@ def check_device_details(page, base):
 def check_reveal_timing(page, base):
     page.goto(base)
     cards = page.locator(".fl-service-grid > .fl-service-card")
-    for card, delay in zip(cards.all(), (.045, .12, .195, .27)):
-        assert card.evaluate("n => parseFloat(getComputedStyle(n).animationDelay)") == delay
-        assert card.evaluate("n => getComputedStyle(n).translate") == "none"
-    page.wait_for_timeout(1150)
-    assert page.evaluate("scrollY") == 0
-    assert cards.last.evaluate("n => getComputedStyle(n).opacity") == "1"
+    for card, delay in zip(cards.all(), ("0ms", "110ms", "220ms", "330ms")):
+        expect(card).to_have_css("--fl-stagger", delay)
+        expect(card).to_have_css("translate", "0px 28px")
+        expect(card).to_have_css("animation-name", "none")
+    cards.last.scroll_into_view_if_needed()
+    for card in cards.all():
+        expect(card).to_have_css("opacity", "1")
+        expect(card).to_have_css("animation-name", "none")
+    page.evaluate("scrollTo(0,0)")
+    cards.last.scroll_into_view_if_needed()
+    expect(cards.last).to_have_css("animation-name", "none")
+    number = page.locator(".fl-milestone-number")
+    final_number = number.inner_text()
+    number.scroll_into_view_if_needed()
+    expect(number.locator("span.screen-reader-text")).to_have_text(final_number)
+    expect(number.locator("span")).to_have_count(0)
+    expect(number).to_have_text(final_number)
     page.emulate_media(reduced_motion="reduce")
-    assert cards.last.evaluate("n => getComputedStyle(n).animationName") == "none"
+    expect(page.locator(".fl-reveal")).to_have_count(0)
     page.emulate_media(reduced_motion="no-preference")
+
+    # The AJAX catalogue has its own lifecycle. Capture the inserted card's animation
+    # at its start, even when the test runner takes longer than the transition to resume.
+    page.goto(base + "/en/projects/")
+    page.evaluate("""document.addEventListener('animationstart', e => {
+        if (e.animationName === 'fl-section-lift' && e.target.matches('.fl-case-grid article'))
+            window.revealedProject = e.target;
+    })""")
+    page.locator('.fl-filters a[href*="-industry"]').click()
+    project = page.locator(".fl-case-grid article")
+    expect(project).to_have_count(1)
+    project.scroll_into_view_if_needed()
+    page.wait_for_function("window.revealedProject === document.querySelector('.fl-case-grid article')")
+    expect(project).to_have_css("opacity", "1")
 
 
 def check_footer(page, base):
@@ -181,6 +209,7 @@ def check_sticky_controls(page, base, mobile):
     expect(button).to_be_hidden()
     page.evaluate("window.scrollTo(0, 670)")
     expect(button).to_be_visible()
+    expect(page.locator(".wp-site-blocks > header")).to_have_class(re.compile(r"fl-scrolled"))
     expect(button).to_have_accessible_name("Back to top")
     page.locator("footer .fl-footer-main").evaluate("""footer => {
         footer.insertAdjacentHTML('beforeend',
@@ -198,7 +227,10 @@ def check_sticky_controls(page, base, mobile):
         expect(panel).to_be_visible()
         items = panel.locator("li a")
         expect(items).to_have_count(6)
-        assert all(item.bounding_box()["width"] >= page.viewport_size["width"] * .8 for item in items.all())
+        for item in items.all():
+            bounds = item.bounding_box()
+            assert bounds["width"] >= 240 and bounds["height"] >= 44
+            expect(item).to_have_css("text-decoration-line", "none")
         expect(button).to_be_hidden()
         page.keyboard.press("Escape")
         expect(menu).to_be_focused()
@@ -239,27 +271,52 @@ def check_sticky_controls(page, base, mobile):
     expect(page.locator('head link[rel="alternate"][hreflang]')).to_have_count(0)
 
 
-def check_tablet_menu(browser, base):
-    page = browser.new_page(viewport={"width": 1180, "height": 820}, has_touch=True, is_mobile=True)
-    page.goto(base + "/uslugi/")
-    menu = page.locator("header .wp-block-navigation__responsive-container-open")
-    menu.tap()
-    dialog = page.get_by_role("dialog")
-    expect(dialog.locator(".fl-menu-brand img")).to_be_visible()
-    expect(dialog.locator("li a[aria-current]")).to_have_text("Usługi")
-    phone = page.locator('.fl-contactbar a[href^="tel:"]').first
-    expect(dialog.locator(".fl-menu-phone")).to_have_attribute("href", phone.get_attribute("href"))
-    expect(dialog.locator(".fl-menu-phone")).to_contain_text(phone.text_content().strip())
-    panel = dialog.bounding_box()
-    assert abs(2 * panel["x"] + panel["width"] - page.viewport_size["width"]) < 2
-    assert dialog.locator("li a").first.evaluate("a => getComputedStyle(a).textAlign") == "center"
-    page.touchscreen.tap(12, 120)
-    expect(dialog).to_be_hidden()
-    expect(menu).to_be_focused()
-    menu.tap()
-    dialog.locator('.fl-mobile-locales a[data-language="en"]').tap()
-    expect(page).to_have_url(base + "/en/services/")
-    page.close()
+def check_drawer(browser, base):
+    for width, height in ((320, 568), (390, 844), (740, 390), (1180, 820)):
+        page = browser.new_page(viewport={"width": width, "height": height}, has_touch=True, is_mobile=True)
+        page.goto(base + "/uslugi/")
+        menu = page.locator("header .wp-block-navigation__responsive-container-open")
+        menu.tap()
+        dialog = page.get_by_role("dialog")
+        expect(dialog.locator(".fl-menu-brand img")).to_be_visible()
+        # The drawer travels horizontally. Its final right edge meets the viewport.
+        expect(dialog).to_have_css("animation-name", "fl-drawer-enter")
+        page.evaluate("""() => Promise.all(document.querySelector('[role="dialog"]').getAnimations()
+            .map(animation => animation.finished))""")
+        panel = dialog.bounding_box()
+        assert panel["x"] > 18 and abs(panel["x"] + panel["width"] - width) < 1, (width, panel)
+        assert panel["width"] <= 416.1 and abs(panel["height"] - height) < 2, (width, height, panel)
+        current = dialog.locator("li a[aria-current]")
+        expect(current).to_have_text("Usługi")
+        expect(current).to_have_css("text-decoration-line", "none")
+        expect(current).to_have_css("text-align", "center")
+        expect(dialog.locator(".fl-mobile-locales [aria-current]")).to_have_css("text-decoration-line", "none")
+        phone = page.locator('.fl-contactbar a[href^="tel:"]').first
+        contact = dialog.locator(".fl-menu-phone")
+        expect(contact).to_have_attribute("href", phone.get_attribute("href"))
+        expect(contact).to_contain_text(phone.text_content().strip())
+        contact.scroll_into_view_if_needed()
+        assert contact.bounding_box()["y"] + contact.bounding_box()["height"] <= height + 1
+        contact.focus()
+        page.keyboard.press("Tab")
+        expect(dialog.get_by_role("button")).to_be_focused()
+        page.keyboard.press("Shift+Tab")
+        expect(contact).to_be_focused()
+        page.keyboard.press("Escape")
+        expect(dialog).to_be_hidden()
+        expect(menu).to_be_focused()
+        menu.tap()
+        expect(dialog).to_be_visible()
+        page.touchscreen.tap(6, 120)
+        expect(dialog).to_be_hidden()
+        expect(menu).to_be_focused()
+        menu.tap()
+        dialog.get_by_role("button").tap()
+        expect(dialog).to_be_hidden()
+        menu.tap()
+        dialog.locator('.fl-mobile-locales a[data-language="en"]').tap()
+        expect(page).to_have_url(base + "/en/services/")
+        page.close()
 
 
 def check_admin_bar(browser, base, password):
@@ -275,6 +332,7 @@ def check_admin_bar(browser, base, password):
         if width < 960:
             page.get_by_role("button", name="Open menu").click()
             page.get_by_role("button", name="Close menu").click()
+            expect(page.get_by_role("dialog")).to_be_hidden()
         admin = page.locator("#wpadminbar")
         expect(admin).to_be_visible()
         h1 = page.locator("main h1")
@@ -309,7 +367,7 @@ if __name__ == "__main__":
             print(f"{width}px: 12 pages, long copy, local fonts, sticky navigation and keyboard return OK", flush=True)
         for mode in ("reduce", "no-preference"):
             check_motion(browser, base, mode)
-        check_tablet_menu(browser, base)
+        check_drawer(browser, base)
         for width in (390, 1440):
             page = browser.new_page(viewport={"width": width, "height": 840}, reduced_motion="reduce" if width < 600 else "no-preference")
             if width == 1440:
@@ -328,5 +386,5 @@ if __name__ == "__main__":
         expect(page.locator('header .fl-nav a[href$="/en/services/"]')).to_be_visible()
         page.locator(".fl-floating-top").click()
         assert page.url.endswith("#fl-page-top")
-        print("Reduced motion, timed entry, anchor clearance and no-JS return OK")
+        print("Reduced motion, viewport reveals, anchor clearance and no-JS return OK")
         browser.close()

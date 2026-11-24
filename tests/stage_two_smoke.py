@@ -44,6 +44,12 @@ def check_pages(browser, screenshots, axe_path):
                     img.evaluate("img => img.decode()")
                 assert not errors, (path, errors)
                 if axe_path and path in ("/", "/realizacje/", "/kontakt/", "/en/contact/"):
+                    # Compare settled foreground/background colours after scrolling the images into view.
+                    page.evaluate("""async () => {
+                        await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+                        await Promise.all([...document.querySelectorAll('main .fl-reveal.is-revealed')]
+                            .flatMap(el => el.getAnimations().map(animation => animation.finished)));
+                    }""")
                     page.add_script_tag(path=str(axe_path))
                     issues = page.evaluate("""async () => (await axe.run(document, {
                         runOnly: {type: 'tag', values: ['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']}

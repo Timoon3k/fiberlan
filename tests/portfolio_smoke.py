@@ -1,6 +1,5 @@
 """Check the installed bilingual project pages with the child theme active."""
 import argparse
-import re
 import shutil
 
 from playwright.sync_api import expect, sync_playwright
@@ -61,7 +60,7 @@ def check_pages(page, lang, width, base=BASE):
     expect(page.locator(".fl-case-grid article")).to_have_count(3)
     badges = page.locator(".fl-operator-badges")
     badges.scroll_into_view_if_needed()
-    expect(badges).to_have_class(re.compile(r"fl-badges-visible"))
+    expect(badges.locator("p").last).to_have_css("opacity", "1")
     assert badges.locator("p").first.evaluate("n => getComputedStyle(n).animationName") == "none"
     reports = page.locator(".fl-case-grid article a").evaluate_all("links => links.map(a => a.href)")
     for report in reports:

@@ -1,5 +1,13 @@
 # FIBERLAN SC · Status projektu
 
+## Nawigacja mobilna i animacje · 4.10.0
+
+Menu PL/EN wysuwa się od prawej krawędzi. Podświetlone tło wskazuje bieżącą podstronę. Panel korzysta z logo, odnośników i telefonu ustawionych w WordPressie. Zamyka się przyciskiem, dotknięciem przyciemnionego tła lub klawiszem Escape. Po zamknięciu fokus wraca do przycisku Menu.
+
+Pierwszy ekran jest widoczny od razu. Podczas przewijania kolejne sekcje i karty pojawiają się w ciągu 800 ms, z przesunięciem o 28 px. Sąsiednie karty startują w odstępach 110 ms. Ten sam efekt obejmuje wyniki filtrowania realizacji. Licznik lat odczytuje wartość z bloku Gutenberga. Systemowe ograniczenie ruchu wyłącza przesuwanie panelu, odsłanianie sekcji i odliczanie. Parametry ruchu pochodzą z [publicznego kodu Industry Blocks](https://github.com/colorlibhq/industry-blocks/tree/de6bf2f7c653d298fc856abf61403900f152c672).
+
+Zmiany zawiera motyw bazowy `fiberlan` w wersji 4.10.0. Na istniejącej instalacji wystarczy zaktualizować ten motyw. Na kopii z treścią klienta sprawdzono 22 adresy PL/EN przy szerokościach 390 i 1440 px. Testy panelu objęły dotyk, nawigację klawiaturą, telefon w poziomie i przejście na angielski odpowiednik bieżącej podstrony.
+
 ## Porównanie z bazą klienta · 4.9.1
 
 Porównano 22 opublikowane strony polskie i angielskie z eksportu bazy z 21 listopada. W angielskiej wersji uzupełniono opis założycieli i serwisu 24/7, zakresy usług, wyposażenie oraz liczby urządzeń. Na obu stronach usług odnośniki do pomiarów, szaf RACK, instalacji Ribbon i sieci miedzianych prowadzą do właściwych sekcji. W obu wersjach strony głównej karty doświadczenia prowadzą do odpowiednich realizacji. Zachowano konfigurację bloku recenzji Google. W bazie były logo FIBERLAN i trzy zdjęcia sprzętu. Operatorów przedstawiono za pomocą edytowalnych oznaczeń tekstowych.
