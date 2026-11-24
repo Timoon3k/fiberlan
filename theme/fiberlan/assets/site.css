@@ -1938,3 +1938,46 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
     grid-template-columns: minmax(0,1fr);
   }
 }
+
+
+/* Real client photographs: preserve their composition and avoid destructive cropping. */
+.fl-section-image:not(.fl-photo-placeholder) > img,
+.fl-team-photo:not(.fl-photo-placeholder) > img {
+  object-position: center;
+}
+.fl-subhero.fl-equipment-hero .fl-client-cutout {
+  background: transparent;
+  border: 0 !important;
+  overflow: visible;
+}
+.fl-subhero.fl-equipment-hero .fl-client-cutout > img {
+  max-height: clamp(15rem, 29vw, 27rem);
+  width: 100%;
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: transparent;
+  filter: drop-shadow(0 1.1rem 1.4rem #0005);
+}
+.fl-project-gallery > .wp-block-image:not(.fl-photo-placeholder) > img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
+  background: #e6edf2;
+}
+.fl-repair-row:has(.fl-repair-photo) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+  gap: 1.3rem clamp(2rem,5vw,5rem);
+  align-items: center;
+}
+.fl-repair-row:has(.fl-repair-photo) > .fl-repair-photo {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  margin: 0;
+}
+.fl-repair-photo img { width: 100%; aspect-ratio: 8 / 5; object-fit: contain; }
+@media (max-width: 48rem) {
+  .fl-repair-row:has(.fl-repair-photo) { grid-template-columns: minmax(0,1fr); }
+  .fl-repair-row:has(.fl-repair-photo) > .fl-repair-photo { grid-column: 1; grid-row: auto; }
+}

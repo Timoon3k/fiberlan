@@ -108,3 +108,9 @@ W **Realizacjach** nazwy operatorów są osobnymi blokami edytowanymi w obu jęz
 
 
 W wydaniu 4.9.1 wtyczka uzupełnia treści angielskie pasujące do starszych sekcji z kopii klienta i koryguje cele odnośników. Na stronie z tej kopii aktywny jest motyw **FIBERLAN**. Przy aktualizacji wystarczy zaktualizować aktywny motyw i wtyczkę **FIBERLAN Core**, a następnie otworzyć kokpit jako administrator. Konfiguracja recenzji pochodzi z zainstalowanej wtyczki **Widgets for Google Reviews**.
+
+## 4.11.0 — własne fotografie, media PL/EN i zarządzanie
+
+Zaktualizuj motyw i wtyczkę z gałęzi preview/szata-fotograficzna. W panelu **FIBERLAN → Import fotografii FIBERLAN** wgraj dostarczoną osobno paczkę fiberlan-media-4.11.zip. Import jest jawny, wymaga administratora, deduplikuje pliki po SHA-256, zapisuje ALT PL i EN, tworzy załączniki WordPressa i opcjonalnie uzupełnia pasujące placeholdery na pięciu podstronach w obu językach. Własne obrazy nie są zastępowane. Jeśli strona jest zablokowana, zamknij edytor i użyj przycisku ponownego dopasowania. W raporcie widać liczbę wstawionych zdjęć. Nie przypisujemy nowych fotografii do nazwanych lokalizacji bez potwierdzenia.
+
+Główne menu FIBERLAN zawiera szybkie odnośniki do stron PL/EN, biblioteki i współdzielonych danych kontaktowych. Panel Gutenberga ma wyszukiwanie sekcji, edycję obrazów, ALT oraz wybór pliku wideo; galerie i wzorce pozostają natywnymi blokami. Na EN ALT wstawionych obrazów jest angielski, na PL polski. Przed publikacją sprawdź wizerunki, prawa oraz widoczne oznaczenia infrastruktury. W paczce są wyłącznie zdjęcia, nie filmy. Osobny wariant spawarki na przezroczystym tle wykorzystuje rzeczywiste zdjęcie, bez generowania elementów. Zachowaj oryginały.

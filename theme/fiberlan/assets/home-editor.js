@@ -3,7 +3,7 @@
 'use strict';
 if (!window.wp || !wp.plugins || !wp.editPost?.PluginSidebar || !wp.blockEditor) return;
 const h=wp.element.createElement;
-const {useEffect}=wp.element;
+const {useEffect,useState}=wp.element;
 const {useSelect,useDispatch}=wp.data;
 const {PanelBody,TextControl,TextareaControl,Button,Notice}=wp.components;
 const {MediaUpload,MediaUploadCheck}=wp.blockEditor;
@@ -15,7 +15,7 @@ function hasMarkup(value) {return /<\/?[a-z][^>]*>/i.test(String(value||''));}
 function leaves(root) {
   const result=[];
   function walk(block) {
-    if (['core/heading','core/paragraph','core/button','core/image','core/details','core/shortcode','core/spacer','core/list-item'].includes(block.name) || block.name.startsWith('fiberlan/')) result.push(block);
+    if (['core/heading','core/paragraph','core/button','core/image','core/details','core/shortcode','core/spacer','core/list-item','core/video','core/gallery','core/block'].includes(block.name) || block.name.startsWith('fiberlan/')) result.push(block);
     for(const child of block.innerBlocks||[])walk(child);
   }
   walk(root);return result;
@@ -36,6 +36,8 @@ function Panel() {
   const {updateBlockAttributes,selectBlock}=useDispatch('core/block-editor');
   const {editPost}=useDispatch('core/editor');
   const options=window.fiberlanEditorPanel||{};
+  const [query,setQuery]=useState('');
+  const language=options.language==='en'?'en':'pl';
   useEffect(()=>{
     const editor=wp.data.dispatch('core/edit-post');
     if(editor?.openGeneralSidebar)editor.openGeneralSidebar('fiberlan-content-editor/content');
@@ -63,7 +65,8 @@ function Panel() {
           if(!media?.id)return;
           updateBlockAttributes(block.clientId,{
             id:media.id,url:media.url||media.source_url,
-            alt:media.alt||media.alt_text||block.attributes.alt||'',sizeSlug:'full'
+            alt:media.meta?.['_fl_alt_'+language]||media.alt||media.alt_text||'',sizeSlug:'full',
+            className:String(block.attributes.className||'').split(/\s+/).filter(x=>x!=='fl-photo-placeholder'&&x!=='fl-client-cutout').join(' ')
           });
         },
         render:({open})=>h(Button,{variant:'secondary',onClick:open},src?'Zastąp zdjęcie':'Dodaj zdjęcie')
@@ -84,6 +87,14 @@ function Panel() {
       case 'core/shortcode':return h('div',{key},field(block,'text','Shortcode widżetu',true));
       case 'core/spacer':return h('div',{key},field(block,'height','Wysokość odstępu',false));
       case 'core/image':return image(block);
+      case 'core/video':return h('div',{key,className:'fl-home-editor-field'},
+        h('p',{className:'fl-home-editor-field-title'},'Film'),
+        h(MediaUploadCheck,null,h(MediaUpload,{allowedTypes:['video'],value:block.attributes.id,
+          onSelect:media=>updateBlockAttributes(key,{id:media.id,src:media.url||media.source_url}),
+          render:({open})=>h(Button,{variant:'secondary',onClick:open},'Wybierz / zastąp film')})),
+        jump(block,'Ustawienia odtwarzania i miniatura'));
+      case 'core/gallery':return h('div',{key},jump(block,'Zarządzaj galerią w podglądzie'));
+      case 'core/block':return h('div',{key},jump(block,'Edytuj współdzielony wzorzec'));
       default:
         if(block.name.startsWith('fiberlan/'))return h('div',{key,className:'fl-home-editor-field'},
           h('p',{className:'fl-home-editor-field-title'},'Blok '+block.name.split('/')[1]),
@@ -93,6 +104,7 @@ function Panel() {
   }
   const groups=blocks.map((root,index)=>({id:root.clientId,title:sectionTitle(root,index),
     items:leaves(root)})).filter(group=>group.items.length);
+  const filtered=groups.filter(group=>!query.trim()||[group.title,...group.items.map(b=>plain(b.attributes?.content||b.attributes?.alt||b.attributes?.text||''))].join(' ').toLowerCase().includes(query.trim().toLowerCase()));
   const seo=options.seo?h(PanelBody,{title:'SEO strony',initialOpen:false},
     h('p',{className:'fl-home-editor-help'},'Puste pola korzystają z domyślnych danych SEO.'),
     ...[['rank_math_title','Tytuł SEO','title'],['rank_math_description','Opis meta','description']].map(([key,label,defaultKey])=>
@@ -105,7 +117,10 @@ function Panel() {
       h('h2',null,'Edytuj sekcje strony'),
       h('p',{className:'fl-home-editor-help'},
         'Wybierz sekcję, zmień tekst, zdjęcia lub linki, a następnie kliknij Zapisz w górnym pasku.'),
-      groups.length?groups.map((group,index)=>h(PanelBody,{
+      h(TextControl,{label:'Szukaj sekcji lub tekstu',value:query,onChange:setQuery}),
+      h('p',{className:'fl-home-editor-help'},'Język strony: '+language.toUpperCase()),
+      options.managerUrl?h('a',{href:options.managerUrl,target:'_blank',rel:'noopener'},'FIBERLAN — panel zarządzania'):null,
+      filtered.length?filtered.map((group,index)=>h(PanelBody,{
         key:group.id,title:(index+1)+'. '+group.title,initialOpen:index===0},
         group.items.map(entry))):h(Notice,{status:'info',isDismissible:false},'Brak bloków do edycji.'),
       seo,

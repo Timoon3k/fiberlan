@@ -42,6 +42,8 @@ add_action( 'enqueue_block_editor_assets', static function () {
 	$seo = function_exists( 'fl_seo_defaults' ) && ! ( function_exists( 'fl_rank_math_ready' ) && fl_rank_math_ready() );
 	wp_add_inline_script( 'fiberlan-home-editor', 'window.fiberlanEditorPanel = ' . wp_json_encode( array(
 		'seo' => $seo,
+		'language' => function_exists( 'fl_page_lang' ) ? fl_page_lang( $post->ID ) : 'pl',
+		'managerUrl' => admin_url( 'admin.php?page=fiberlan-manager' ),
 		'seoDefaults' => $seo ? fl_seo_defaults( $post->ID ) : array(),
 	), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ';', 'before' );
 } );
