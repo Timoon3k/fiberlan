@@ -1981,3 +1981,54 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
   .fl-repair-row:has(.fl-repair-photo) { grid-template-columns: minmax(0,1fr); }
   .fl-repair-row:has(.fl-repair-photo) > .fl-repair-photo { grid-column: 1; grid-row: auto; }
 }
+
+
+/* 4.12: photo-led presentation, without a separate equipment sales block. */
+.fl-subhero.fl-services-hero:has(.fl-service-hero-photo) { background: #092437; }
+.fl-subhero.fl-services-hero:has(.fl-service-hero-photo) > .fl-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr);
+  align-items: center;
+  gap: clamp(1.25rem,4vw,4rem);
+}
+.fl-subhero.fl-services-hero > .fl-reading > :not(.fl-service-hero-photo) { grid-column: 1; margin: 0; }
+.fl-subhero.fl-services-hero > .fl-reading > .fl-eyebrow { grid-row: 1; align-self: end; }
+.fl-subhero.fl-services-hero > .fl-reading > h1 { grid-row: 2; }
+.fl-subhero.fl-services-hero > .fl-reading > .fl-lead { grid-row: 3; align-self: start; }
+.fl-subhero.fl-services-hero:has(.fl-service-hero-photo) .fl-service-hero-photo {
+  position: relative; inset: auto; z-index: auto; opacity: 1;
+  grid-column: 2; grid-row: 1 / span 3; width: 100%; margin: 0; overflow: hidden; border: 0;
+}
+.fl-subhero.fl-services-hero .fl-service-hero-photo::after { content: none; }
+.fl-subhero.fl-services-hero .fl-service-hero-photo img {
+  width: 100%; height: auto; max-height: 25rem; aspect-ratio: 8 / 5; object-fit: cover;
+}
+.fl-subhero.fl-equipment-hero > .fl-reading,
+.fl-subhero.fl-equipment-hero > .fl-split {
+  padding-block: clamp(1rem,2vw,2rem);
+  align-items: center;
+  gap: 1.1rem clamp(1.5rem,4vw,4rem);
+}
+.fl-subhero.fl-equipment-hero .fl-split-copy { align-self: center; }
+.fl-subhero.fl-equipment-hero .fl-split-copy > * { margin-block: .6rem; }
+.fl-subhero.fl-equipment-hero:has(.fl-subhero-visual) .fl-subhero-visual:not(.fl-client-cutout) {
+  border: 0; background: transparent; opacity: 1;
+}
+.fl-subhero.fl-equipment-hero:has(.fl-subhero-visual) .fl-subhero-visual:not(.fl-client-cutout) > img {
+  aspect-ratio: auto; max-height: clamp(19rem,31vw,29rem); object-fit: contain; background: transparent;
+}
+.fl-project-photos .fl-project-gallery { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.fl-project-gallery > .wp-block-image { min-width: 0; }
+.fl-project-gallery > .wp-block-image > img { aspect-ratio: 8/5; object-fit: contain; }
+.fl-representative-photo figcaption { font-size: .75rem; line-height: 1.45; padding: .4rem .5rem; margin: 0; }
+.fl-project-card .fl-representative-photo figcaption { color: #dce7f1; }
+@media (max-width: 60rem) { .fl-project-photos .fl-project-gallery { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 48rem) {
+  .fl-subhero.fl-services-hero:has(.fl-service-hero-photo) > .fl-shell { grid-template-columns: minmax(0,1fr); }
+  .fl-subhero.fl-services-hero > .fl-reading > :not(.fl-service-hero-photo),
+  .fl-subhero.fl-services-hero:has(.fl-service-hero-photo) .fl-service-hero-photo { grid-column: 1; grid-row: auto; }
+  .fl-subhero.fl-equipment-hero > .fl-reading,
+  .fl-subhero.fl-equipment-hero > .fl-split { padding-block: .5rem; }
+}
+@media (max-width: 37.5rem) { .fl-project-photos .fl-project-gallery { grid-template-columns: minmax(0,1fr); } }

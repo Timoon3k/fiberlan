@@ -211,7 +211,7 @@ add_action( 'admin_post_fl_install_stage_two', static function () {
 	if ( is_wp_error( $result ) ) {
 		wp_die( esc_html( $result->get_error_message() ), 'FIBERLAN PL/EN', array( 'back_link' => true ) );
 	}
-	wp_safe_redirect( admin_url( 'themes.php?page=fiberlan-site' ) );
+	wp_safe_redirect( admin_url( 'admin.php?page=fiberlan-manager' ) );
 	exit;
 } );
 

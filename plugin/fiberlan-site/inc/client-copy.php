@@ -213,9 +213,7 @@ function fl_refresh_client_copy( $post, $lang, $key ) {
 	}
 	if ( 'services' === $key && ! isset( $anchors['lan'] ) ) {
 		$copper = fl_client_copper_service( $lang );
-		$tester = parse_blocks( fl_fluke_service( $lang ) )[0];
-		$before = serialize_block( $tester );
-		$content = false !== strpos( $content, $before ) ? str_replace( $before, $copper . $before, $content ) : $content . $copper;
+		$content .= $copper;
 	}
 	return $content;
 }

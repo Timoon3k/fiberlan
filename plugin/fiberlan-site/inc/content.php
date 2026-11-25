@@ -209,7 +209,7 @@ function fl_services_content( $lang, $title ) {
 		$copy = fl_heading( $name ) . fl_paragraph( fl_text( $lang, $desc_pl, $desc_en ) ) . fl_contact_cta( $lang );
 		$body .= fl_section( fl_group( 'fl-split-copy', $copy ) . $visual, 'fl-split', $index % 2 ? 'fl-alternate' : '', $anchor );
 	}
-	return $body . fl_fluke_service( $lang );
+	return $body;
 }
 
 function fl_equipment_content( $lang, $title ) {
@@ -263,6 +263,15 @@ function fl_gallery_extra_slots( $lang ) {
 	return array(
 		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'montaż okablowania', 'cabling installation' ) ),
 		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'pomiary odbiorowe', 'acceptance testing' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 7', 'project photograph 7' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 8', 'project photograph 8' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 9', 'project photograph 9' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 10', 'project photograph 10' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 11', 'project photograph 11' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 12', 'project photograph 12' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 13', 'project photograph 13' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 14', 'project photograph 14' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 15', 'project photograph 15' ) ),
 	);
 }
 

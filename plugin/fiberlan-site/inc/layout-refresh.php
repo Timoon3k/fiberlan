@@ -492,7 +492,7 @@ function fl_expand_project_gallery( &$block, $lang ) {
 		$extra = fl_gallery_extra_slots( $lang );
 		foreach ( $extra as $slot ) {
 			// An existing customised gallery may have fewer slots than the startup layout.
-			if ( count( $block['innerBlocks'] ) >= 6 ) {
+			if ( count( $block['innerBlocks'] ) >= 15 ) {
 				break;
 			}
 			if ( false === strpos( serialize_block( $block ), trim( $slot ) ) ) {
@@ -570,7 +570,7 @@ function fl_refresh_portfolio_content( $post, $lang, $key ) {
 			fl_restore_fluke_image( $blocks[ $index ], $photo );
 			return serialize_blocks( $blocks );
 		}
-		return $content . fl_fluke_service( $lang );
+		return $content;
 	}
 	return $content;
 }
