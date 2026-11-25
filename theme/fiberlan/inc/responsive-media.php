@@ -125,3 +125,30 @@ add_filter( 'render_block_core/image', static function ( $content, $block ) {
 		1
 	);
 }, 10, 2 );
+
+
+// Provide the full attachment to the gallery, rather than its thumbnail.
+add_filter( 'render_block_core/image', static function ( $html, $block ) {
+	$classes = preg_split( '/\s+/', $block['attrs']['className'] ?? '' );
+	if ( in_array( 'fl-operator-logo', $classes, true ) ) {
+		$tag = new WP_HTML_Tag_Processor( $html );
+		if ( $tag->next_tag( 'img' ) ) {
+			$tag->set_attribute( 'referrerpolicy', 'no-referrer' );
+			$tag->set_attribute( 'loading', 'eager' );
+			return $tag->get_updated_html();
+		}
+	}
+	$id = absint( $block['attrs']['id'] ?? 0 );
+	if ( ! $id ) {
+		return $html;
+	}
+	$full = wp_get_attachment_image_url( $id, 'full' );
+	if ( $full ) {
+		$tag = new WP_HTML_Tag_Processor( $html );
+		if ( $tag->next_tag( 'img' ) ) {
+			$tag->set_attribute( 'data-fl-full', $full );
+			return $tag->get_updated_html();
+		}
+	}
+	return $html;
+}, 30, 2 );

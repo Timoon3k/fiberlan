@@ -259,7 +259,7 @@ function fl_media_image( $asset, $lang, $class, $representative = false ) {
 	$attrs = array( 'id' => $id, 'sizeSlug' => 'full', 'linkDestination' => 'none', 'className' => $class );
 	$markup = '<!-- wp:image ' . serialize_block_attributes( $attrs ) . ' -->'
 		. '<figure class="wp-block-image size-full ' . esc_attr( $class ) . '"><img src="' . esc_url( $url ) . '" alt="' . esc_attr( $alt ) . '" class="wp-image-' . $id . '"/>'
-		. ( $representative ? '<figcaption class="wp-element-caption">' . esc_html( fl_text( $lang, 'Archiwum FIBERLAN', 'FIBERLAN archive' ) ) . '</figcaption>' : '' )
+		. ( $representative ? '<figcaption class="wp-element-caption">' . esc_html( fl_text( $lang, 'Archiwum FIBERLAN — lokalizacja ujęcia niepotwierdzona', 'FIBERLAN archive — photo location unconfirmed' ) ) . '</figcaption>' : '' )
 		. '</figure><!-- /wp:image -->';
 	return parse_blocks( $markup )[0];
 }

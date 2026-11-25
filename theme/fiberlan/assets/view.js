@@ -441,6 +441,15 @@
     const track=document.createElement('div');track.className='fl-logo-track';const clone=set.cloneNode(true);clone.setAttribute('aria-hidden','true');clone.inert=true;
     clone.querySelectorAll('img').forEach(img=>{img.alt='';img.loading='eager'});
     track.append(set,clone);marquee.append(track);
+    const measure=()=>marquee.style.setProperty('--fl-logo-cell',Math.max(160,Math.ceil(marquee.clientWidth/logos.length))+'px');
+    measure();
+    if(window.ResizeObserver)new ResizeObserver(measure).observe(marquee);
+    else window.addEventListener('resize',measure);
+    clone.querySelectorAll('img').forEach((img,i)=>{
+      const fail=()=>{const fig=img.closest('figure');if(!fig||fig.querySelector('.fl-logo-fallback'))return;img.hidden=true;const name=document.createElement('span');name.className='fl-logo-fallback';name.textContent=logos[i]?.querySelector('img')?.alt||'';fig.append(name)};
+      img.addEventListener('error',fail);
+      if(img.complete&&!img.naturalWidth)fail();
+    });
     const toggle=document.createElement('button');toggle.type='button';toggle.className='fl-logo-toggle';toggle.setAttribute('aria-pressed','false');toggle.textContent=t('Wstrzymaj animację','Pause animation');
     toggle.addEventListener('click',()=>{const pause=track.classList.toggle('is-paused');toggle.setAttribute('aria-pressed',String(pause));toggle.textContent=pause?t('Wznów animację','Resume animation'):t('Wstrzymaj animację','Pause animation')});
     marquee.after(toggle);

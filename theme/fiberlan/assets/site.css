@@ -2148,3 +2148,12 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
   .fl-gallery-viewer { padding:.65rem; }
   .fl-gallery-viewer[open] { grid-template-columns:2.5rem minmax(0,1fr) 2.5rem; gap:.35rem; }
 }
+
+
+/* Continuous logo ribbon fits the actual available width. */
+.fl-logo-set > .fl-operator-logo, .fl-operator-marquee > .fl-operator-logo {
+  flex-basis:var(--fl-logo-cell,12rem);width:var(--fl-logo-cell,12rem);
+}
+.fl-operator-logo img[hidden] { display:none; }
+.fl-catalogue-archive { color:#536575; font-size:.78rem; margin:.6rem 0 1rem; }
+#portfolio .fl-case-grid > article > a > img { aspect-ratio:16/10; max-height:none; }
