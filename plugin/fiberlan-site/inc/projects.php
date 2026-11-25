@@ -31,11 +31,14 @@ function fl_projects_render( $attrs ) {
 	$html .= '</nav><div class="fl-case-grid">';
 	foreach ( $projects as $project ) {
 		$image = get_the_post_thumbnail( $project, 'medium_large' );
+		$representative = false;
 		if ( ! $image ) {
 			$fallback = '';
-			$image = fl_project_image( parse_blocks( $project->post_content ), $fallback ) ?: $fallback;
+			$image = fl_project_image( parse_blocks( $project->post_content ), $fallback, $representative ) ?: $fallback;
 		}
-		$html .= '<article><a href="' . esc_url( get_permalink( $project ) ) . '">' . $image . '<h3>' . esc_html( get_the_title( $project ) ) . '</h3></a><p>' . esc_html( $project->post_excerpt ) . '</p></article>';
+		$html .= '<article><a href="' . esc_url( get_permalink( $project ) ) . '">' . $image
+			. ( $representative ? '<span class="fl-project-archive-note">' . esc_html( fl_text( $lang, 'Zdjęcie poglądowe — archiwum FIBERLAN', 'Illustrative photo — FIBERLAN archive' ) ) . '</span>' : '' )
+			. '<h3>' . esc_html( get_the_title( $project ) ) . '</h3></a><p>' . esc_html( $project->post_excerpt ) . '</p></article>';
 	}
 	if ( ! $projects ) {
 		$html .= '<p>' . esc_html( $attrs['empty'] ) . '</p>';
@@ -44,7 +47,7 @@ function fl_projects_render( $attrs ) {
 }
 
 // Read the first real image even when the editor moves it into a Group or Gallery.
-function fl_project_image( $blocks, &$fallback = '' ) {
+function fl_project_image( $blocks, &$fallback = '', &$representative = false ) {
 	foreach ( $blocks as $block ) {
 		if ( 'core/image' === $block['blockName'] ) {
 			$tag = new WP_HTML_Tag_Processor( $block['innerHTML'] );
@@ -58,13 +61,14 @@ function fl_project_image( $blocks, &$fallback = '' ) {
 					$src = fiberlan_scene_url( $src );
 				}
 				if ( $src !== get_theme_file_uri( 'assets/diagrams/photo-placeholder.svg' ) ) {
+					$representative = in_array( 'fl-representative-photo', preg_split( '/\s+/', $block['attrs']['className'] ?? '' ), true );
 					return $image;
 				}
 				$fallback = $image;
 			}
 		}
 		if ( $block['innerBlocks'] ) {
-			$image = fl_project_image( $block['innerBlocks'], $fallback );
+			$image = fl_project_image( $block['innerBlocks'], $fallback, $representative );
 			if ( $image ) {
 				return $image;
 			}

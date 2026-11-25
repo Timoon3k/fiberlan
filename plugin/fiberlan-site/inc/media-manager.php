@@ -273,7 +273,7 @@ function fl_media_home_service( $block ) {
 	foreach ( array(
 		'spawanie' => '/spawanie|splicing|zastosowan|applications/iu',
 		'pomiary' => '/pomiary|testing|certyfikacja|certification/iu',
-		'instalacje' => '/instalacje|installations/iu',
+		'instalacje' => '/instalacj[ae]|installations?/iu',
 		'lan' => '/komputerowe|miedziane|copper|computer networks/iu',
 	) as $name => $pattern ) {
 		if ( preg_match( $pattern, $heading ) ) {
@@ -306,6 +306,27 @@ function fl_media_can_replace( $block, $context, $asset ) {
 		return true;
 	}
 	$src = (string) $tag->get_attribute( 'src' );
+	// A 4.12 archive may have been uploaded using the 4.11 importer without
+	// replacing the visible old image. Recognize those exact earlier imports.
+	$legacy = array(
+		'services:spawanie' => 'spawanie-wlokien-mufa.webp',
+		'services:instalacje' => 'centrum-danych-szafy-rack.webp',
+		'home:instalacje' => 'centrum-danych-szafy-rack.webp',
+		'home:pomiary' => 'pomiary-sieci-szafa-rack.webp',
+		'home:lan' => 'okablowanie-strukturalne-rack.webp',
+		'services:pomiary' => 'pomiary-sieci-szafa-rack.webp',
+		'equipment:hero' => 'spawarka-fiberlan-transparent.webp',
+		'projects:gallery:0' => 'przelacznica-optyczna-porty.webp',
+		'projects:gallery:1' => 'infrastruktura-przemyslowa-wykop.webp',
+		'projects:gallery:2' => 'szafy-teleinformatyczne-montaz.webp',
+		'projects:gallery:3' => 'mufa-swiatlowodowa-wlokna.webp',
+		'projects:gallery:4' => 'spawarka-fiberlan-na-statku.webp',
+		'projects:gallery:5' => 'miernik-przy-panelach.webp',
+	);
+	if ( $id && isset( $legacy[ $context ] ) && get_post_meta( $id, '_fl_media_hash', true )
+		&& wp_basename( (string) get_attached_file( $id ) ) === $legacy[ $context ] ) {
+		return true;
+	}
 	if ( function_exists( 'fiberlan_scene_url' ) && false !== strpos( fiberlan_scene_url( $src ), '/assets/diagrams/photo-placeholder.svg' ) ) {
 		return true;
 	}
@@ -366,6 +387,18 @@ function fl_media_prepare_page( $blocks, $lang, $page ) {
 	}
 	if ( 'projects' === $page || 0 === strpos( $page, 'report:' ) ) {
 		$limit = 'projects' === $page ? 15 : 3;
+		if ( ! fl_layout_find_photo( $blocks, 'fl-project-gallery' ) ) {
+			if ( 'projects' === $page ) {
+				$gallery = '';
+				for ( $i = 0; $i < $limit; $i++ ) {
+					$gallery .= fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji', 'project photograph' ) );
+				}
+				$blocks[] = parse_blocks( fl_section( fl_heading( fl_text( $lang, 'Galeria realizacji', 'Project gallery' ) )
+					. fl_group( 'fl-project-gallery', $gallery ), 'fl-wide', 'fl-project-photos' ) )[0];
+			} else {
+				$blocks[] = parse_blocks( fl_report_gallery( $lang ) )[0];
+			}
+		}
 		foreach ( $blocks as &$block ) {
 			fl_media_expand_gallery( $block, $lang, $limit );
 		}
@@ -376,15 +409,15 @@ function fl_media_prepare_page( $blocks, $lang, $page ) {
 
 function fl_media_upgrade_layouts() {
 	if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) || ! get_option( 'fl_copy_491_complete' )
-		|| get_option( 'fl_media_412_layout_complete' ) || ! function_exists( 'fl_save_managed_page' )
-		|| version_compare( wp_get_theme( get_template() )->get( 'Version' ), '4.12.0', '<' ) ) {
+		|| get_option( 'fl_media_4121_layout_complete' ) || ! function_exists( 'fl_save_managed_page' )
+		|| version_compare( wp_get_theme( get_template() )->get( 'Version' ), '4.12.1', '<' ) ) {
 		return;
 	}
 	$complete = true;
 	foreach ( array( 'pl', 'en' ) as $lang ) {
 		foreach ( array( 'services', 'projects' ) as $page ) {
 			$id = fl_page_id( $page, $lang );
-			if ( $id && ! fl_save_managed_page( $id, $lang, $page, '_fl_media_412_layout', static function ( $post, $lang, $page ) {
+			if ( $id && ! fl_save_managed_page( $id, $lang, $page, '_fl_media_4121_layout', static function ( $post, $lang, $page ) {
 				return serialize_blocks( fl_media_prepare_page( parse_blocks( $post->post_content ), $lang, $page ) );
 			} ) ) {
 				$complete = false;
@@ -392,7 +425,7 @@ function fl_media_upgrade_layouts() {
 		}
 	}
 	if ( $complete ) {
-		update_option( 'fl_media_412_layout_complete', true, false );
+		update_option( 'fl_media_4121_layout_complete', true, false );
 	}
 }
 add_action( 'admin_init', 'fl_media_upgrade_layouts', 45 );
@@ -404,7 +437,7 @@ function fl_media_walk( &$block, $page, $lang, $slots, &$counts, $context = '' )
 	if ( 'home' === $page && fl_media_class( $block, 'fl-service-card' ) ) {
 		$context = fl_media_home_service( $block );
 	}
-	if ( 'services' === $page && fl_media_class( $block, 'fl-service-hero-photo' ) ) {
+	if ( 'services' === $page && fl_media_class( $block, 'fl-services-hero' ) ) {
 		$context = 'services:hero';
 	}
 	if ( 'home' === $page && fl_media_class( $block, 'fl-project-card' ) ) {
@@ -454,6 +487,21 @@ function fl_media_walk( &$block, $page, $lang, $slots, &$counts, $context = '' )
 		}
 		unset( $child );
 	}
+	// Only change the old screen description in the Fluke catalogue item,
+	// not when the new image appears exclusively in the equipment hero.
+	if ( 'equipment:fluke' === $context && fl_media_class( $block, 'fl-equipment-item' ) && ! empty( $slots[ $context ]['id'] ) ) {
+		$original = serialize_block( $block );
+		if ( false !== strpos( $original, 'wp-image-' . absint( $slots[ $context ]['id'] ) . '"' ) ) {
+			$updated = strtr( $original, array(
+				'a zdjęcie przedstawia platformę Versiv 2 z ekranem FiberInspector Pro.' => 'a zdjęcie przedstawia platformę Versiv 2 z modułami optycznymi CertiFiber Pro.',
+				'The photo shows the Versiv 2 platform displaying FiberInspector Pro.' => 'The photo shows the Versiv 2 platform with CertiFiber Pro optical test modules.',
+				'The photograph shows the Versiv 2 main and remote units with the FiberInspector Pro inspection screen.' => 'The photograph shows the Versiv 2 main and remote units with CertiFiber Pro optical test modules.',
+			) );
+			if ( $updated !== $original ) {
+				$block = parse_blocks( $updated )[0];
+			}
+		}
+	}
 	// The current 24/7 service is text-only. Add the image once, to its inner shell.
 	if ( 'services:serwis' === $context && fl_media_class( $block, 'fl-repair-row' ) && isset( $slots[ $context ] ) ) {
 		foreach ( $block['innerBlocks'] ?? array() as $child ) {
@@ -493,13 +541,6 @@ function fl_media_apply_all( $slots ) {
 			}
 			unset( $block );
 			$updated_content = serialize_blocks( $blocks );
-			if ( 'equipment' === $key && ! empty( $slots['equipment:fluke']['id'] ) && false !== strpos( $updated_content, 'wp-image-' . absint( $slots['equipment:fluke']['id'] ) . '"' ) ) {
-				$updated_content = strtr( $updated_content, array(
-					'a zdjęcie przedstawia platformę Versiv 2 z ekranem FiberInspector Pro.' => 'a zdjęcie przedstawia platformę Versiv 2 z modułami optycznymi CertiFiber Pro.',
-					'The photo shows the Versiv 2 platform displaying FiberInspector Pro.' => 'The photo shows the Versiv 2 platform with CertiFiber Pro optical test modules.',
-					'The photograph shows the Versiv 2 main and remote units with the FiberInspector Pro inspection screen.' => 'The photograph shows the Versiv 2 main and remote units with CertiFiber Pro optical test modules.',
-				) );
-			}
 			if ( $updated_content === $post->post_content ) {
 				$report[] = strtoupper( $lang ) . ' / ' . $key . ': brak pasujących pustych miejsc; własne zdjęcia pozostają.';
 				continue;
