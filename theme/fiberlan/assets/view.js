@@ -382,3 +382,67 @@
 		if (displayed !== location.pathname + location.search) filterProjects(new URL(location.href), false);
 	});
 })();
+
+
+/* FIBERLAN gallery: keyboard, touch and full-size media, no dependencies. */
+(() => {
+  const en = document.documentElement.lang.toLowerCase().startsWith('en');
+  const t = (pl, english) => en ? english : pl;
+  const groups = document.querySelectorAll('.fl-project-gallery');
+  if (typeof HTMLDialogElement !== 'undefined' && groups.length) {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'fl-gallery-viewer';
+    dialog.setAttribute('aria-label',t('Powiększenie zdjęcia','Enlarged photograph'));
+    const btn = (cl,label,txt) => {const b=document.createElement('button');b.type='button';b.className=cl;b.setAttribute('aria-label',label);b.textContent=txt;return b;};
+    const close=btn('fl-gallery-close',t('Zamknij','Close'),'×');
+    const prev=btn('fl-gallery-prev',t('Poprzednie zdjęcie','Previous photo'),'‹');
+    const next=btn('fl-gallery-next',t('Następne zdjęcie','Next photo'),'›');
+    const image=document.createElement('img');
+    const status=document.createElement('p'); status.className='fl-gallery-status';status.setAttribute('aria-live','polite');
+    dialog.append(close,prev,image,next,status);document.body.append(dialog);
+    let photos=[],index=0,opener=null,scrollStyle='',touchX=null;
+    const show = n => {
+      index=(n+photos.length)%photos.length;
+      const source=photos[index];
+      image.src=source.dataset.flFull||source.getAttribute('src')||source.currentSrc;
+      image.alt=source.alt||'';
+      status.textContent=(index+1)+' / '+photos.length+(image.alt?' · '+image.alt:'');
+    };
+    close.addEventListener('click',()=>dialog.close());
+    prev.addEventListener('click',()=>show(index-1));next.addEventListener('click',()=>show(index+1));
+    dialog.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();show(index-1)}if(e.key==='ArrowRight'){e.preventDefault();show(index+1)}});
+    dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
+    dialog.addEventListener('touchstart',e=>{touchX=e.changedTouches[0].clientX},{passive:true});
+    dialog.addEventListener('touchend',e=>{if(touchX===null)return;const dx=e.changedTouches[0].clientX-touchX;touchX=null;if(Math.abs(dx)>50)show(index+(dx<0?1:-1))},{passive:true});
+    dialog.addEventListener('close',()=>{document.body.style.overflow=scrollStyle;image.removeAttribute('src');opener?.focus()});
+    groups.forEach(group=>{
+      const entries=[...group.querySelectorAll('figure.wp-block-image img')].filter(img=>img.getAttribute('src')&&!img.src.includes('photo-placeholder.svg')&&!img.closest('a, .wp-lightbox-container'));
+      entries.forEach((img,i)=>{
+        const figure=img.closest('figure');
+        if(!figure||figure.querySelector('.fl-gallery-open'))return;
+        const open=btn('fl-gallery-open',t('Powiększ zdjęcie','Enlarge photograph')+(img.alt?' — '+img.alt:''),'');
+        figure.append(open);
+        open.addEventListener('click',()=>{photos=entries;opener=open;show(i);scrollStyle=document.body.style.overflow;document.body.style.overflow='hidden';dialog.showModal();close.focus()});
+      });
+    });
+  }
+  document.querySelectorAll('.fl-operator-marquee').forEach(marquee=>{
+    const logos=[...marquee.querySelectorAll(':scope > .fl-operator-logo')];
+    if(!logos.length)return;
+    const set=document.createElement('div');set.className='fl-logo-set';
+    logos.forEach(logo=>{
+      const img=logo.querySelector('img');
+      if(img){
+        const fallback=()=>{if(logo.querySelector('.fl-logo-fallback'))return;const name=document.createElement('span');name.className='fl-logo-fallback';name.textContent=img.alt;img.hidden=true;logo.append(name)};
+        img.addEventListener('error',fallback);if(img.complete&&!img.naturalWidth)fallback();
+      }
+      set.append(logo);
+    });
+    const track=document.createElement('div');track.className='fl-logo-track';const clone=set.cloneNode(true);clone.setAttribute('aria-hidden','true');clone.inert=true;
+    clone.querySelectorAll('img').forEach(img=>{img.alt='';img.loading='eager'});
+    track.append(set,clone);marquee.append(track);
+    const toggle=document.createElement('button');toggle.type='button';toggle.className='fl-logo-toggle';toggle.setAttribute('aria-pressed','false');toggle.textContent=t('Wstrzymaj animację','Pause animation');
+    toggle.addEventListener('click',()=>{const pause=track.classList.toggle('is-paused');toggle.setAttribute('aria-pressed',String(pause));toggle.textContent=pause?t('Wznów animację','Resume animation'):t('Wstrzymaj animację','Pause animation')});
+    marquee.after(toggle);
+  });
+})();

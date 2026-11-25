@@ -28,7 +28,7 @@ function fl_projects_render( $attrs ) {
 		$args['tax_query'] = array( array( 'taxonomy' => 'fl_sector', 'field' => 'slug', 'terms' => $filter ) );
 	}
 	$projects = get_posts( $args );
-	$html .= '</nav><div class="fl-case-grid">';
+	$html .= '</nav><p class="fl-catalogue-archive">' . esc_html( fl_text( $lang, 'Fotografie z archiwum FIBERLAN; lokalizacje poszczególnych ujęć nie zawsze są potwierdzone.', 'Photographs from the FIBERLAN archive; individual photo locations are not always confirmed.' ) ) . '</p><div class="fl-case-grid">';
 	foreach ( $projects as $project ) {
 		$image = get_the_post_thumbnail( $project, 'medium_large' );
 		$representative = false;
@@ -37,7 +37,6 @@ function fl_projects_render( $attrs ) {
 			$image = fl_project_image( parse_blocks( $project->post_content ), $fallback, $representative ) ?: $fallback;
 		}
 		$html .= '<article><a href="' . esc_url( get_permalink( $project ) ) . '">' . $image
-			. ( $representative ? '<span class="fl-project-archive-note">' . esc_html( fl_text( $lang, 'Zdjęcie poglądowe — archiwum FIBERLAN', 'Illustrative photo — FIBERLAN archive' ) ) . '</span>' : '' )
 			. '<h3>' . esc_html( get_the_title( $project ) ) . '</h3></a><p>' . esc_html( $project->post_excerpt ) . '</p></article>';
 	}
 	if ( ! $projects ) {

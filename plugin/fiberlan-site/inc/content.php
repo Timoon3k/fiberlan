@@ -253,10 +253,27 @@ function fl_project_examples() {
 	);
 }
 
+function fl_operator_logos() {
+	// Original marks, not imitations. Sources are documented in EDYCJA.md.
+	$logos = array(
+		'T-Mobile' => 'https://upload.wikimedia.org/wikipedia/commons/e/ee/T-Mobile_logo.svg',
+		'Orange' => 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg',
+		'Plus' => 'https://upload.wikimedia.org/wikipedia/commons/2/24/Plus_Logo.svg',
+		'CD PROJEKT' => 'https://upload.wikimedia.org/wikipedia/commons/4/46/CDProjekt-logo.svg',
+		'ZUS' => 'https://upload.wikimedia.org/wikipedia/commons/5/54/ZUS_logo.svg',
+	);
+	$images = '';
+	foreach ( $logos as $name => $url ) {
+		$attrs = array( 'sizeSlug' => 'full', 'linkDestination' => 'none', 'className' => 'fl-operator-logo' );
+		$images .= '<!-- wp:image ' . serialize_block_attributes( $attrs ) . ' -->'
+			. '<figure class="wp-block-image size-full fl-operator-logo"><img src="' . esc_url( $url ) . '" alt="' . esc_attr( $name ) . '"/></figure><!-- /wp:image -->';
+	}
+	return fl_group( 'fl-operator-marquee', $images );
+}
+
 function fl_operator_section( $lang ) {
-	$names = fl_paragraph( 'T-Mobile' ) . fl_paragraph( 'Orange' ) . fl_paragraph( 'Plus' );
-	return fl_section( fl_heading( fl_text( $lang, 'Prace podwykonawcze dla operatorów', 'Subcontracted work for network operators' ) )
-		. fl_group( 'fl-operator-badges', $names ), 'fl-wide', 'fl-project-operators' );
+	return fl_section( fl_heading( fl_text( $lang, 'Prace podwykonawcze dla operatorów i instytucji', 'Subcontracted work for operators and organisations' ) )
+		. fl_operator_logos(), 'fl-wide', 'fl-project-operators' );
 }
 
 function fl_gallery_extra_slots( $lang ) {
@@ -272,6 +289,15 @@ function fl_gallery_extra_slots( $lang ) {
 		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 13', 'project photograph 13' ) ),
 		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 14', 'project photograph 14' ) ),
 		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 15', 'project photograph 15' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 16', 'project photograph 16' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 17', 'project photograph 17' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 18', 'project photograph 18' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 19', 'project photograph 19' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 20', 'project photograph 20' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 21', 'project photograph 21' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 22', 'project photograph 22' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 23', 'project photograph 23' ) ),
+		fl_photo_placeholder( $lang, 'fl-gallery-placeholder', fl_text( $lang, 'fotografia realizacji 24', 'project photograph 24' ) ),
 	);
 }
 
@@ -345,7 +371,7 @@ function fl_projects_content( $lang, $title ) {
 	$photos = fl_section(
 		fl_heading( fl_text( $lang, 'Galeria realizacji', 'Project gallery' ) )
 		. fl_group( 'fl-project-gallery', $gallery . implode( '', fl_gallery_extra_slots( $lang ) ) ), 'fl-wide', 'fl-project-photos' );
-	return fl_hero( $lang, 'FIBERLAN SC', $title, $lead ) . $catalogue . fl_operator_section( $lang ) . $showcase . $photos;
+	return fl_hero( $lang, 'FIBERLAN SC', $title, $lead, fl_photo_placeholder( $lang, 'fl-subhero-visual', fl_text( $lang, 'infrastruktura centrum danych', 'data centre infrastructure' ) ), 'fl-projects-hero' ) . $catalogue . fl_operator_section( $lang ) . $showcase . $photos;
 }
 
 

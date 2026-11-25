@@ -72,7 +72,7 @@ add_action(
 
 add_filter( 'wp_preload_resources', static function ( $resources ) {
 	// Load the heading and navigation fonts before the first paint.
-	foreach ( array( 'BRITANIC.woff2', 'Manrope.woff2' ) as $font ) {
+	foreach ( array( 'Manrope.woff2' ) as $font ) {
 		$resources[] = array(
 			'href'        => get_theme_file_uri( 'assets/fonts/' . $font ),
 			'as'          => 'font',

@@ -22,7 +22,7 @@ function fl_media_slots() {
 		'about:team', 'services:spawanie', 'services:instalacje', 'services:pomiary',
 		'services:lan', 'services:data-center', 'services:serwis',
 		'home:spawanie', 'home:instalacje', 'home:pomiary', 'home:lan', 'equipment:hero',
-		'services:hero', 'equipment:fluke', 'equipment:exfo',
+		'services:hero', 'equipment:fluke', 'equipment:exfo', 'equipment:intro', 'projects:hero',
 		'projects:gallery:0', 'projects:gallery:1', 'projects:gallery:2',
 		'projects:gallery:3', 'projects:gallery:4', 'projects:gallery:5',
 		'projects:gallery:6',
@@ -34,6 +34,15 @@ function fl_media_slots() {
 		'projects:gallery:12',
 		'projects:gallery:13',
 		'projects:gallery:14',
+		'projects:gallery:15',
+		'projects:gallery:16',
+		'projects:gallery:17',
+		'projects:gallery:18',
+		'projects:gallery:19',
+		'projects:gallery:20',
+		'projects:gallery:21',
+		'projects:gallery:22',
+		'projects:gallery:23',
 		'home:project:frankfurt', 'report:frankfurt:cover', 'report:frankfurt:gallery:0', 'report:frankfurt:gallery:1', 'report:frankfurt:gallery:2',
 		'home:project:bordeaux', 'report:bordeaux:cover', 'report:bordeaux:gallery:0', 'report:bordeaux:gallery:1', 'report:bordeaux:gallery:2',
 		'home:project:marine', 'report:marine:cover', 'report:marine:gallery:0', 'report:marine:gallery:1', 'report:marine:gallery:2',
@@ -250,7 +259,7 @@ function fl_media_image( $asset, $lang, $class, $representative = false ) {
 	$attrs = array( 'id' => $id, 'sizeSlug' => 'full', 'linkDestination' => 'none', 'className' => $class );
 	$markup = '<!-- wp:image ' . serialize_block_attributes( $attrs ) . ' -->'
 		. '<figure class="wp-block-image size-full ' . esc_attr( $class ) . '"><img src="' . esc_url( $url ) . '" alt="' . esc_attr( $alt ) . '" class="wp-image-' . $id . '"/>'
-		. ( $representative ? '<figcaption class="wp-element-caption">' . esc_html( fl_text( $lang, 'Zdjęcie poglądowe z archiwum FIBERLAN — dokładna lokalizacja niepotwierdzona.', 'Illustrative FIBERLAN archive photograph — exact location unconfirmed.' ) ) . '</figcaption>' : '' )
+		. ( $representative ? '<figcaption class="wp-element-caption">' . esc_html( fl_text( $lang, 'Archiwum FIBERLAN', 'FIBERLAN archive' ) ) . '</figcaption>' : '' )
 		. '</figure><!-- /wp:image -->';
 	return parse_blocks( $markup )[0];
 }
@@ -361,6 +370,40 @@ function fl_media_expand_gallery( &$block, $lang, $limit ) {
 }
 
 function fl_media_prepare_page( $blocks, $lang, $page ) {
+	if ( 'projects' === $page ) {
+		foreach ( $blocks as &$section ) {
+			if ( fl_layout_has_class( $section, 'fl-subhero' ) ) {
+				fl_layout_add_class( $section, 'fl-projects-hero' );
+				foreach ( $section['innerBlocks'] as &$shell ) {
+					if ( fl_layout_has_class( $shell, 'fl-reading' ) || fl_layout_has_class( $shell, 'fl-split' ) ) {
+						if ( ! fl_layout_find_photo( $shell['innerBlocks'], 'fl-subhero-visual' ) ) {
+							fl_layout_insert_last( $shell, fl_layout_placeholder_block( $lang, 'fl-subhero-visual', fl_text( $lang, 'infrastruktura centrum danych', 'data centre infrastructure' ) ) );
+						}
+						break;
+					}
+				}
+				unset( $shell );
+			}
+			if ( fl_layout_has_class( $section, 'fl-project-operators' ) && fl_layout_find_photo( $section['innerBlocks'], 'fl-operator-badges' ) ) {
+				$section = parse_blocks( fl_operator_section( $lang ) )[0];
+			}
+		}
+		unset( $section );
+	}
+	if ( 'equipment' === $page ) {
+		foreach ( $blocks as &$section ) {
+			if ( ! fl_layout_has_class( $section, 'fl-equipment-intro' ) ) {
+				continue;
+			}
+			foreach ( $section['innerBlocks'] as &$shell ) {
+				if ( fl_layout_has_class( $shell, 'fl-reading' ) && ! fl_layout_find_photo( $shell['innerBlocks'], 'fl-equipment-intro-photo' ) ) {
+					fl_layout_insert_last( $shell, fl_layout_placeholder_block( $lang, 'fl-section-image fl-equipment-intro-photo', fl_text( $lang, 'zaplecze techniczne FIBERLAN', 'FIBERLAN technical workspace' ) ) );
+				}
+			}
+			unset( $shell );
+		}
+		unset( $section );
+	}
 	if ( 'services' === $page ) {
 		$labels = array( 'Testery okablowania Fluke Networks', 'Fluke Networks cable testers', 'Fluke Networks cabling testers' );
 		$blocks = array_values( array_filter( $blocks, static function ( $block ) use ( $labels ) {
@@ -386,7 +429,7 @@ function fl_media_prepare_page( $blocks, $lang, $page ) {
 		unset( $block );
 	}
 	if ( 'projects' === $page || 0 === strpos( $page, 'report:' ) ) {
-		$limit = 'projects' === $page ? 15 : 3;
+		$limit = 'projects' === $page ? 24 : 3;
 		if ( ! fl_layout_find_photo( $blocks, 'fl-project-gallery' ) ) {
 			if ( 'projects' === $page ) {
 				$gallery = '';
@@ -409,23 +452,33 @@ function fl_media_prepare_page( $blocks, $lang, $page ) {
 
 function fl_media_upgrade_layouts() {
 	if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) || ! get_option( 'fl_copy_491_complete' )
-		|| get_option( 'fl_media_4121_layout_complete' ) || ! function_exists( 'fl_save_managed_page' )
-		|| version_compare( wp_get_theme( get_template() )->get( 'Version' ), '4.12.1', '<' ) ) {
+		|| get_option( 'fl_media_413_layout_complete' ) || ! function_exists( 'fl_save_managed_page' )
+		|| version_compare( wp_get_theme( get_template() )->get( 'Version' ), '4.13.0', '<' ) ) {
 		return;
 	}
 	$complete = true;
 	foreach ( array( 'pl', 'en' ) as $lang ) {
-		foreach ( array( 'services', 'projects' ) as $page ) {
+		foreach ( array( 'services', 'equipment', 'projects' ) as $page ) {
 			$id = fl_page_id( $page, $lang );
-			if ( $id && ! fl_save_managed_page( $id, $lang, $page, '_fl_media_4121_layout', static function ( $post, $lang, $page ) {
-				return serialize_blocks( fl_media_prepare_page( parse_blocks( $post->post_content ), $lang, $page ) );
+			if ( $id && ! fl_save_managed_page( $id, $lang, $page, '_fl_media_413_layout', static function ( $post, $lang, $page ) {
+				$blocks = fl_media_prepare_page( parse_blocks( $post->post_content ), $lang, $page );
+				$slots = get_option( 'fl_media_assignments', array() );
+				if ( empty( $slots['projects:hero'] ) && ! empty( $slots['projects:gallery:1'] ) ) {
+					$slots['projects:hero'] = $slots['projects:gallery:1'];
+				}
+				$counts = array( 'placed' => 0 );
+				foreach ( $blocks as &$block ) {
+					fl_media_walk( $block, $page, $lang, $slots, $counts );
+				}
+				unset( $block );
+				return serialize_blocks( $blocks );
 			} ) ) {
 				$complete = false;
 			}
 		}
 	}
 	if ( $complete ) {
-		update_option( 'fl_media_4121_layout_complete', true, false );
+		update_option( 'fl_media_413_layout_complete', true, false );
 	}
 }
 add_action( 'admin_init', 'fl_media_upgrade_layouts', 45 );
@@ -459,6 +512,12 @@ function fl_media_walk( &$block, $page, $lang, $slots, &$counts, $context = '' )
 	}
 	if ( 'about' === $page && fl_media_class( $block, 'fl-team-photo' ) ) {
 		$context = 'about:team';
+	}
+	if ( 'equipment' === $page && fl_media_class( $block, 'fl-equipment-intro-photo' ) ) {
+		$context = 'equipment:intro';
+	}
+	if ( 'projects' === $page && fl_media_class( $block, 'fl-projects-hero' ) ) {
+		$context = 'projects:hero';
 	}
 	if ( 'equipment' === $page && fl_media_class( $block, 'fl-equipment-hero' ) ) {
 		$context = 'equipment:hero';
