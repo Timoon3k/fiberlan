@@ -49,13 +49,13 @@
       "fontFamilies": [
         {
           "slug": "display",
-          "name": "Manrope — nagłówki",
-          "fontFamily": "'Manrope', Arial, sans-serif"
+          "name": "Suisse Intl — nagłówki",
+          "fontFamily": "'Suisse Intl', 'Suisse Int’l', \"Suisse Int'l\", 'Manrope', Arial, sans-serif"
         },
         {
           "slug": "body",
-          "name": "Manrope",
-          "fontFamily": "'Manrope', Arial, sans-serif",
+          "name": "Suisse Intl — tekst",
+          "fontFamily": "'Suisse Intl', 'Suisse Int’l', \"Suisse Int'l\", 'Manrope', Arial, sans-serif",
           "fontFace": [
             {
               "fontFamily": "Manrope",
@@ -88,22 +88,22 @@
         {
           "slug": "lead",
           "name": "Wprowadzenie",
-          "size": "clamp(1.0625rem, 0.92rem + 0.42vw, 1.375rem)"
+          "size": "clamp(1rem, 1.2vw, 1.2rem)"
         },
         {
           "slug": "subheading",
           "name": "Tytuł karty",
-          "size": "clamp(1.125rem, 1rem + 0.6vw, 1.65rem)"
+          "size": "clamp(1.08rem, 1.3vw, 1.4rem)"
         },
         {
           "slug": "section",
           "name": "Tytuł sekcji",
-          "size": "clamp(2rem, 1.36rem + 2.2vw, 3.875rem)"
+          "size": "clamp(1.65rem, 2.2vw, 2.6rem)"
         },
         {
           "slug": "hero",
           "name": "Tytuł główny",
-          "size": "clamp(2.85rem, 1.86rem + 3.6vw, 6rem)"
+          "size": "clamp(2.1rem, 3.8vw, 4.5rem)"
         }
       ]
     },
@@ -168,9 +168,9 @@
       "heading": {
         "typography": {
           "fontFamily": "var:preset|font-family|display",
-          "fontWeight": "800",
+          "fontWeight": "600",
           "lineHeight": "1.12",
-          "letterSpacing": "-0.045em"
+          "letterSpacing": "-0.025em"
         }
       },
       "h1": {
@@ -187,7 +187,7 @@
         "typography": {
           "fontFamily": "var:preset|font-family|body",
           "fontSize": "var:preset|font-size|subheading",
-          "fontWeight": "700",
+          "fontWeight": "600",
           "lineHeight": "1.22"
         }
       },

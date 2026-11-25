@@ -2044,10 +2044,10 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
 
 
 /* 4.13 — unified photographic editorial system. */
-:root, .editor-styles-wrapper { --wp--preset--font-family--display: 'Manrope', Arial, sans-serif; }
+:root, .editor-styles-wrapper { --wp--preset--font-family--display: 'Suisse Intl', 'Suisse Int’l', "Suisse Int'l", 'Manrope', Arial, sans-serif; --wp--preset--font-family--body: 'Suisse Intl', 'Suisse Int’l', "Suisse Int'l", 'Manrope', Arial, sans-serif; }
 :where(.wp-site-blocks,.editor-styles-wrapper) :is(h1,h2,.wp-block-heading.has-display-font-family) {
-  font-family: 'Manrope', Arial, sans-serif;
-  font-weight: 800; letter-spacing: -.045em; line-height: 1.12;
+  font-family: var(--wp--preset--font-family--display);
+  font-weight: 600; letter-spacing: -.025em; line-height: 1.12;
 }
 .fl-subhero h1 { font-size: clamp(2.6rem,4.6vw,5.1rem); }
 .fl-section h2 { font-size: clamp(1.8rem,2.7vw,3.1rem); }
@@ -2112,7 +2112,7 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
 .fl-gallery-viewer[open] { display:grid; grid-template-columns:3rem minmax(0,1fr) 3rem; grid-template-rows:auto minmax(0,1fr) auto; align-items:center; gap:.7rem; }
 .fl-gallery-viewer::backdrop { background:#06131e; }
 .fl-gallery-viewer img { grid-column:2; grid-row:2; width:100%; height:100%; min-height:0; max-height:100%; object-fit:contain; }
-.fl-gallery-viewer button { display:grid; place-items:center; border:1px solid #91aabb; background:#183347; color:white; min-height:2.75rem; font:600 1.35rem Manrope, sans-serif; cursor:pointer; }
+.fl-gallery-viewer button { display:grid; place-items:center; border:1px solid #91aabb; background:#183347; color:white; min-height:2.75rem; font:600 1.35rem var(--wp--preset--font-family--body); cursor:pointer; }
 .fl-gallery-viewer button:focus-visible { outline:3px solid #a5c7ff; }
 .fl-gallery-viewer .fl-gallery-close { grid-column:3; grid-row:1; }
 .fl-gallery-viewer .fl-gallery-prev { grid-column:1; grid-row:2; }
@@ -2157,3 +2157,41 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
 .fl-operator-logo img[hidden] { display:none; }
 .fl-catalogue-archive { color:#536575; font-size:.78rem; margin:.6rem 0 1rem; }
 #portfolio .fl-case-grid > article > a > img { aspect-ratio:16/10; max-height:none; }
+
+
+/* 4.13.1 — compact Suisse editorial typography. The Manrope fallback uses
+   the same measurements until the licensed local webfonts are installed. */
+.fl-hero-copy { container-type: inline-size; min-width: 0; }
+.fl-hero-copy h1,
+.editor-styles-wrapper .fl-hero-copy h1 {
+  font-size: clamp(1.85rem, 3.8vw, 4.5rem);
+  font-size: clamp(1.85rem, 10.9cqi, 4.5rem);
+  line-height: 1.08;
+  letter-spacing: -.032em;
+  font-weight: 600;
+  margin-block: .8rem 1.05rem;
+  max-inline-size: 100%;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: none;
+  text-wrap: balance;
+}
+.fl-hero-copy .fl-lead { font-size: clamp(1rem, 1.2vw, 1.2rem); line-height: 1.55; max-width: 46ch; }
+.fl-hero-copy .fl-actions { margin-top: clamp(1.25rem, 1.8vw, 1.8rem); }
+.fl-subhero h1 { font-size: clamp(2rem, 3.6vw, 4.2rem); line-height: 1.12; font-weight: 600; letter-spacing: -.028em; overflow-wrap: break-word; word-break: normal; }
+.fl-section h2, .fl-section .fl-equipment-item .fl-equipment-copy h2 {
+  font-size: clamp(1.65rem, 2.2vw, 2.6rem);
+  font-weight: 600; line-height: 1.16; letter-spacing: -.025em;
+  overflow-wrap: break-word; word-break: normal; hyphens: auto;
+}
+.fl-project-card h3, .fl-project-feature h3 { font-weight: 600; }
+.fl-operator-logo:has(img[alt="CD PROJEKT RED"]) img { max-width: 10.4rem; max-height: 4.1rem; }
+@media (min-width: 52.01rem) {
+  .fl-hero-grid { grid-template-columns: minmax(0, .98fr) minmax(0, 1.02fr); min-height: clamp(23rem, 31vw, 33rem); }
+}
+@media (max-width: 52rem) {
+  .fl-hero-copy h1, .editor-styles-wrapper .fl-hero-copy h1 {
+    font-size: clamp(1.85rem, 8.3vw, 3.5rem);
+    font-size: clamp(1.85rem, 10.9cqi, 3.5rem);
+  }
+}

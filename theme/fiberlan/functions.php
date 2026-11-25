@@ -14,6 +14,7 @@ require_once __DIR__ . '/inc/photography.php';
 require_once __DIR__ . '/inc/starter.php';
 require_once __DIR__ . '/inc/responsive-media.php';
 require_once __DIR__ . '/inc/customize-hero.php';
+require_once __DIR__ . '/inc/typography.php';
 
 add_action(
 	'after_setup_theme',

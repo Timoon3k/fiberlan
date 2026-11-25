@@ -259,7 +259,7 @@ function fl_operator_logos() {
 		'T-Mobile' => 'https://upload.wikimedia.org/wikipedia/commons/e/ee/T-Mobile_logo.svg',
 		'Orange' => 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg',
 		'Plus' => 'https://upload.wikimedia.org/wikipedia/commons/2/24/Plus_Logo.svg',
-		'CD PROJEKT' => 'https://upload.wikimedia.org/wikipedia/commons/4/46/CDProjekt-logo.svg',
+		'CD PROJEKT RED' => 'https://www.cdprojekt.com/pl/wp-content/themes/cdprojekt/assets/images/cd_projekt_red_logo_red.svg',
 		'ZUS' => 'https://upload.wikimedia.org/wikipedia/commons/5/54/ZUS_logo.svg',
 	);
 	$images = '';

@@ -645,3 +645,44 @@ add_filter( 'attachment_fields_to_save', static function ( $post, $attachment ) 
 	}
 	return $post;
 }, 10, 2 );
+
+
+/** Update only the old default logo, not other logos or user-supplied images. */
+function fl_update_cdpr_logo( &$blocks ) {
+	foreach ( $blocks as &$block ) {
+		if ( 'core/image' === ( $block['blockName'] ?? '' ) && fl_media_class( $block, 'fl-operator-logo' ) ) {
+			$old = 'https://upload.wikimedia.org/wikipedia/commons/4/46/CDProjekt-logo.svg';
+			$new = 'https://www.cdprojekt.com/pl/wp-content/themes/cdprojekt/assets/images/cd_projekt_red_logo_red.svg';
+			$search = array( $old, 'alt="CD PROJEKT"' );
+			$replace = array( $new, 'alt="CD PROJEKT RED"' );
+			if ( false !== strpos( $block['innerHTML'] ?? '', $old ) && empty( $block['attrs']['id'] ) ) {
+				$block['innerHTML'] = str_replace( $search, $replace, $block['innerHTML'] );
+				foreach ( $block['innerContent'] as &$fragment ) {
+					if ( is_string( $fragment ) ) {
+						$fragment = str_replace( $search, $replace, $fragment );
+					}
+				}
+				unset( $fragment );
+			}
+		}
+		if ( ! empty( $block['innerBlocks'] ) ) {
+			fl_update_cdpr_logo( $block['innerBlocks'] );
+		}
+	}
+	unset( $block );
+}
+add_action( 'admin_init', static function () {
+	if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) || ! function_exists( 'fl_save_managed_page' ) || ! get_option( 'fl_stage_two_ready' ) ) {
+		return;
+	}
+	foreach ( array( 'pl', 'en' ) as $lang ) {
+		$id = fl_page_id( 'projects', $lang );
+		if ( $id ) {
+			fl_save_managed_page( $id, $lang, 'projects', '_fl_cdpr_logo_4131', static function ( $post ) {
+				$blocks = parse_blocks( $post->post_content );
+				fl_update_cdpr_logo( $blocks );
+				return serialize_blocks( $blocks );
+			} );
+		}
+	}
+}, 60 );
