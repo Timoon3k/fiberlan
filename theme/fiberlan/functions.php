@@ -73,6 +73,10 @@ add_action(
 
 add_filter( 'wp_preload_resources', static function ( $resources ) {
 	// Load the heading and navigation fonts before the first paint.
+	$suisse = fiberlan_suisse_fonts();
+	if ( $suisse ) {
+		return $resources;
+	}
 	foreach ( array( 'Manrope.woff2' ) as $font ) {
 		$resources[] = array(
 			'href'        => get_theme_file_uri( 'assets/fonts/' . $font ),

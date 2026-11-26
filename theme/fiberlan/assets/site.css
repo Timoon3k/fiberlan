@@ -2044,7 +2044,7 @@ body:has(.cky-consent-container:not(.cky-hide,[hidden]),.cky-modal.cky-modal-ope
 
 
 /* 4.13 — unified photographic editorial system. */
-:root, .editor-styles-wrapper { --wp--preset--font-family--display: 'Suisse Intl', 'Suisse Int’l', "Suisse Int'l", 'Manrope', Arial, sans-serif; --wp--preset--font-family--body: 'Suisse Intl', 'Suisse Int’l', "Suisse Int'l", 'Manrope', Arial, sans-serif; }
+:root, .editor-styles-wrapper { --wp--preset--font-family--display: 'FIBERLAN Suisse Intl', 'Suisse Intl', 'Suisse Int’l', "Suisse Int'l", 'Manrope', Arial, sans-serif; --wp--preset--font-family--body: 'FIBERLAN Suisse Intl', 'Suisse Intl', 'Suisse Int’l', "Suisse Int'l", 'Manrope', Arial, sans-serif; }
 :where(.wp-site-blocks,.editor-styles-wrapper) :is(h1,h2,.wp-block-heading.has-display-font-family) {
   font-family: var(--wp--preset--font-family--display);
   font-weight: 600; letter-spacing: -.025em; line-height: 1.12;

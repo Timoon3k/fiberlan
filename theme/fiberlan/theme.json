@@ -50,12 +50,12 @@
         {
           "slug": "display",
           "name": "Suisse Intl — nagłówki",
-          "fontFamily": "'Suisse Intl', 'Suisse Int’l', \"Suisse Int'l\", 'Manrope', Arial, sans-serif"
+          "fontFamily": "'FIBERLAN Suisse Intl', 'Suisse Intl', 'Suisse Int’l', \"Suisse Int'l\", 'Manrope', Arial, sans-serif"
         },
         {
           "slug": "body",
           "name": "Suisse Intl — tekst",
-          "fontFamily": "'Suisse Intl', 'Suisse Int’l', \"Suisse Int'l\", 'Manrope', Arial, sans-serif",
+          "fontFamily": "'FIBERLAN Suisse Intl', 'Suisse Intl', 'Suisse Int’l', \"Suisse Int'l\", 'Manrope', Arial, sans-serif",
           "fontFace": [
             {
               "fontFamily": "Manrope",
